@@ -6,3 +6,6 @@ class Fraction:
             self.value = numerator / denominator
         else:
             raise ZeroDivisionError
+
+    def __str__(self):
+        return "{}/{}".format(self.numerator, self.denominator)

@@ -33,7 +33,7 @@ class ProblemSet:
         if self.settings.int_value_manual:
             return choice(self.settings.int_values)
         else:
-            return randrange(self.settings.int_values[0], self.settings.int_values[1])
+            return randrange(self.settings.int_values[0], self.settings.int_values[1] + 1)
 
     def make_fraction(self):
         numerator = None
@@ -42,13 +42,13 @@ class ProblemSet:
         if self.settings.numerator_value_manual:
             numerator = choice(self.settings.numerator_values)
         else:
-            numerator = randrange(self.settings.numerator_values[0], self.settings.numerator_values[1])
+            numerator = randrange(self.settings.numerator_values[0], self.settings.numerator_values[1] + 1)
 
         if self.settings.denominator_value_manual:
             denominator = choice(self.settings.denominator_values)
         else:
             if self.settings.denominator_values[0] > 0:
-                denominator = randrange(self.settings.denominator_values[0], self.settings.denominator_values[1])
+                denominator = randrange(self.settings.denominator_values[0], self.settings.denominator_values[1] + 1)
             else:
                 neg = list(range(self.settings.denominator_values[0], 0))
                 pos = list(range(1, self.settings.denominator_values[1] + 1))

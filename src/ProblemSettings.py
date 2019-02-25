@@ -18,4 +18,4 @@ class ProblemSettings:
         self.operator_sets = {}
 
         self.allow_mixed_terms = False
-        self.term_sets = {}
+        self.term_sets = []

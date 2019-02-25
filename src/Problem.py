@@ -4,9 +4,3 @@ class Problem:
         self.terms = []
         self.operators = []
         self.answer = None
-
-    def add_term(self, term):
-        self.terms.append(term)
-
-    def add_operator(self, op):
-        self.operators.append(op)

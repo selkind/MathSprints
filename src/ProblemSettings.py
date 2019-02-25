@@ -3,7 +3,7 @@ class ProblemSettings:
         self.term_count_min = None
         self.term_count_max = None
 
-        self.allowed_terms = {"integers": False, "decimals": False, "fractions": False}
+        self.allowed_terms = {"integer": False, "decimal": False, "fraction": False}
         self.int_value_manual = False
         self.int_values = []
         self.numerator_value_manual = False
@@ -15,7 +15,7 @@ class ProblemSettings:
 
         self.allowed_operators = {"+": False, "-": False, "*": False, "/": False}
         self.mixed_operators = False
-        self.operator_sets = {}
+        self.operator_sets = []
 
         self.allow_mixed_terms = False
         self.term_sets = []

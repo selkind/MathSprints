@@ -4,3 +4,12 @@ class Problem:
         self.terms = []
         self.operators = []
         self.answer = None
+
+    def __str__(self):
+        problem = ""
+        for i in range(len(self.term_count))
+            if i != self.term_count - 1:
+                problem += str(self.terms[i]) + " " + self.operators[i] + " "
+            else:
+                problem += str(self.terms[i])
+        return problem

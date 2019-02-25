@@ -3,6 +3,7 @@ from src.Problem import Problem
 from src.Fraction import Fraction
 from random import randrange, choice, sample, random
 
+
 class ProblemSet:
     def __init__(self, settings):
         self.settings = settings

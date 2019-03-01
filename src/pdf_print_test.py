@@ -1,5 +1,6 @@
 from PyQt5 import QtGui, QtWidgets, QtCore, QtQuick
 import sys
+from tests.basic_problem_set import TestSet
 
 
 '''Probably going to have to have two painters. One to render the worksheet dynamically
@@ -15,24 +16,27 @@ class Window(QtWidgets.QWidget):
         self.setLayout(self.layout)
 
     def page_layout(self):
-        top_widget = QtWidgets.QWidget()
-        layout = QtWidgets.QGridLayout(top_widget)
-        label = self.config_problem_label()
-        layout.addWidget(label, 0, 1)
-        top_widget.setFixedSize(850, 1100)
-        return top_widget
-
-    def config_problem_label(self):
+        page_widget = QtWidgets.QWidget()
         pal = QtGui.QPalette()
         pal.setColor(QtGui.QPalette.Background, QtGui.QColor(10, 100, 10))
+        page_widget.setAutoFillBackground(True)
+        page_widget.setPalette(pal)
+        layout = QtWidgets.QGridLayout(page_widget)
+        label = self.problem_label(self.config_test_problem())
+        layout.addWidget(label, 0, 1)
+        page_widget.setFixedSize(850, 1100)
+        return page_widget
+
+    def problem_label(self, problem):
         font = QtGui.QFont()
-        font.setPointSize(72)
-        font.setBold(True)
-        problem = QtWidgets.QLabel("Problem 1")
-        problem.setAutoFillBackground(True)
-        problem.setPalette(pal)
+        font.setPointSize(12)
+        problem = QtWidgets.QLabel(problem.__str__())
         problem.setFont(font)
         return problem
+
+    def config_test_problem(self):
+        test_set = TestSet(1)
+        return test_set.prob_set.problems[0]
 
     def print_screen(self, widget):
         filename = "test.pdf"
@@ -46,6 +50,12 @@ class Window(QtWidgets.QWidget):
 
 def run():
     app = QtWidgets.QApplication([])
+    screen = QtWidgets.QApplication.primaryScreen()
+    screen_geom = screen.geometry()
+    height = screen_geom.height()
+    width = screen_geom.width()
+    print("width: {}, height: {}".format(width, height))
+
     window = Window()
     window.show()
     #window.print_screen(window.texttest)

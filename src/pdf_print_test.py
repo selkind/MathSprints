@@ -43,7 +43,7 @@ class Window(QtWidgets.QDesktopWidget):
         printer = QtGui.QPdfWriter(filename)
         printer.setPageSize(QtGui.QPdfWriter.Letter)
         painter = QtGui.QPainter(printer)
-        #painter.scale(10, 10)
+        painter.scale(10, 10)
         widget.render(painter)
         painter.end()
 

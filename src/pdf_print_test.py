@@ -1,6 +1,7 @@
 from PyQt5 import QtGui, QtWidgets, QtCore, QtQuick
 import sys
 from tests.basic_problem_set import TestSet
+from src.ProblemSetPageSettings import ProblemSetPageSettings
 
 
 '''Probably going to have to have two painters. One to render the worksheet dynamically
@@ -12,11 +13,13 @@ class Window(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         self.layout = QtWidgets.QVBoxLayout(self)
         self.setWindowTitle(self.tr("test rendering"))
-        self.page = self.page_layout(self.make_test_set(50))
+        self.set_settings = ProblemSetPageSettings()
+        self.set_settings.columns = 2
+        self.page = self.page_layout(self.make_test_set(50), self.set_settings)
         self.layout.addWidget(self.page)
         self.setLayout(self.layout)
 
-    def page_layout(self, problem_set):
+    def page_layout(self, problem_set, set_settings):
         page_widget = QtWidgets.QWidget()
         pal = QtGui.QPalette()
         pal.setColor(QtGui.QPalette.Background, QtGui.QColor(10, 100, 10, 50))
@@ -30,14 +33,15 @@ class Window(QtWidgets.QWidget):
         layout = QtWidgets.QGridLayout(page_widget)
 
         available_page_width = page_width
-        col_count = 3
+        col_count = set_settings.columns
+        max_problems = set_settings.max_problems_per_page
         col = 0
         row = 0
 
         for i in problem_set.problems:
             problem_label = self.problem_label(i)
             test_font = QtGui.QFont()
-            test_font.setPointSizeF(4)
+            test_font.setPointSizeF(set_settings.font_size)
             problem_label.setFont(test_font)
 
             problem_size = problem_label.fontMetrics().boundingRect(problem_label.text())

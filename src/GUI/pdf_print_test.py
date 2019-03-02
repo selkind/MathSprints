@@ -1,7 +1,7 @@
-from PyQt5 import QtGui, QtWidgets, QtCore, QtQuick
+from PyQt5 import QtGui, QtWidgets, QtCore
 import sys
 from tests.basic_problem_set import TestSet
-from src.ProblemSetPageSettings import ProblemSetPageSettings
+from src.GUI.ProblemSetPageSettings import ProblemSetPageSettings
 
 
 '''Probably going to have to have two painters. One to render the worksheet dynamically
@@ -11,7 +11,7 @@ from src.ProblemSetPageSettings import ProblemSetPageSettings
 class Window(QtWidgets.QWidget):
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
-        self.layout = QtWidgets.QVBoxLayout(self)
+        self.layout = QtWidgets.QHBoxLayout(self)
         self.setWindowTitle(self.tr("test rendering"))
         self.set_settings = ProblemSetPageSettings()
         self.set_settings.columns = 2
@@ -19,6 +19,7 @@ class Window(QtWidgets.QWidget):
         self.layout.addWidget(self.page)
         self.setLayout(self.layout)
 
+    #refactor into PageViewer class that contains Pages containing widgets generated according to problem sets and page settings
     def page_layout(self, problem_set, set_settings):
         page_widget = QtWidgets.QWidget()
         pal = QtGui.QPalette()

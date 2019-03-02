@@ -18,6 +18,5 @@ class TestSet:
         settings.term_sets.append(["fraction"])
 
         self.prob_set = ProblemSet(settings)
-        problem_count = 1
         for i in range(problem_count):
             self.prob_set.make_problem(settings.term_sets[0], settings.operator_sets[0])

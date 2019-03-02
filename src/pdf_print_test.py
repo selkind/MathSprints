@@ -12,35 +12,60 @@ class Window(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         self.layout = QtWidgets.QVBoxLayout(self)
         self.setWindowTitle(self.tr("test rendering"))
-        self.page = self.page_layout()
+        self.page = self.page_layout(self.make_test_set(50))
         self.layout.addWidget(self.page)
         self.setLayout(self.layout)
 
-    def page_layout(self):
+    def page_layout(self, problem_set):
         page_widget = QtWidgets.QWidget()
         pal = QtGui.QPalette()
         pal.setColor(QtGui.QPalette.Background, QtGui.QColor(10, 100, 10, 50))
         page_widget.setAutoFillBackground(True)
         page_widget.setPalette(pal)
-        layout = QtWidgets.QGridLayout(page_widget)
-        label = self.problem_label(self.config_test_problem())
-        label2 = self.problem_label(self.config_test_problem())
-        layout.addWidget(label2, 1, 1)
-        print("label2 size: {}".format(label2.fontMetrics().boundingRect(label2.text())))
-        layout.addWidget(label, 0, 1)
+
         page_size = self.size()
         page_width = page_size.height() * (17/22)
         page_widget.setFixedSize(page_width, page_size.height())
+
+        layout = QtWidgets.QGridLayout(page_widget)
+
+        available_page_width = page_width
+        col_count = 3
+        col = 0
+        row = 0
+
+        for i in problem_set.problems:
+            problem_label = self.problem_label(i)
+            test_font = QtGui.QFont()
+            test_font.setPointSizeF(4)
+            problem_label.setFont(test_font)
+
+            problem_size = problem_label.fontMetrics().boundingRect(problem_label.text())
+            #problem_label.setFixedWidth(problem_size.width())
+
+            available_page_width -= problem_size.width()
+            if available_page_width < 0:
+                row += 1
+                col = 0
+                available_page_width = page_width
+
+            print("problem_label size: {}".format(problem_label.fontMetrics().boundingRect(problem_label.text())))
+            layout.addWidget(problem_label, row, col)
+            col += 1
+            if col == col_count:
+                row += 1
+                col = 0
+                available_page_width = page_width
+
         return page_widget
 
     def problem_label(self, problem):
         font = QtGui.QFont()
         font.setPointSize(12)
 
-
         problem = QtWidgets.QLabel(problem.__str__())
 
-        problem.setAlignment(QtCore.Qt.AlignCenter)
+        problem.setAlignment(QtCore.Qt.AlignLeft)
 
         pal = QtGui.QPalette()
         pal.setColor(QtGui.QPalette.Background, QtGui.QColor(10, 10, 100, 50))
@@ -48,13 +73,18 @@ class Window(QtWidgets.QWidget):
         problem.setPalette(pal)
         problem.setFont(font)
 
-        dimensions = problem.fontMetrics().boundingRect(problem.text())
-        #problem.setFixedSize(dimensions.width(), dimensions.height())
         return problem
 
-    def config_test_problem(self):
-        test_set = TestSet(1)
-        return test_set.prob_set.problems[0]
+    def answer_label(self):
+        answer = QtWidgets.QLabel()
+        pal = QtGui.QPalette()
+        pal.setColor(QtGui.QPalette.Background, QtGui.QColor(100, 10, 10, 50))
+        answer.setAutoFillBackground(True)
+        answer.setPalette(pal)
+        return answer
+
+    def make_test_set(self, problem_count):
+        return TestSet(problem_count).prob_set
 
     def print_screen(self, widget):
         filename = "test.pdf"

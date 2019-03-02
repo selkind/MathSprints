@@ -7,7 +7,7 @@ from tests.basic_problem_set import TestSet
     then another to pass the printer to when creating a pdf.'''
 
 
-class Window(QtWidgets.QDesktopWidget):
+class Window(QtWidgets.QWidget):
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
         self.layout = QtWidgets.QVBoxLayout(self)

@@ -34,18 +34,21 @@ class Window(QtWidgets.QWidget):
         return page_widget
 
     def problem_label(self, problem):
-        #font = QtGui.QFont()
-        #font.setPointSize(12)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+
+
+        problem = QtWidgets.QLabel(problem.__str__())
+
+        problem.setAlignment(QtCore.Qt.AlignCenter)
 
         pal = QtGui.QPalette()
         pal.setColor(QtGui.QPalette.Background, QtGui.QColor(10, 10, 100, 50))
-
-        problem = QtWidgets.QLabel(problem.__str__())
         problem.setAutoFillBackground(True)
         problem.setPalette(pal)
-        #problem.setFont(font)
+        problem.setFont(font)
 
-        #dimensions = problem.fontMetrics().boundingRect(problem.text())
+        dimensions = problem.fontMetrics().boundingRect(problem.text())
         #problem.setFixedSize(dimensions.width(), dimensions.height())
         return problem
 
@@ -56,8 +59,10 @@ class Window(QtWidgets.QWidget):
     def print_screen(self, widget):
         filename = "test.pdf"
 
-        '''Potential to take string argument of page sizes and use a dictionary to map
-        to Qpage sizes. then use that size as parameter during page size instantiation'''
+        '''
+        Potential to take string argument of page sizes and use a dictionary to map
+        to Qpage sizes. then use that size as parameter during page size instantiation
+        '''
         page_size = QtGui.QPageSize(QtGui.QPageSize.Letter)
 
         printer = QtGui.QPdfWriter(filename)
@@ -87,7 +92,7 @@ def run():
     #geom = window.availableGeometry()
     #print(geom)
     window.show()
-    window.print_screen(window.page)
+    #window.print_screen(window.page)
     sys.exit(app.exec_())
 
 

@@ -7,7 +7,7 @@ from tests.basic_problem_set import TestSet
     then another to pass the printer to when creating a pdf.'''
 
 
-class Window(QtWidgets.QWidget):
+class Window(QtWidgets.QDesktopWidget):
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -43,22 +43,19 @@ class Window(QtWidgets.QWidget):
         printer = QtGui.QPdfWriter(filename)
         printer.setPageSize(QtGui.QPdfWriter.Letter)
         painter = QtGui.QPainter(printer)
-        painter.scale(10, 10)
+        #painter.scale(10, 10)
         widget.render(painter)
         painter.end()
 
 
 def run():
     app = QtWidgets.QApplication([])
-    screen = QtWidgets.QApplication.primaryScreen()
-    screen_geom = screen.geometry()
-    height = screen_geom.height()
-    width = screen_geom.width()
-    print("width: {}, height: {}".format(width, height))
 
     window = Window()
+    #geom = window.availableGeometry()
+    #print(geom)
     window.show()
-    #window.print_screen(window.texttest)
+    #window.print_screen(window)
     sys.exit(app.exec_())
 
 

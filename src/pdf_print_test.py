@@ -31,7 +31,6 @@ class Window(QtWidgets.QWidget):
         page_size = self.size()
         page_width = page_size.height() * (17/22)
         page_widget.setFixedSize(page_width, page_size.height())
-        print(page_size)
         return page_widget
 
     def problem_label(self, problem):
@@ -56,16 +55,23 @@ class Window(QtWidgets.QWidget):
 
     def print_screen(self, widget):
         filename = "test.pdf"
+
+        '''Potential to take string argument of page sizes and use a dictionary to map
+        to Qpage sizes. then use that size as parameter during page size instantiation'''
+        page_size = QtGui.QPageSize(QtGui.QPageSize.Letter)
+
         printer = QtGui.QPdfWriter(filename)
         printer.setPageSize(QtGui.QPdfWriter.Letter)
         printer.setPageMargins(QtCore.QMarginsF())
+        page_resolution = printer.logicalDpiY()
+        y_pixels_page = QtGui.QPageSize.sizePixels(page_size.id(), page_resolution).height()
+        y_pixels_widget = widget.size().height()
 
-        logicaldpix = printer.logicalDpiX()
-        pointsperinch = 43.5
-        print("pagesize(x,y): ({}, {})".format(printer.logicalDpiX(), printer.logicalDpiY()))
-        print("pagesize(x,y): ({}, {})".format(printer.logicalDpiX(), printer.logicalDpiY()))
-        print("widget(x,y): ({}, {})".format(widget.logicalDpiX(), widget.logicalDpiY()))
-        scaling = logicaldpix / pointsperinch
+        scaling = y_pixels_page / y_pixels_widget
+
+        print("pixels: {}".format(y_pixels_page))
+
+        print("widgetsize: {}".format(widget.size()))
         print("scaling: {}".format(scaling))
 
         painter = QtGui.QPainter(printer)

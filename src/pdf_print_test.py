@@ -61,9 +61,12 @@ class Window(QtWidgets.QWidget):
         printer.setPageMargins(QtCore.QMarginsF())
 
         logicaldpix = printer.logicalDpiX()
-        pointsperinch = 40
-        printer.pageSize()
+        pointsperinch = 43.5
+        print("pagesize(x,y): ({}, {})".format(printer.logicalDpiX(), printer.logicalDpiY()))
+        print("pagesize(x,y): ({}, {})".format(printer.logicalDpiX(), printer.logicalDpiY()))
+        print("widget(x,y): ({}, {})".format(widget.logicalDpiX(), widget.logicalDpiY()))
         scaling = logicaldpix / pointsperinch
+        print("scaling: {}".format(scaling))
 
         painter = QtGui.QPainter(printer)
         painter.scale(scaling, scaling)

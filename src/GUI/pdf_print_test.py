@@ -35,7 +35,7 @@ class Window(QtWidgets.QWidget):
         page_widget.setFixedSize(page_width, page_size.height())
 
         available_page_width = page_width
-        max_prob_size = page_widget.fontMetrics().boundingRect(problem_set.get_largest_problem_text())
+        max_prob_size = page_widget.fontMetrics().boundingRect(problem_set.get_largest_problem().__str__())
         answer_space = 10
         max_width = max_prob_size.width()
         max_height = max_prob_size.height()
@@ -122,7 +122,7 @@ def run():
     #geom = window.availableGeometry()
     #print(geom)
     window.show()
-    window.print_screen(window.page)
+    #window.print_screen(window.page)
     sys.exit(app.exec_())
 
 

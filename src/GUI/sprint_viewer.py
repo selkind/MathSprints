@@ -22,7 +22,15 @@ class SprintViewer(QtWidgets.QWidget):
         self.aspect_ratio = 17/22
 
     def layout_problem_set(self, problem_set, set_settings):
-        if self.pages[-1].hasSpace:
+        largest_problem = problem_set.get_largest_problem()
+        max_prob_size = largest_problem.fontMetrics().boundingRect(largest_problem.__str__())
+
+        max_width = max_prob_size.width()
+        problem_height = max_prob_size.height()
+
+        has_room = self.pages[-1].available_height - problem_height > 0
+
+        if has_room:
             current_page = self.pages.pop()
         else:
             current_page = self.new_page()
@@ -30,23 +38,33 @@ class SprintViewer(QtWidgets.QWidget):
         current_page.available_width = current_page.size().width()
         layout = QtWidgets.QGridLayout(current_page)
 
-        # find problem with max width and calculate largest number of columns with that info
-        max_problems = set_settings.max_problems_per_page
-        # find number of rows that the max problems will take up in the largest number of columns
+        col_count = current_page.size().width() // (max_width + ProblemSetPageSettings.ANSWER_SPACE)
+        if col_count < 1:
+            raise ValueError("largest problem in set is too large to fit on a single line with selected font size")
+
+        row_count = set_settings.max_problems_per_page // problem_height
+
         col = 0
         row = 0
 
         for i in problem_set.problems:
-            problem_label = self.generate_problem_label(i)
-            problem_size = problem_label.fontMetrics().boundingRect(problem_label.text())
-            if problem_size > current_page.size().width():
-                raise ValueError("problem is too large to fit on a single line with current font")
-
-            if current_page.available_width < problem_size.width():
+            layout.addWidget(self.generate_problem_label(i), row, col)
+            col += 1
+            if col == col_count:
                 row += 1
                 col = 0
+                current_page.available_height -= problem_height
 
+            if row == row_count or current_page.available_height - problem_height < 0:
+                current_page.available_height = 0
+                self.pages.append(current_page)
+                current_page = self.new_page()
+                current_page.available_width = current_page.size().width()
+                layout = QtWidgets.QGridLayout(current_page)
+                row = 0
+                col = 0
 
+        self.pages.append(current_page)
 
     """
     Creates a label containing the text of a problem

@@ -127,7 +127,7 @@ def run():
     #geom = window.availableGeometry()
     #print(geom)
     window.show()
-    #window.print_screen(window.page)
+    window.print_screen(window.page)
     sys.exit(app.exec_())
 
 

@@ -59,3 +59,6 @@ class ProblemSet:
     def make_decimal(self):
         return 0
 
+    def get_largest_problem_text(self):
+        return max(self.problems, key=lambda item: len(item.__str__())).__str__()
+

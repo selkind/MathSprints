@@ -5,7 +5,7 @@ class TestSet:
     def __init__(self, problem_count):
         settings = ProblemSettings()
         settings.term_count_min = 2
-        settings.term_count_max = 5
+        settings.term_count_max = 3
         settings.numerator_values.append(1)
         settings.numerator_values.append(100)
         settings.denominator_value_manual = True

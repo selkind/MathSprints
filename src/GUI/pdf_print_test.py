@@ -14,7 +14,7 @@ class Window(QtWidgets.QWidget):
         self.layout = QtWidgets.QHBoxLayout(self)
         self.setWindowTitle(self.tr("test rendering"))
         self.set_settings = ProblemSetPageSettings()
-        self.set_settings.columns = 2
+        self.set_settings.columns = 10
         self.page = self.page_layout(self.make_test_set(50), self.set_settings)
         self.layout.addWidget(self.page)
         self.setLayout(self.layout)
@@ -27,15 +27,21 @@ class Window(QtWidgets.QWidget):
         page_widget.setAutoFillBackground(True)
         page_widget.setPalette(pal)
 
+
+        layout = QtWidgets.QGridLayout(page_widget)
+
         page_size = self.size()
         page_width = page_size.height() * (17/22)
         page_widget.setFixedSize(page_width, page_size.height())
 
-        layout = QtWidgets.QGridLayout(page_widget)
-
         available_page_width = page_width
-        col_count = set_settings.columns
-        max_problems = set_settings.max_problems_per_page
+        max_prob_size = page_widget.fontMetrics().boundingRect(problem_set.get_largest_problem_text())
+        answer_space = 10
+        max_width = max_prob_size.width()
+        max_height = max_prob_size.height()
+        col_count = page_width // (max_width + answer_space)
+        print("page_width: {}\nproblem_width: {}\ncol_count: {}".format(page_width, max_width, col_count))
+        row_count = set_settings.max_problems_per_page // max_height
         col = 0
         row = 0
 
@@ -45,22 +51,11 @@ class Window(QtWidgets.QWidget):
             test_font.setPointSizeF(set_settings.font_size)
             problem_label.setFont(test_font)
 
-            problem_size = problem_label.fontMetrics().boundingRect(problem_label.text())
-            #problem_label.setFixedWidth(problem_size.width())
-
-            available_page_width -= problem_size.width()
-            if available_page_width < 0:
-                row += 1
-                col = 0
-                available_page_width = page_width
-
-            print("problem_label size: {}".format(problem_label.fontMetrics().boundingRect(problem_label.text())))
             layout.addWidget(problem_label, row, col)
             col += 1
             if col == col_count:
                 row += 1
                 col = 0
-                available_page_width = page_width
 
         return page_widget
 

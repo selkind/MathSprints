@@ -86,7 +86,7 @@ class Window(QtWidgets.QWidget):
     def make_test_set(self, problem_count):
         return TestSet(problem_count).prob_set
 
-    def print_screen(self, widget):
+    def print_screen(self, sprint):
         filename = "test.pdf"
 
         '''
@@ -98,20 +98,25 @@ class Window(QtWidgets.QWidget):
         printer = QtGui.QPdfWriter(filename)
         printer.setPageSize(QtGui.QPdfWriter.Letter)
         printer.setPageMargins(QtCore.QMarginsF())
+
         page_resolution = printer.logicalDpiY()
         y_pixels_page = QtGui.QPageSize.sizePixels(page_size.id(), page_resolution).height()
-        y_pixels_widget = widget.size().height()
+        y_pixels_widget = sprint.pages[0].size().height()
 
         scaling = y_pixels_page / y_pixels_widget
 
         print("pixels: {}".format(y_pixels_page))
 
-        print("widgetsize: {}".format(widget.size()))
+        print("widgetsize: {}".format(sprint.size()))
         print("scaling: {}".format(scaling))
-
         painter = QtGui.QPainter(printer)
         painter.scale(scaling, scaling)
-        widget.render(painter)
+        sprint.pages[0].render(painter)
+        if len(sprint.pages) > 1:
+            for i in sprint.pages[1:]:
+                print(printer.newPage())
+                i.render(painter)
+
         painter.end()
 
 

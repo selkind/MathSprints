@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QApplication
 from src.GUI.sprint_viewer import SprintViewer
 from src.GUI.ProblemSetPageSettings import ProblemSetPageSettings
 from tests.basic_problem_set import TestSet
+from src.GUI.pdf_print_test import Window
 import sys
 
 
@@ -22,6 +23,9 @@ def run():
     sprint.setLayout(sprint.layout)
 
     sprint.show()
+
+    printer = Window()
+    printer.print_screen(sprint)
 
     sys.exit(app.exec_())
 

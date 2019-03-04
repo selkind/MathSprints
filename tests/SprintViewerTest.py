@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QScrollArea, QFrame, QHBoxLayout
 from src.GUI.sprint_viewer import SprintViewer
 from src.GUI.ProblemSetPageSettings import ProblemSetPageSettings
 from tests.basic_problem_set import TestSet
@@ -10,7 +10,7 @@ def run():
     app = QApplication([])
     sprint = SprintViewer()
     set_page_settings = ProblemSetPageSettings()
-    test_set = TestSet(50)
+    test_set = TestSet(100)
 
     sprint.problem_sets.append(test_set.prob_set)
     sprint.problem_set_settings.append(set_page_settings)
@@ -22,10 +22,16 @@ def run():
 
     sprint.setLayout(sprint.layout)
 
-    sprint.show()
+    scroll = QScrollArea()
+    scroll.setWidgetResizable(True)
+    scroll.setWidget(sprint)
 
-    printer = Window()
-    printer.print_screen(sprint)
+
+    scroll.show()
+
+
+    #printer = Window()
+    #printer.print_screen(sprint)
 
     sys.exit(app.exec_())
 

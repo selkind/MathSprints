@@ -15,7 +15,7 @@ class SprintViewer(QtWidgets.QWidget):
         self.problem_background = QtGui.QColor(10, 10, 100, 50)
         self.aspect_ratio = 17/22
 
-        self.layout = QtWidgets.QVBoxLayout(self)
+        self.layout = QtWidgets.QVBoxLayout()
         self.pages = []
         self.pages.append(self.new_page())
         self.problem_sets = []

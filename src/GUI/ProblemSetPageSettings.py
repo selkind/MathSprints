@@ -1,5 +1,5 @@
 class ProblemSetPageSettings:
-    ANSWER_SPACE = 10
+    ANSWER_SPACE = 50
 
     def __init__(self):
         self.auto_columns = True

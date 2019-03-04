@@ -17,9 +17,42 @@ class SprintViewer(QtWidgets.QWidget):
 
         self.layout = QtWidgets.QVBoxLayout()
         self.pages = []
-        self.pages.append(self.new_page())
+        first_page = self.new_page()
+        header = self.build_sprint_header()
+        first_page.layout.addWidget(header)
+
+        self.pages.append(first_page)
         self.problem_sets = []
         self.problem_set_settings = []
+
+    def build_sprint_header(self):
+        header = QtWidgets.QWidget()
+        font = QtGui.QFont()
+        font.setPointSizeF(4)
+        layout = QtWidgets.QHBoxLayout()
+
+        name = QtWidgets.QLabel("Name:")
+        name.setFont(font)
+        height = name.fontMetrics().boundingRect(name.text()).height()
+        name.setFixedHeight(height)
+
+
+        #name_line = QtWidgets.QFrame()
+        #name_line.setFrameShape(QtWidgets.QFrame.HLine)
+        date = QtWidgets.QLabel("Date:")
+        date.setFont(font)
+        date.setFixedHeight(height)
+
+        #date_line = QtWidgets.QFrame()
+        #date_line.setFrameShape(QtWidgets.QFrame.HLine)
+
+        layout.addWidget(name)
+        #layout.addWidget(name_line)
+        layout.addWidget(date)
+        #layout.addWidget(date_line)
+
+        header.setLayout(layout)
+        return header
 
     def layout_problem_set(self, problem_set, set_settings):
         largest_problem = problem_set.get_largest_problem()
@@ -37,7 +70,8 @@ class SprintViewer(QtWidgets.QWidget):
             current_page = self.new_page()
 
         current_page.available_width = current_page.size().width()
-        layout = QtWidgets.QGridLayout(current_page)
+        widget = QtWidgets.QWidget()
+        layout = QtWidgets.QGridLayout()
 
         col_count = current_page.size().width() // (max_width + ProblemSetPageSettings.ANSWER_SPACE)
         if col_count < 1:
@@ -59,14 +93,20 @@ class SprintViewer(QtWidgets.QWidget):
 
             if row == row_count or current_page.available_height - problem_height < 0:
                 current_page.available_height = 0
+                widget.setLayout(layout)
+                current_page.layout.addWidget(widget)
                 self.pages.append(current_page)
                 current_page = self.new_page()
                 current_page.available_width = current_page.size().width()
-                layout = QtWidgets.QGridLayout(current_page)
+                widget = QtWidgets.QWidget()
+                layout = QtWidgets.QGridLayout()
                 row = 0
                 col = 0
 
+        widget.setLayout(layout)
+        current_page.layout.addWidget(widget)
         self.pages.append(current_page)
+
 
     """
     Creates a label containing the text of a problem

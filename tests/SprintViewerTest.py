@@ -18,7 +18,9 @@ def run():
     sprint.layout_problem_set(sprint.problem_sets[0], sprint.problem_set_settings[0])
 
     for i in sprint.pages:
+        i.setLayout(i.layout)
         sprint.layout.addWidget(i)
+
 
     sprint.setLayout(sprint.layout)
 

@@ -6,3 +6,4 @@ class Page(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         self.available_width = width
         self.available_height = height
+        self.layout = QtWidgets.QVBoxLayout()

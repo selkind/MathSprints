@@ -11,10 +11,10 @@ def run():
     set_page_settings = ProblemSetPageSettings()
     test_set = TestSet(50)
 
-    sprint.problem_sets.append(test_set)
+    sprint.problem_sets.append(test_set.prob_set)
     sprint.problem_set_settings.append(set_page_settings)
 
-    sprint.layout_problem_set()
+    sprint.layout_problem_set(sprint.problem_sets[0], sprint.problem_set_settings[0])
 
     for i in sprint.pages:
         sprint.layout.addWidget(i)

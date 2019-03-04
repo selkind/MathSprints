@@ -11,19 +11,20 @@ This class manages the distribution of problem sets on pages and displays those 
 class SprintViewer(QtWidgets.QWidget):
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
+        self.page_background = QtGui.QColor(10, 100, 10, 50)
+        self.problem_background = QtGui.QColor(10, 10, 100, 50)
+        self.aspect_ratio = 17/22
+
         self.layout = QtWidgets.QVBoxLayout(self)
         self.pages = []
         self.pages.append(self.new_page())
         self.problem_sets = []
         self.problem_set_settings = []
 
-        self.page_background = QtGui.QColor(10, 100, 10, 50)
-        self.problem_background = QtGui.QColor(10, 10, 100, 50)
-        self.aspect_ratio = 17/22
-
     def layout_problem_set(self, problem_set, set_settings):
         largest_problem = problem_set.get_largest_problem()
-        max_prob_size = largest_problem.fontMetrics().boundingRect(largest_problem.__str__())
+        max_label = self.generate_problem_label(largest_problem, set_settings.font_size)
+        max_prob_size = max_label.fontMetrics().boundingRect(max_label.text())
 
         max_width = max_prob_size.width()
         problem_height = max_prob_size.height()
@@ -42,13 +43,14 @@ class SprintViewer(QtWidgets.QWidget):
         if col_count < 1:
             raise ValueError("largest problem in set is too large to fit on a single line with selected font size")
 
-        row_count = set_settings.max_problems_per_page // problem_height
+        row_count = set_settings.max_problems_per_page // col_count
+        print("row_count: {}".format(row_count))
 
         col = 0
         row = 0
 
         for i in problem_set.problems:
-            layout.addWidget(self.generate_problem_label(i), row, col)
+            layout.addWidget(self.generate_problem_label(i, set_settings.font_size), row, col)
             col += 1
             if col == col_count:
                 row += 1
@@ -70,9 +72,9 @@ class SprintViewer(QtWidgets.QWidget):
     Creates a label containing the text of a problem
     """
     
-    def generate_problem_label(self, problem, display_answer=False):
+    def generate_problem_label(self, problem, font_size, display_answer=False):
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(font_size)
 
         problem = QtWidgets.QLabel(problem.__str__())
 

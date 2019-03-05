@@ -17,18 +17,25 @@ class SprintViewer(QtWidgets.QScrollArea):
         self.aspect_ratio = 17/22
 
         self.layout = QtWidgets.QVBoxLayout()
+        self.setLayout(self.layout)
+        self.setWidgetResizable(True)
         self.pages = []
         self.problem_sets = []
         self.problem_set_settings = []
         self.add_header()
 
     def load_pages_to_viewer(self):
+        page_frame = QtWidgets.QWidget()
+        page_layout = QtWidgets.QVBoxLayout()
+        page_frame.setLayout(page_layout)
+
         for i in range(len(self.problem_sets)):
             self.layout_problem_set(self.problem_sets[i], self.problem_set_settings[i])
         for i in self.pages:
             i.setLayout(i.layout)
-        self.setLayout(self.layout)
-        self.setWidgetResizable(True)
+            page_layout.addWidget(i)
+        self.layout.addWidget(page_frame)
+        self.setWidget(page_frame)
 
     def add_header(self):
         first_page = self.new_page()

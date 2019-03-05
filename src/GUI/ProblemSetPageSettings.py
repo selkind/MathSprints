@@ -1,3 +1,6 @@
+from PyQt5 import QtGui
+
+
 class ProblemSetPageSettings:
     def __init__(self):
         self.h_answer_space = 50

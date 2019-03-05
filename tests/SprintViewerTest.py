@@ -10,6 +10,7 @@ class MainWindow:
     def __init__(self):
         self.window = None
         self.main_layout = None
+        self.sprint = None
 
     def run(self):
         app = QApplication([])
@@ -18,43 +19,47 @@ class MainWindow:
         self.main_layout = QGridLayout()
         self.window.setLayout(self.main_layout)
 
-        sprint = SprintViewer()
+        self.sprint = SprintViewer()
 
         set_page_settings = ProblemSetPageSettings()
         test_set = TestSet(100)
 
-        sprint.problem_sets.append(test_set.prob_set)
-        sprint.problem_set_settings.append(set_page_settings)
+        self.sprint.problem_sets.append(test_set.prob_set)
+        self.sprint.problem_set_settings.append(set_page_settings)
 
-        sprint.layout_problem_set(sprint.problem_sets[0], sprint.problem_set_settings[0])
+        self.sprint.load_pages_to_viewer()
 
-        for i in sprint.pages:
-            i.setLayout(i.layout)
-            sprint.layout.addWidget(i)
-
-        sprint.setLayout(sprint.layout)
-
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        scroll.setWidget(sprint)
-
-        self.main_layout.addWidget(scroll, 0, 1)
+        self.main_layout.addWidget(self.sprint, 0, 1)
 
         viewer_toggle = QPushButton("toggle page viewer")
-        viewer_toggle.clicked.connect(lambda: self.toggle_visiblity(scroll))
+        viewer_toggle.clicked.connect(lambda: self.toggle_visiblity(self.sprint))
 
         self.main_layout.addWidget(viewer_toggle, 0, 0)
 
         print_but = QPushButton("print sprint")
-        print_but.clicked.connect(lambda: self.print_sprint(sprint))
+        print_but.clicked.connect(lambda: self.print_sprint(self.sprint))
 
         self.main_layout.addWidget(print_but, 1, 0)
 
+        change_but = QPushButton("change problem_set")
+        change_but.clicked.connect(lambda: self.change_problem_set())
+
+        self.main_layout.addWidget(change_but, 2, 0)
+
         self.window.show()
 
-        print(self.window.children())
-
         sys.exit(app.exec_())
+
+    def change_problem_set(self):
+        new_set_settings = ProblemSetPageSettings()
+        new_set = TestSet(20)
+
+        self.sprint.problem_sets = []
+        self.sprint.problem_set_settings = []
+
+        self.sprint.problem_sets.append(new_set.prob_set)
+        self.sprint.problem_set_settings.append(new_set_settings)
+        self.sprint.load_pages_to_viewer()
 
     def toggle_visiblity(self, widget):
         if widget.isHidden():

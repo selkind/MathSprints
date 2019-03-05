@@ -8,9 +8,9 @@ This class manages the distribution of problem sets on pages and displays those 
 """
 
 
-class SprintViewer(QtWidgets.QWidget):
+class SprintViewer(QtWidgets.QScrollArea):
     def __init__(self):
-        QtWidgets.QWidget.__init__(self)
+        QtWidgets.QScrollArea.__init__(self)
         self.page_background = QtGui.QColor(10, 100, 10, 50)
         self.problem_background = QtGui.QColor(10, 10, 100, 50)
         self.header_background = QtGui.QColor(100, 10, 10, 50)
@@ -21,6 +21,14 @@ class SprintViewer(QtWidgets.QWidget):
         self.problem_sets = []
         self.problem_set_settings = []
         self.add_header()
+
+    def load_pages_to_viewer(self):
+        for i in range(len(self.problem_sets)):
+            self.layout_problem_set(self.problem_sets[i], self.problem_set_settings[i])
+        for i in self.pages:
+            i.setLayout(i.layout)
+        self.setLayout(self.layout)
+        self.setWidgetResizable(True)
 
     def add_header(self):
         first_page = self.new_page()

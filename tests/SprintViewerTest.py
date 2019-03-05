@@ -5,62 +5,68 @@ from tests.basic_problem_set import TestSet
 from src.GUI.pdf_print_test import Window
 import sys
 
-def run():
-    app = QApplication([])
-    main = QWidget()
-    main_layout = QGridLayout()
-    main.setLayout(main_layout)
 
+class MainWindow:
+    def __init__(self):
+        self.window = None
+        self.main_layout = None
 
-    sprint = SprintViewer()
+    def run(self):
+        app = QApplication([])
 
-    set_page_settings = ProblemSetPageSettings()
-    test_set = TestSet(100)
+        self.window = QWidget()
+        self.main_layout = QGridLayout()
+        self.window.setLayout(self.main_layout)
 
-    sprint.problem_sets.append(test_set.prob_set)
-    sprint.problem_set_settings.append(set_page_settings)
+        sprint = SprintViewer()
 
-    sprint.layout_problem_set(sprint.problem_sets[0], sprint.problem_set_settings[0])
+        set_page_settings = ProblemSetPageSettings()
+        test_set = TestSet(100)
 
-    for i in sprint.pages:
-        i.setLayout(i.layout)
-        sprint.layout.addWidget(i)
+        sprint.problem_sets.append(test_set.prob_set)
+        sprint.problem_set_settings.append(set_page_settings)
 
-    sprint.setLayout(sprint.layout)
+        sprint.layout_problem_set(sprint.problem_sets[0], sprint.problem_set_settings[0])
 
-    scroll = QScrollArea()
-    scroll.setWidgetResizable(True)
-    scroll.setWidget(sprint)
+        for i in sprint.pages:
+            i.setLayout(i.layout)
+            sprint.layout.addWidget(i)
 
-    main_layout.addWidget(scroll, 0, 1)
+        sprint.setLayout(sprint.layout)
 
-    viewer_toggle = QPushButton("toggle page viewer")
-    viewer_toggle.clicked.connect(lambda: toggle_visiblity(scroll))
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setWidget(sprint)
 
-    main_layout.addWidget(viewer_toggle, 0, 0)
+        self.main_layout.addWidget(scroll, 0, 1)
 
-    print_but = QPushButton("print sprint")
-    print_but.clicked.connect(lambda: print_sprint(sprint))
+        viewer_toggle = QPushButton("toggle page viewer")
+        viewer_toggle.clicked.connect(lambda: self.toggle_visiblity(scroll))
 
-    main_layout.addWidget(print_but, 1, 0)
+        self.main_layout.addWidget(viewer_toggle, 0, 0)
 
-    main.show()
+        print_but = QPushButton("print sprint")
+        print_but.clicked.connect(lambda: self.print_sprint(sprint))
 
-    print(main.children())
+        self.main_layout.addWidget(print_but, 1, 0)
 
-    sys.exit(app.exec_())
+        self.window.show()
 
+        print(self.window.children())
 
-def toggle_visiblity(widget):
-    if widget.isHidden():
-        widget.show()
-    else:
-        widget.hide()
+        sys.exit(app.exec_())
 
-def print_sprint(widget):
-    printer = Window()
-    printer.print_screen(widget)
+    def toggle_visiblity(self, widget):
+        if widget.isHidden():
+            widget.show()
+        else:
+            widget.hide()
+
+    def print_sprint(self, widget):
+        printer = Window()
+        printer.print_screen(widget)
 
 
 if __name__ == "__main__":
-    run()
+    program = MainWindow()
+    program.run()

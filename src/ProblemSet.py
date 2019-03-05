@@ -5,7 +5,8 @@ from random import randrange, choice, sample, random
 
 
 class ProblemSet:
-    def __init__(self, settings):
+    def __init__(self, settings, name):
+        self.name = name
         self.settings = settings
         self.problem_count = 0
         self.problems = []

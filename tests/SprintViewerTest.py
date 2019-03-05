@@ -20,6 +20,7 @@ def run():
     for i in sprint.pages:
         i.setLayout(i.layout)
         sprint.layout.addWidget(i)
+        print(i.size())
 
 
     sprint.setLayout(sprint.layout)

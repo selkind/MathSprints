@@ -3,6 +3,7 @@ from src.ProblemSet import *
 
 class TestSet:
     def __init__(self, problem_count):
+        name = "test2983193u1"
         settings = ProblemSettings()
         settings.term_count_min = 2
         settings.term_count_max = 3
@@ -17,6 +18,6 @@ class TestSet:
         settings.operator_sets.append(["+"])
         settings.term_sets.append(["fraction"])
 
-        self.prob_set = ProblemSet(settings)
+        self.prob_set = ProblemSet(settings, name)
         for i in range(problem_count):
             self.prob_set.make_problem(settings.term_sets[0], settings.operator_sets[0])

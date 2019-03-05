@@ -6,3 +6,4 @@ class ProblemSetPageSettings:
         self.columns = 1
         self.max_problems_per_page = 50
         self.font_size = 4
+        self.problem_value = 1

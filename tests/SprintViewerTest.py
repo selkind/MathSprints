@@ -46,9 +46,17 @@ class MainWindow:
 
         self.main_layout.addWidget(change_but, 2, 0)
 
+        clear_but = QPushButton("clear problem_set")
+        clear_but.clicked.connect(lambda: self.clear_problem_set())
+
+        self.main_layout.addWidget(clear_but, 3, 0)
+
         self.window.show()
 
         sys.exit(app.exec_())
+
+    def clear_problem_set(self):
+        self.sprint.clear_viewer()
 
     def change_problem_set(self):
         new_set_settings = ProblemSetPageSettings()

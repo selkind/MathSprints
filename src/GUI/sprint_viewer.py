@@ -14,7 +14,6 @@ class SprintViewer(QtWidgets.QScrollArea):
         self.page_background = QtGui.QColor(10, 100, 10, 50)
         self.problem_background = QtGui.QColor(10, 10, 100, 50)
         self.header_background = QtGui.QColor(100, 10, 10, 50)
-        self.aspect_ratio = 17/22
 
         self.layout = QtWidgets.QVBoxLayout()
         self.setWidgetResizable(True)
@@ -22,6 +21,7 @@ class SprintViewer(QtWidgets.QScrollArea):
         self.pages = None
         self.problem_sets = []
         self.problem_set_settings = []
+        self.fixed_size = self.size()
 
     def load_pages_to_viewer(self):
         self.pages = []
@@ -219,16 +219,28 @@ class SprintViewer(QtWidgets.QScrollArea):
     """
 
     def new_page(self):
-        height = self.size().height()
-        width = height * self.aspect_ratio
+        page_size = QtGui.QPageSize(QtGui.QPageSize.Letter)
+        y_res = self.logicalDpiY()
+        x_res = self.logicalDpiX()
+        height = page_size.rectPixels(y_res).height()
+        width = page_size.rectPixels(x_res).width()
+        aspect_ratio = float(width) / float(height)
+        scaling = height / self.fixed_size.height()
+        if scaling > 1:
+            app_height = height / scaling
+            app_width = width / scaling
+        if scaling < 1:
+            app_height = height * scaling
+            app_width = width * scaling
 
-        page = Page(width, height)
+        page = Page(app_width, app_height)
 
         pal = QtGui.QPalette()
         pal.setColor(QtGui.QPalette.Background, self.page_background)
         page.setAutoFillBackground(True)
         page.setPalette(pal)
 
-        page.setFixedSize(width, height)
+        page.setFixedSize(app_width, app_height)
+        page.layout.setContentsMargins(0,0,0,0)
 
         return page

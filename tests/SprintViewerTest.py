@@ -56,9 +56,11 @@ class MainWindow:
         sys.exit(app.exec_())
 
     def clear_problem_set(self):
-        self.sprint.clear_viewer()
+        self.sprint.clear_layout(self.sprint.layout)
 
     def change_problem_set(self):
+        self.sprint.clear_layout(self.sprint.layout)
+
         new_set_settings = ProblemSetPageSettings()
         new_set = TestSet(20)
 

@@ -19,12 +19,13 @@ class SprintViewer(QtWidgets.QScrollArea):
         self.layout = QtWidgets.QVBoxLayout()
         self.setWidgetResizable(True)
         self.current_frame = None
-        self.pages = []
+        self.pages = None
         self.problem_sets = []
         self.problem_set_settings = []
-        self.add_header()
 
     def load_pages_to_viewer(self):
+        self.pages = []
+        self.add_header()
         self.current_frame = QtWidgets.QWidget()
         page_layout = QtWidgets.QVBoxLayout()
         self.current_frame.setLayout(page_layout)
@@ -38,7 +39,6 @@ class SprintViewer(QtWidgets.QScrollArea):
         self.setWidget(self.current_frame) # critical to make scroll area work
 
     def clear_layout(self, layout):
-        print(layout.count())
         while layout.count():
             child = layout.takeAt(0)
             if child.widget():

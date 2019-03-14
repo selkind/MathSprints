@@ -1,6 +1,5 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from src.GUI.Page import Page
-from src.GUI.ProblemSetPageSettings import ProblemSetPageSettings
 
 """
 This class manages the distribution of problem sets on pages and displays those pages as a 

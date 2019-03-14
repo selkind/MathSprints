@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QScrollArea, QFrame, QHBoxLayout, QWidget, QGridLayout, QPushButton
 from PyQt5.QtGui import QPageSize
+from PyQt5.QtPrintSupport import QPrinter
 from src.GUI.sprint_viewer import SprintViewer
 from src.GUI.ProblemSetPageSettings import ProblemSetPageSettings
 from tests.basic_problem_set import TestSet
@@ -20,14 +21,21 @@ class MainWindow:
         self.main_layout = QGridLayout()
         self.window.setLayout(self.main_layout)
 
-        page_size = QPageSize.Letter
+        for key in dir(QPageSize):
+            value = getattr(QPageSize, key)
+            if isinstance(value, int):
+                print(key)
 
         self.sprint = SprintViewer()
 
         set_page_settings = ProblemSetPageSettings()
         test_set = TestSet(100)
+        test_set2 = TestSet(10)
 
         self.sprint.problem_sets.append(test_set.prob_set)
+        self.sprint.problem_set_settings.append(set_page_settings)
+
+        self.sprint.problem_sets.append(test_set2.prob_set)
         self.sprint.problem_set_settings.append(set_page_settings)
 
         self.sprint.load_pages_to_viewer()
@@ -48,11 +56,6 @@ class MainWindow:
         change_but.clicked.connect(lambda: self.change_problem_set())
 
         self.main_layout.addWidget(change_but, 2, 0)
-
-        clear_but = QPushButton("clear problem_set")
-        clear_but.clicked.connect(lambda: self.clear_problem_set())
-
-        self.main_layout.addWidget(clear_but, 3, 0)
 
         self.window.show()
 

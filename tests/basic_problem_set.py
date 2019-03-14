@@ -14,7 +14,6 @@ class TestSet:
         settings.denominator_values.append(12)
         settings.denominator_values.append(13)
 
-        settings.allowed_operators["*"] = True
         settings.operator_sets.append(["+"])
         settings.term_sets.append(["fraction"])
 

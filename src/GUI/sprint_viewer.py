@@ -15,13 +15,25 @@ class SprintViewer(QtWidgets.QScrollArea):
         self.problem_background = QtGui.QColor(10, 10, 100, 50)
         self.header_background = QtGui.QColor(100, 10, 10, 50)
 
+        self.fixed_size = self.size()
+        self.page_size = None
+        self.scaling = 1
+        self.set_page_size(QtGui.QPageSize.Letter)
         self.layout = QtWidgets.QVBoxLayout()
         self.setWidgetResizable(True)
         self.current_frame = None
         self.pages = None
         self.problem_sets = []
         self.problem_set_settings = []
-        self.fixed_size = self.size()
+
+    def configure_scaling(self):
+        y_res = self.logicalDpiY()
+        height = self.page_size.rectPixels(y_res).height()
+        self.scaling = height / self.fixed_size.height()
+
+    def set_page_size(self, page_size):
+        self.page_size = QtGui.QPageSize(page_size)
+        self.configure_scaling()
 
     def load_pages_to_viewer(self):
         self.pages = []
@@ -109,8 +121,6 @@ class SprintViewer(QtWidgets.QScrollArea):
 
         current_page.available_height -= set_label.height()
         current_page.layout.addWidget(set_label)
-
-        current_page.available_width = current_page.size().width()
 
         widget = QtWidgets.QWidget()
         layout = QtWidgets.QGridLayout()
@@ -219,28 +229,26 @@ class SprintViewer(QtWidgets.QScrollArea):
     """
 
     def new_page(self):
-        page_size = QtGui.QPageSize(QtGui.QPageSize.Letter)
-        y_res = self.logicalDpiY()
-        x_res = self.logicalDpiX()
-        height = page_size.rectPixels(y_res).height()
-        width = page_size.rectPixels(x_res).width()
-        aspect_ratio = float(width) / float(height)
-        scaling = height / self.fixed_size.height()
-        if scaling > 1:
-            app_height = height / scaling
-            app_width = width / scaling
-        if scaling < 1:
-            app_height = height * scaling
-            app_width = width * scaling
+        width = self.apply_scaling(self.page_size.sizePixels(self.logicalDpiX()).width())
+        height = self.apply_scaling(self.page_size.sizePixels(self.logicalDpiY()).height())
 
-        page = Page(app_width, app_height)
+        page = Page(width, height)
 
         pal = QtGui.QPalette()
         pal.setColor(QtGui.QPalette.Background, self.page_background)
         page.setAutoFillBackground(True)
         page.setPalette(pal)
 
-        page.setFixedSize(app_width, app_height)
-        page.layout.setContentsMargins(0,0,0,0)
+        page.setFixedSize(width, height)
+        margin = self.apply_scaling(51)
+        page.layout.setContentsMargins(margin, margin, margin, margin)
+        page.available_height -= 2 * margin
+        page.available_width -= 2 * margin
 
         return page
+
+    def apply_scaling(self, val):
+        if self.scaling > 1:
+            return val / self.scaling
+        else:
+            return val * self.scaling

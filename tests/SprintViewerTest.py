@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QApplication, QScrollArea, QFrame, QHBoxLayout, QWidget, QGridLayout, QPushButton
+from PyQt5.QtGui import QPageSize
 from src.GUI.sprint_viewer import SprintViewer
 from src.GUI.ProblemSetPageSettings import ProblemSetPageSettings
 from tests.basic_problem_set import TestSet
@@ -18,6 +19,8 @@ class MainWindow:
         self.window = QWidget()
         self.main_layout = QGridLayout()
         self.window.setLayout(self.main_layout)
+
+        page_size = QPageSize.Letter
 
         self.sprint = SprintViewer()
 

@@ -5,6 +5,7 @@ from src.GUI.sprint_viewer import SprintViewer
 from src.GUI.ProblemSetPageSettings import ProblemSetPageSettings
 from tests.basic_problem_set import TestSet
 from src.GUI.pdf_print_test import Window
+from src.GUI.user_control import UserControl
 import sys
 
 
@@ -20,11 +21,6 @@ class MainWindow:
         self.window = QWidget()
         self.main_layout = QGridLayout()
         self.window.setLayout(self.main_layout)
-
-        for key in dir(QPageSize):
-            value = getattr(QPageSize, key)
-            if isinstance(value, int):
-                print(key)
 
         self.sprint = SprintViewer()
 
@@ -42,20 +38,23 @@ class MainWindow:
 
         self.main_layout.addWidget(self.sprint, 0, 1)
 
+        ctrl_panel = UserControl()
+        self.main_layout.addWidget(ctrl_panel, 0, 0)
+
         viewer_toggle = QPushButton("toggle page viewer")
         viewer_toggle.clicked.connect(lambda: self.toggle_visiblity(self.sprint))
 
-        self.main_layout.addWidget(viewer_toggle, 0, 0)
+        self.main_layout.addWidget(viewer_toggle, 1, 0)
 
         print_but = QPushButton("print sprint")
         print_but.clicked.connect(lambda: self.print_sprint(self.sprint))
 
-        self.main_layout.addWidget(print_but, 1, 0)
+        self.main_layout.addWidget(print_but, 2, 0)
 
         change_but = QPushButton("change problem_set")
         change_but.clicked.connect(lambda: self.change_problem_set())
 
-        self.main_layout.addWidget(change_but, 2, 0)
+        self.main_layout.addWidget(change_but, 3, 0)
 
         self.window.show()
 

@@ -5,10 +5,12 @@ class UserControl(QtWidgets.QFrame):
     def __init__(self):
         QtWidgets.QFrame.__init__(self)
         self.test_term_list = ["Integer", "Fraction", "Decimal"]
+        self.test_op_list = ["+", "-", "X", "/"]
         self.layout = QtWidgets.QGridLayout(self)
         self.layout.addWidget(self.page_layout_input(), 0, 0)
         self.layout.addWidget(self.problem_set_settings(), 1, 0)
         self.layout.addWidget(self.term_type_settings(), 2, 0)
+        self.layout.addWidget(self.op_type_settings(), 3, 0)
 
     def page_layout_input(self):
         frame = QtWidgets.QFrame()
@@ -89,7 +91,7 @@ class UserControl(QtWidgets.QFrame):
         frame = QtWidgets.QFrame()
         layout = QtWidgets.QVBoxLayout(frame)
 
-        multiple_type_option = QtWidgets.QCheckBox("Mulitple Term Types")
+        multiple_type_option = QtWidgets.QCheckBox("Multiple Term Types")
         multiple_type_option.setCheckable(True)
         multiple_type_option.setChecked(False)
 
@@ -106,4 +108,40 @@ class UserControl(QtWidgets.QFrame):
 
         return frame
 
+    def term_list_check(self, term_types):
+        frame = QtWidgets.QFrame()
+        layout = QtWidgets.QVBoxLayout(frame)
+        for i in term_types:
+            layout.addWidget(QtWidgets.QCheckBox(i))
+
+        return frame
+
+    def op_type_settings(self):
+        frame = QtWidgets.QFrame()
+        layout = QtWidgets.QVBoxLayout(frame)
+
+        multiple_op_option = QtWidgets.QCheckBox("Multiple Operators")
+        multiple_op_option.setCheckable(True)
+        multiple_op_option.setChecked(False)
+
+        layout.addWidget(multiple_op_option)
+        layout.addWidget(self.op_list_radio(self.test_op_list))
+
+        return frame
+
+    def op_list_radio(self, op_types):
+        frame = QtWidgets.QFrame()
+        layout = QtWidgets.QVBoxLayout(frame)
+        for i in op_types:
+            layout.addWidget(QtWidgets.QRadioButton(i))
+
+        return frame
+
+    def op_list_check(self, op_types):
+        frame = QtWidgets.QFrame()
+        layout = QtWidgets.QVBoxLayout(frame)
+        for i in op_types:
+            layout.addWidget(QtWidgets.QCheckBox(i))
+
+        return frame
 

@@ -23,7 +23,7 @@ class SprintViewer(QtWidgets.QScrollArea):
         self.setWidgetResizable(True)
         self.current_frame = None
         self.pages = None
-        self.problem_sets = []
+        self.worksheet = None
         self.problem_set_settings = []
 
     def configure_scaling(self):
@@ -42,8 +42,8 @@ class SprintViewer(QtWidgets.QScrollArea):
         page_layout = QtWidgets.QVBoxLayout()
         self.current_frame.setLayout(page_layout)
 
-        for i in range(len(self.problem_sets)):
-            self.layout_problem_set(self.problem_sets[i], self.problem_set_settings[i])
+        for i in range(len(self.worksheet.problem_sets)):
+            self.layout_problem_set(self.worksheet.problem_sets[i], self.problem_set_settings[i])
         for i in self.pages:
             i.setLayout(i.layout)
             page_layout.addWidget(i)

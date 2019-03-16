@@ -6,6 +6,7 @@ from src.GUI.ProblemSetPageSettings import ProblemSetPageSettings
 from tests.basic_problem_set import TestSet
 from src.GUI.pdf_print_test import Window
 from src.GUI.user_control import UserControl
+from src.Worksheet import Worksheet
 import sys
 
 
@@ -28,10 +29,12 @@ class MainWindow:
         test_set = TestSet(100)
         test_set2 = TestSet(10)
 
-        self.sprint.problem_sets.append(test_set.prob_set)
-        self.sprint.problem_set_settings.append(set_page_settings)
+        sheet = Worksheet()
+        sheet.problem_sets.append(test_set.prob_set)
+        sheet.problem_sets.append(test_set2.prob_set)
 
-        self.sprint.problem_sets.append(test_set2.prob_set)
+        self.sprint.worksheet = sheet
+        self.sprint.problem_set_settings.append(set_page_settings)
         self.sprint.problem_set_settings.append(set_page_settings)
 
         self.sprint.load_pages_to_viewer()

@@ -13,6 +13,7 @@ class SprintViewer(QtWidgets.QScrollArea):
         self.page_background = QtGui.QColor(10, 100, 10, 50)
         self.problem_background = QtGui.QColor(10, 10, 100, 50)
         self.header_background = QtGui.QColor(100, 10, 10, 50)
+        self.font_size = 8
 
         self.fixed_size = self.size()
         self.page_size = None
@@ -71,7 +72,7 @@ class SprintViewer(QtWidgets.QScrollArea):
         header.setPalette(pal)
 
         font = QtGui.QFont()
-        font.setPointSizeF(4)
+        font.setPointSizeF(self.font_size)
         layout = QtWidgets.QHBoxLayout()
 
         name = QtWidgets.QLabel("Name:")
@@ -96,7 +97,7 @@ class SprintViewer(QtWidgets.QScrollArea):
         This ensures no widget overflow/overlap on page.
         """
         largest_problem = problem_set.get_largest_problem()
-        max_label = self.generate_problem_label(largest_problem, set_page_settings.font_size)
+        max_label = self.generate_problem_label(largest_problem, self.font_size)
         max_prob_size = max_label.fontMetrics().boundingRect(max_label.text())
 
         max_width = max_prob_size.width() + set_page_settings.h_answer_space
@@ -136,7 +137,7 @@ class SprintViewer(QtWidgets.QScrollArea):
         row = 0
 
         for i in problem_set.problems:
-            problem = self.generate_problem_label(i, set_page_settings.font_size)
+            problem = self.generate_problem_label(i, self.font_size)
             problem.setFixedSize(max_width, problem_height)
             layout.addWidget(problem, row, col)
 
@@ -181,7 +182,7 @@ class SprintViewer(QtWidgets.QScrollArea):
         header.setPalette(pal)
 
         font = QtGui.QFont()
-        font.setPointSizeF(4)
+        font.setPointSizeF(self.font_size)
         layout = QtWidgets.QHBoxLayout()
 
         name = QtWidgets.QLabel(name)

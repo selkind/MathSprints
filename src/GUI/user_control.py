@@ -13,8 +13,8 @@ class UserControl(QtWidgets.QFrame):
         self.layout.addWidget(self.problem_set_settings(), 1, 0)
         self.layout.addWidget(self.term_type_settings(), 2, 0)
         self.layout.addWidget(self.op_type_settings(), 2, 1)
-        set_settings = ProblemSetPageSettings()
-        self.layout.addWidget(ProblemSetLayoutControls(set_settings), 3, 0)
+        self.set_settings = ProblemSetPageSettings()
+        self.layout.addWidget(ProblemSetLayoutControls(self.set_settings), 3, 0)
 
     def page_layout_input(self):
         frame = QtWidgets.QFrame()

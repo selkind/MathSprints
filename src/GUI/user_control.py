@@ -1,4 +1,6 @@
 from PyQt5 import QtGui, QtWidgets
+from src.GUI.problem_set_layout_controls import ProblemSetLayoutControls
+from src.GUI.ProblemSetPageSettings import ProblemSetPageSettings
 
 
 class UserControl(QtWidgets.QFrame):
@@ -6,13 +8,13 @@ class UserControl(QtWidgets.QFrame):
         QtWidgets.QFrame.__init__(self)
         self.test_term_list = ["Integer", "Fraction", "Decimal"]
         self.test_op_list = ["+", "-", "X", "/"]
-        self.test_col_options = ["Auto", "1", "2", "3", "4"]
         self.layout = QtWidgets.QGridLayout(self)
         self.layout.addWidget(self.page_layout_input(), 0, 0)
         self.layout.addWidget(self.problem_set_settings(), 1, 0)
         self.layout.addWidget(self.term_type_settings(), 2, 0)
         self.layout.addWidget(self.op_type_settings(), 2, 1)
-        self.layout.addWidget(self.problem_layout_settings(), 3, 0)
+        set_settings = ProblemSetPageSettings()
+        self.layout.addWidget(ProblemSetLayoutControls(set_settings), 3, 0)
 
     def page_layout_input(self):
         frame = QtWidgets.QFrame()
@@ -146,71 +148,3 @@ class UserControl(QtWidgets.QFrame):
             layout.addWidget(QtWidgets.QCheckBox(i))
 
         return frame
-
-    def problem_layout_settings(self):
-        frame = QtWidgets.QFrame()
-        layout = QtWidgets.QVBoxLayout(frame)
-
-        answer_label = QtWidgets.QLabel("Set Answer Space Minimum Size")
-        layout.addWidget(answer_label)
-
-        v_space_frame = QtWidgets.QFrame()
-        v_space_layout = QtWidgets.QHBoxLayout(v_space_frame)
-
-        v_space = QtWidgets.QSpinBox()
-        v_space.setMinimum(0)
-        v_space.setMaximum(300)
-        v_space.setValue(100)
-
-        v_label = QtWidgets.QLabel("Vertical")
-        v_unit = QtWidgets.QLabel("Pixels")
-
-        v_space_layout.addWidget(v_label)
-        v_space_layout.addWidget(v_space)
-        v_space_layout.addWidget(v_unit)
-
-        h_space_frame = QtWidgets.QFrame()
-        h_space_layout = QtWidgets.QHBoxLayout(h_space_frame)
-
-        h_space = QtWidgets.QSpinBox()
-        h_space.setMinimum(0)
-        h_space.setMaximum(300)
-        h_space.setValue(50)
-
-        h_label = QtWidgets.QLabel("Horizontal")
-        h_unit = QtWidgets.QLabel("Pixels")
-
-        h_space_layout.addWidget(h_label)
-        h_space_layout.addWidget(h_space)
-        h_space_layout.addWidget(h_unit)
-
-        layout.addWidget(h_space_frame)
-        layout.addWidget(v_space_frame)
-
-        col_label = QtWidgets.QLabel("Set Number of Problem Columns")
-        col_number = QtWidgets.QComboBox()
-        col_number.addItems(self.test_col_options)
-        col_number.setCurrentText(self.test_col_options[0])
-
-        layout.addWidget(col_label)
-        layout.addWidget(col_number)
-
-        page_prob_count_label = QtWidgets.QLabel("Maximum Problems Per Page")
-        page_prob_count = QtWidgets.QSpinBox()
-        page_prob_count.setMaximum(200)
-        page_prob_count.setMinimum(1)
-        page_prob_count.setValue(50)
-
-        layout.addWidget(page_prob_count_label)
-        layout.addWidget(page_prob_count)
-
-        point_label = QtWidgets.QLabel("Points per Problem")
-        point_val = QtWidgets.QSpinBox()
-        point_val.setMaximum(100)
-        point_val.setMinimum(1)
-        point_val.setValue(1)
-        layout.addWidget(point_label)
-        layout.addWidget(point_val)
-
-        return frame
-

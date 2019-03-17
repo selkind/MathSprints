@@ -1,12 +1,12 @@
 class ProblemSettings:
     def __init__(self):
         self.variable_term_count = False
-        self.term_count_min = None
-        self.term_count_max = None
+        self.term_count_min = 2
+        self.term_count_max = self.term_count_min
 
         # supported terms integer, fraction
         self.int_value_manual = False
-        self.int_values = []
+        self.int_values = [0, 100]
 
         self.numerator_value_manual = False
         self.numerator_values = []
@@ -19,7 +19,7 @@ class ProblemSettings:
 
         # supported operators +, -, *, /
         self.mixed_operators = False
-        self.operator_sets = []
+        self.operator_sets = [["+"]]
 
         self.allow_mixed_terms = False
-        self.term_sets = []
+        self.term_sets = [["Integer"]]

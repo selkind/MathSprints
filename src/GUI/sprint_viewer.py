@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from src.GUI.Page import Page
+from src.GUI.worksheet_layout_settings import WorksheetLayoutSettings
 
 """
 This class manages the distribution of problem sets on pages and displays those pages as a 
@@ -13,12 +14,13 @@ class SprintViewer(QtWidgets.QScrollArea):
         self.page_background = QtGui.QColor(10, 100, 10, 50)
         self.problem_background = QtGui.QColor(10, 10, 100, 50)
         self.header_background = QtGui.QColor(100, 10, 10, 50)
-        self.font_size = 8
+
+        self.sheet_layout_settings = WorksheetLayoutSettings()
 
         self.fixed_size = self.size()
         self.page_size = None
         self.scaling = 1
-        self.set_page_size(QtGui.QPageSize.Letter)
+        self.set_page_size(self.sheet_layout_settings.page_size)
         self.layout = QtWidgets.QVBoxLayout()
         self.setWidgetResizable(True)
         self.current_frame = None
@@ -72,7 +74,7 @@ class SprintViewer(QtWidgets.QScrollArea):
         header.setPalette(pal)
 
         font = QtGui.QFont()
-        font.setPointSizeF(self.font_size)
+        font.setPointSizeF(self.sheet_layout_settings.font_size)
         layout = QtWidgets.QHBoxLayout()
 
         name = QtWidgets.QLabel("Name:")
@@ -97,7 +99,7 @@ class SprintViewer(QtWidgets.QScrollArea):
         This ensures no widget overflow/overlap on page.
         """
         largest_problem = problem_set.get_largest_problem()
-        max_label = self.generate_problem_label(largest_problem, self.font_size)
+        max_label = self.generate_problem_label(largest_problem, self.sheet_layout_settings.font_size)
         max_prob_size = max_label.fontMetrics().boundingRect(max_label.text())
 
         max_width = max_prob_size.width() + set_page_settings.h_answer_space
@@ -137,7 +139,7 @@ class SprintViewer(QtWidgets.QScrollArea):
         row = 0
 
         for i in problem_set.problems:
-            problem = self.generate_problem_label(i, self.font_size)
+            problem = self.generate_problem_label(i, self.sheet_layout_settings.font_size)
             problem.setFixedSize(max_width, problem_height)
             layout.addWidget(problem, row, col)
 
@@ -182,7 +184,7 @@ class SprintViewer(QtWidgets.QScrollArea):
         header.setPalette(pal)
 
         font = QtGui.QFont()
-        font.setPointSizeF(self.font_size)
+        font.setPointSizeF(self.sheet_layout_settings.font_size)
         layout = QtWidgets.QHBoxLayout()
 
         name = QtWidgets.QLabel(name)
@@ -240,7 +242,7 @@ class SprintViewer(QtWidgets.QScrollArea):
         page.setPalette(pal)
 
         page.setFixedSize(width, height)
-        margin = self.apply_scaling(51)
+        margin = self.apply_scaling(self.sheet_layout_settings.margin_size)
         page.layout.setContentsMargins(margin, margin, margin, margin)
         page.available_height -= 2 * margin
         page.available_width -= 2 * margin

@@ -27,7 +27,7 @@ class ProblemSet:
         self.problems.append(prob)
 
     def make_term(self, term_set):
-        terms = {"integer": self.make_integer, "fraction": self.make_fraction, "decimal": self.make_decimal}
+        terms = {"Integer": self.make_integer, "Fraction": self.make_fraction, "Decimal": self.make_decimal}
         return terms[choice(term_set)]()
 
     def make_integer(self):

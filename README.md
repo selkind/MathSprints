@@ -16,7 +16,7 @@ practice materials that are closely aligned with a wide range of abilities.
 
 Currently, the repo contains:
 * a backend problem generator that supports basic arithmetic problems for integers and fractions. 
-*a desktop GUI written in PYQT5 that is in development. This GUI provides flexible worksheet-layout controls and supports 
+* a desktop GUI written in PYQT5 that is in development. This GUI provides flexible worksheet-layout controls and supports 
 worksheet publishing to PDFs
 
 Areas for further development include:

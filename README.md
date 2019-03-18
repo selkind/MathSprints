@@ -22,7 +22,7 @@ worksheet publishing to PDFs
 Areas for further development include:
 * Extension of backed capabilities for more advanced problem types 
   (incorporation of parentheses, one-step algebra, mulit-step algebra, exponents, roots, logs and many others)
-* Extension of the backend to output problems in MathML (https://www.w3.org/Math/)[https://www.w3.org/Math/]
+* Extension of the backend to output problems in MathML (https://www.w3.org/Math/)
 * Extension of the backend to calculate the answers to the problems to facilitate answer-sheet generation
 * An alternative web-hosted front end including user accounts, saved problem set configs, etc...
 * Using a Handwriting-to-text ML model to implement photo-based auto-grader

@@ -21,8 +21,8 @@ class UserControl(QtWidgets.QFrame):
 
         self.worksheet = Worksheet()
         self.worksheet.name = "testsheet"
-        self.worksheet.problem_sets.append(TestSet(20).prob_set)
-        self.worksheet.problem_sets.append(TestSet(40).prob_set)
+        self.worksheet.problem_sets.append(TestSet(20, "test20").prob_set)
+        self.worksheet.problem_sets.append(TestSet(40, "test40").prob_set)
 
         self.set_management = ProblemSetManagementControls(self.worksheet)
         self.layout.addWidget(self.set_management)

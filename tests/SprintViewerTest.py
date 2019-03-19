@@ -26,8 +26,8 @@ class MainWindow:
         self.sprint = SprintViewer()
 
         set_page_settings = ProblemSetPageSettings()
-        test_set = TestSet(100)
-        test_set2 = TestSet(10)
+        test_set = TestSet(100, "test100")
+        test_set2 = TestSet(10, "test10")
 
         sheet = Worksheet()
         sheet.problem_sets.append(test_set.prob_set)
@@ -70,7 +70,7 @@ class MainWindow:
         self.sprint.clear_layout(self.sprint.layout)
 
         new_set_settings = ProblemSetPageSettings()
-        new_set = TestSet(20)
+        new_set = TestSet(20, "test20")
 
         self.sprint.problem_sets = []
         self.sprint.problem_set_settings = []

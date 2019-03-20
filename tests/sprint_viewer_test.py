@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton
 from src.GUI.views.worksheet_display import WorksheetDisplay
 from src.problem_set_page_settings import ProblemSetPageSettings
 from tests.basic_problem_set import BasicProblemSet
-from src.GUI.controllers.printer import PrintController
+from src.GUI.controllers.printer import Printer
 from src.GUI.views.user_control_display import UserControlDisplay
 from src.worksheet import Worksheet
 import sys

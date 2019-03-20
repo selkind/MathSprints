@@ -1,7 +1,7 @@
-from src.ProblemSet import *
+from src.problem_set import *
 
 
-class TestSet:
+class BasicProblemSet:
     def __init__(self, problem_count, name):
         name = name
         settings = ProblemSettings()

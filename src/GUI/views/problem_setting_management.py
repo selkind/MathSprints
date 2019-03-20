@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 
 
-class ProblemSettingControls(QtWidgets.QFrame):
+class ProblemSettingManagement(QtWidgets.QFrame):
     def __init__(self, problemsettings):
         QtWidgets.QFrame.__init__(self)
         self.layout = QtWidgets.QGridLayout(self)

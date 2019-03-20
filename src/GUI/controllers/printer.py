@@ -1,12 +1,11 @@
 from PyQt5 import QtGui, QtCore
-from src.GUI.Page import Page
 
 
-class Window:
+class Printer:
     def __init__(self):
         pass
 
-    def print_screen(self, widget):
+    def worksheet_to_pdf(self, worksheet):
         filename = "test.pdf"
 
         '''
@@ -22,19 +21,19 @@ class Window:
         page_resolution = printer.logicalDpiY()
         y_pixels_page = QtGui.QPageSize.sizePixels(page_size.id(), page_resolution).height()
 
-        y_pixels_widget = widget.pages[0].size().height()
+        y_pixels_widget = worksheet.pages[0].size().height()
 
         scaling = y_pixels_page / y_pixels_widget
 
         print("pixels: {}".format(y_pixels_page))
 
-        print("widgetsize: {}".format(widget.size()))
+        print("widgetsize: {}".format(worksheet.size()))
         print("scaling: {}".format(scaling))
         painter = QtGui.QPainter(printer)
         painter.scale(scaling, scaling)
-        widget.pages[0].render(painter)
-        if len(widget.pages) > 1:
-            for i in widget.pages[1:]:
+        worksheet.pages[0].render(painter)
+        if len(worksheet.pages) > 1:
+            for i in worksheet.pages[1:]:
                 printer.newPage()
                 i.render(painter)
 

@@ -1,12 +1,10 @@
-from PyQt5.QtWidgets import QApplication, QScrollArea, QFrame, QHBoxLayout, QWidget, QGridLayout, QPushButton
-from PyQt5.QtGui import QPageSize
-from PyQt5.QtPrintSupport import QPrinter
-from src.GUI.sprint_viewer import SprintViewer
-from src.GUI.ProblemSetPageSettings import ProblemSetPageSettings
-from tests.basic_problem_set import TestSet
-from src.GUI.pdf_print_test import Window
-from src.GUI.user_control import UserControl
-from src.Worksheet import Worksheet
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton
+from src.GUI.views.worksheet_display import WorksheetDisplay
+from src.problem_set_page_settings import ProblemSetPageSettings
+from tests.basic_problem_set import BasicProblemSet
+from src.GUI.controllers.printer import PrintController
+from src.GUI.views.user_control_display import UserControlDisplay
+from src.worksheet import Worksheet
 import sys
 
 
@@ -23,11 +21,11 @@ class MainWindow:
         self.main_layout = QGridLayout()
         self.window.setLayout(self.main_layout)
 
-        self.sprint = SprintViewer()
+        self.sprint = WorksheetDisplay()
 
         set_page_settings = ProblemSetPageSettings()
-        test_set = TestSet(100, "test100")
-        test_set2 = TestSet(10, "test10")
+        test_set = BasicProblemSet(100, "test100")
+        test_set2 = BasicProblemSet(10, "test10")
 
         sheet = Worksheet()
         sheet.problem_sets.append(test_set.prob_set)
@@ -41,7 +39,7 @@ class MainWindow:
 
         self.main_layout.addWidget(self.sprint, 0, 1)
 
-        ctrl_panel = UserControl()
+        ctrl_panel = UserControlDisplay()
         self.main_layout.addWidget(ctrl_panel, 0, 0)
 
         viewer_toggle = QPushButton("toggle page viewer")
@@ -70,7 +68,7 @@ class MainWindow:
         self.sprint.clear_layout(self.sprint.layout)
 
         new_set_settings = ProblemSetPageSettings()
-        new_set = TestSet(20, "test20")
+        new_set = BasicProblemSet(20, "test20")
 
         self.sprint.problem_sets = []
         self.sprint.problem_set_settings = []
@@ -86,8 +84,8 @@ class MainWindow:
             widget.hide()
 
     def print_sprint(self, widget):
-        printer = Window()
-        printer.print_screen(widget)
+        printer = PrintController()
+        printer.worksheet_to_pdf(widget)
 
 
 if __name__ == "__main__":

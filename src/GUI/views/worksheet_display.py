@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
-from src.GUI.Page import Page
-from src.GUI.worksheet_layout_settings import WorksheetLayoutSettings
+from src.GUI.views.page import Page
+from src.worksheet_layout_settings import WorksheetLayoutSettings
 
 """
 This class manages the distribution of problem sets on pages and displays those pages as a 
@@ -8,7 +8,7 @@ This class manages the distribution of problem sets on pages and displays those 
 """
 
 
-class SprintViewer(QtWidgets.QScrollArea):
+class WorksheetDisplay(QtWidgets.QScrollArea):
     def __init__(self):
         QtWidgets.QScrollArea.__init__(self)
         self.page_background = QtGui.QColor(10, 100, 10, 50)

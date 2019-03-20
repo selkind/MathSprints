@@ -1,6 +1,6 @@
-from src.ProblemSettings import ProblemSettings
-from src.Problem import Problem
-from src.Fraction import Fraction
+from src.problem_settings import ProblemSettings
+from src.problem import Problem
+from src.fraction import Fraction
 from random import randrange, choice, sample, random
 
 

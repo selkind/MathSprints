@@ -1,11 +1,5 @@
-from PyQt5.QtWidgets import QApplication, QScrollArea, QFrame, QHBoxLayout, QWidget, QGridLayout, QPushButton
-from PyQt5.QtGui import QPageSize
-from PyQt5.QtPrintSupport import QPrinter
-from src.GUI.sprint_viewer import SprintViewer
-from src.GUI.ProblemSetPageSettings import ProblemSetPageSettings
-from tests.basic_problem_set import TestSet
-from src.GUI.pdf_print_test import Window
-from src.GUI.user_control import UserControl
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
+from src.GUI.views.user_control_display import UserControlDisplay
 import sys
 
 
@@ -22,7 +16,7 @@ class MainWindow:
         self.main_layout = QGridLayout()
         self.window.setLayout(self.main_layout)
 
-        self.control = UserControl()
+        self.control = UserControlDisplay()
         self.main_layout.addWidget(self.control)
 
         self.window.show()

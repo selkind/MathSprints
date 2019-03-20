@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtGui
 
 
-class WorksheetLayoutControls(QtWidgets.QFrame):
+class WorksheetLayoutManagement(QtWidgets.QFrame):
     def __init__(self, worksheet_layout_settings):
         QtWidgets.QFrame.__init__(self)
         self.layout = QtWidgets.QGridLayout(self)

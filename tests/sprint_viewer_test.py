@@ -13,7 +13,9 @@ class MainWindow:
     def __init__(self):
         self.window = None
         self.main_layout = None
-        self.sprint = None
+        self.worksheet_display = None
+        self.ctrl_panel = None
+        self.set_layout_manager = None
 
     def run(self):
         app = QApplication([])
@@ -22,36 +24,51 @@ class MainWindow:
         self.main_layout = QGridLayout()
         self.window.setLayout(self.main_layout)
 
-        self.set_layout_manager = ProblemSetLayoutManager()
-
-        self.sprint = WorksheetDisplay()
+        self.worksheet_display = WorksheetDisplay()
 
         set_page_settings = ProblemSetPageSettings()
         test_set = BasicProblemSet(100, "test100")
         test_set2 = BasicProblemSet(10, "test10")
 
         sheet = Worksheet()
-        sheet.problem_sets.append(test_set.prob_set)
-        sheet.problem_sets.append(test_set2.prob_set)
+        sheet.problem_sets.append([test_set.prob_set, set_page_settings])
+        sheet.problem_sets.append([test_set2.prob_set, set_page_settings])
 
-        self.sprint.worksheet = sheet
-        self.sprint.problem_set_settings.append(set_page_settings)
-        self.sprint.problem_set_settings.append(set_page_settings)
+        self.worksheet_display.worksheet = sheet
+        self.worksheet_display.problem_set_settings.append(set_page_settings)
+        self.worksheet_display.problem_set_settings.append(set_page_settings)
 
-        self.sprint.load_pages_to_viewer()
+        self.worksheet_display.load_pages_to_viewer()
 
-        self.main_layout.addWidget(self.sprint, 0, 1)
+        self.main_layout.addWidget(self.worksheet_display, 0, 1)
 
-        ctrl_panel = UserControlDisplay()
-        self.main_layout.addWidget(ctrl_panel, 0, 0)
+        self.ctrl_panel = UserControlDisplay()
+        self.main_layout.addWidget(self.ctrl_panel, 0, 0)
 
+        self.configure_test_buttons()
+
+        self.set_layout_manager = ProblemSetLayoutManager(self.ctrl_panel.problem_set_layout_controls,
+                                                          self.worksheet_display)
+
+        self.set_layout_manager.set_current_model(sheet.problem_sets[0][1])
+
+        self.set_layout_manager.load_to_view()
+
+        self.window.show()
+
+        sys.exit(app.exec_())
+
+    def configure_panel_buttons(self):
+        self.set_layout_manager = ProblemSetLayoutManager(self.ctrl_panel.problem_set_layout_controls)
+
+    def configure_test_buttons(self):
         viewer_toggle = QPushButton("toggle page viewer")
-        viewer_toggle.clicked.connect(lambda: self.toggle_visiblity(self.sprint))
+        viewer_toggle.clicked.connect(lambda: self.toggle_visiblity(self.worksheet_display))
 
         self.main_layout.addWidget(viewer_toggle, 1, 0)
 
         print_but = QPushButton("print sprint")
-        print_but.clicked.connect(lambda: self.print_sprint(self.sprint))
+        print_but.clicked.connect(lambda: self.print_sprint(self.worksheet_display))
 
         self.main_layout.addWidget(print_but, 2, 0)
 
@@ -60,30 +77,21 @@ class MainWindow:
 
         self.main_layout.addWidget(change_but, 3, 0)
 
-        self.set_layout_manager.load_to_view(ctrl_panel.problem_set_layout_controls, set_page_settings)
-
-        self.window.show()
-
-        set_page_settings.v_answer_space = 200
-        self.set_layout_manager.load_to_view(ctrl_panel.problem_set_layout_controls, set_page_settings)
-
-        sys.exit(app.exec_())
-
     def clear_problem_set(self):
-        self.sprint.clear_layout(self.sprint.layout)
+        self.worksheet_display.clear_layout(self.worksheet_display.layout)
 
     def change_problem_set(self):
-        self.sprint.clear_layout(self.sprint.layout)
+        self.worksheet_display.clear_layout(self.worksheet_display.layout)
 
         new_set_settings = ProblemSetPageSettings()
         new_set = BasicProblemSet(20, "test20")
 
-        self.sprint.problem_sets = []
-        self.sprint.problem_set_settings = []
+        self.worksheet_display.problem_sets = []
+        self.worksheet_display.problem_set_settings = []
 
-        self.sprint.problem_sets.append(new_set.prob_set)
-        self.sprint.problem_set_settings.append(new_set_settings)
-        self.sprint.load_pages_to_viewer()
+        self.worksheet_display.problem_sets.append(new_set.prob_set)
+        self.worksheet_display.problem_set_settings.append(new_set_settings)
+        self.worksheet_display.load_pages_to_viewer()
 
     def toggle_visiblity(self, widget):
         if widget.isHidden():

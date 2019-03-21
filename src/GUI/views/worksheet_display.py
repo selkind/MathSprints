@@ -16,6 +16,7 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
         self.header_background = QtGui.QColor(100, 10, 10, 50)
 
         self.sheet_layout_settings = WorksheetLayoutSettings()
+        self.worksheet = None
 
         self.fixed_size = self.size()
         self.page_size = None
@@ -50,7 +51,7 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
         self.current_frame.setLayout(page_layout)
 
         for i in range(len(self.worksheet.problem_sets)):
-            self.layout_problem_set(self.worksheet.problem_sets[i], self.problem_set_settings[i])
+            self.layout_problem_set(self.worksheet.problem_sets[i][0], self.worksheet.problem_sets[i][1])
         for i in self.pages:
             i.setLayout(i.layout)
             page_layout.addWidget(i)

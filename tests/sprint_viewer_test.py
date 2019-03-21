@@ -5,6 +5,7 @@ from tests.basic_problem_set import BasicProblemSet
 from src.GUI.controllers.printer import Printer
 from src.GUI.views.user_control_display import UserControlDisplay
 from src.worksheet import Worksheet
+from src.GUI.controllers.problem_set_layout import ProblemSetLayoutManager
 import sys
 
 
@@ -20,6 +21,8 @@ class MainWindow:
         self.window = QWidget()
         self.main_layout = QGridLayout()
         self.window.setLayout(self.main_layout)
+
+        self.set_layout_manager = ProblemSetLayoutManager()
 
         self.sprint = WorksheetDisplay()
 
@@ -57,7 +60,12 @@ class MainWindow:
 
         self.main_layout.addWidget(change_but, 3, 0)
 
+        self.set_layout_manager.load_to_view(ctrl_panel.problem_set_layout_controls, set_page_settings)
+
         self.window.show()
+
+        set_page_settings.v_answer_space = 200
+        self.set_layout_manager.load_to_view(ctrl_panel.problem_set_layout_controls, set_page_settings)
 
         sys.exit(app.exec_())
 
@@ -84,7 +92,7 @@ class MainWindow:
             widget.hide()
 
     def print_sprint(self, widget):
-        printer = PrintController()
+        printer = Printer()
         printer.worksheet_to_pdf(widget)
 
 

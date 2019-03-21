@@ -34,7 +34,12 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
         self.scaling = height / self.fixed_size.height()
 
     def set_page_size(self, page_size):
-        self.page_size = QtGui.QPageSize(page_size)
+        page_sizes = {}
+        for key in dir(QtGui.QPageSize):
+            value = getattr(QtGui.QPageSize, key)
+            if isinstance(value, int):
+                page_sizes[key] = value
+        self.page_size = QtGui.QPageSize(page_sizes[page_size])
         self.configure_scaling()
 
     def load_pages_to_viewer(self):

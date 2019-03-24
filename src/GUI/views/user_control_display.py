@@ -5,7 +5,7 @@ from src.GUI.views.problem_setting_management import ProblemSettingManagement
 from src.problem_settings import ProblemSettings
 from src.GUI.views.worksheet_layout_management import WorksheetLayoutManagement
 from src.worksheet_layout_settings import WorksheetLayoutSettings
-from src.GUI.views.problem_set_management import ProblemSetManagement
+from src.GUI.views.worksheet_set_display import WorksheetSetDisplay
 from src.worksheet import Worksheet
 from tests.basic_problem_set import BasicProblemSet
 
@@ -23,7 +23,7 @@ class UserControlDisplay(QtWidgets.QFrame):
         self.layout.addWidget(self.sheet_controls)
 
         worksheet = Worksheet()
-        self.set_management = ProblemSetManagement(worksheet)
+        self.set_management = WorksheetSetDisplay(worksheet)
         self.layout.addWidget(self.set_management)
 
         set_settings = ProblemSettings()

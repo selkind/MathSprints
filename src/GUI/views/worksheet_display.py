@@ -17,6 +17,7 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
 
         self.sheet_layout_settings = WorksheetLayoutSettings()
         self.worksheet = None
+        self.current_set = None
 
         self.fixed_size = self.size()
         self.page_size = None
@@ -26,7 +27,6 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
         self.setWidgetResizable(True)
         self.current_frame = None
         self.pages = None
-        self.worksheet = None
         self.problem_set_settings = []
 
     def configure_scaling(self):
@@ -51,12 +51,12 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
         self.current_frame.setLayout(page_layout)
 
         for i in range(len(self.worksheet.problem_sets)):
-            self.layout_problem_set(self.worksheet.problem_sets[i][0], self.worksheet.problem_sets[i][1])
+            self.layout_problem_set(self.worksheet.problem_sets[i]["set"], self.worksheet.problem_sets[i]["settings"])
         for i in self.pages:
             i.setLayout(i.layout)
             page_layout.addWidget(i)
         self.layout.addWidget(self.current_frame)
-        self.setWidget(self.current_frame) # critical to make scroll area work
+        self.setWidget(self.current_frame)    # critical to make scroll area work
 
     def clear_layout(self, layout):
         while layout.count():

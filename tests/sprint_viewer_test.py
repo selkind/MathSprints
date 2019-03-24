@@ -5,7 +5,8 @@ from tests.basic_problem_set import BasicProblemSet
 from src.GUI.controllers.printer import Printer
 from src.GUI.views.user_control_display import UserControlDisplay
 from src.worksheet import Worksheet
-from src.GUI.controllers.problem_set_layout import ProblemSetLayoutManager
+from src.GUI.controllers.problem_set_layout_manager import ProblemSetLayoutManager
+from src.GUI.controllers.worksheet_set_manager import WorksheetSetManager
 import sys
 
 
@@ -15,6 +16,7 @@ class MainWindow:
         self.main_layout = None
         self.worksheet_display = None
         self.ctrl_panel = None
+        self.sheet_set_manager = None
         self.set_layout_manager = None
 
     def run(self):
@@ -31,12 +33,15 @@ class MainWindow:
         test_set2 = BasicProblemSet(10, "test10")
 
         sheet = Worksheet()
-        sheet.problem_sets.append([test_set.prob_set, set_page_settings])
-        sheet.problem_sets.append([test_set2.prob_set, set_page_settings])
+        sheet.problem_sets.append({"name": test_set.prob_set.name,
+                                   "set": test_set.prob_set,
+                                   "settings": set_page_settings})
+
+        sheet.problem_sets.append({"name": test_set2.prob_set.name,
+                                   "set": test_set2.prob_set,
+                                   "settings": set_page_settings})
 
         self.worksheet_display.worksheet = sheet
-        self.worksheet_display.problem_set_settings.append(set_page_settings)
-        self.worksheet_display.problem_set_settings.append(set_page_settings)
 
         self.worksheet_display.load_pages_to_viewer()
 
@@ -47,10 +52,12 @@ class MainWindow:
 
         self.configure_test_buttons()
 
+        self.sheet_set_manager = WorksheetSetManager(self.ctrl_panel.set_management, self.worksheet_display)
+
         self.set_layout_manager = ProblemSetLayoutManager(self.ctrl_panel.problem_set_layout_controls,
                                                           self.worksheet_display)
 
-        self.set_layout_manager.set_current_model(sheet.problem_sets[0][1])
+        self.set_layout_manager.set_current_model(sheet.problem_sets[0]["settings"])
 
         self.set_layout_manager.load_to_view()
 

@@ -27,6 +27,9 @@ class ProblemSetLayoutManager:
         self.view.point_val.disconnect()
 
     def load_to_view(self):
+        if self.current_model is None:
+            return
+
         self.view.v_space.setValue(self.current_model.v_answer_space)
         self.view.h_space.setValue(self.current_model.h_answer_space)
 

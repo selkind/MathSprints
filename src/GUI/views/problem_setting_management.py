@@ -2,17 +2,24 @@ from PyQt5 import QtWidgets
 
 
 class ProblemSettingManagement(QtWidgets.QFrame):
-    def __init__(self, problemsettings):
+    def __init__(self):
         QtWidgets.QFrame.__init__(self)
         self.layout = QtWidgets.QGridLayout(self)
-        self.settings = problemsettings
 
         self.test_term_list = ["Integer", "Fraction", "Decimal"]
         self.test_op_list = ["+", "-", "X", "/"]
 
+        self.term_count_label_min = None
+        self.term_count_label_max = None
+        self.variable_term_count = None
+        self.term_count_min = None
+        self.term_count_max = None
+
+        self.multiple_type_option = None
         self.term_check = None
         self.term_radio = None
 
+        self.multiple_op_option = None
         self.op_check = None
         self.op_radio = None
 
@@ -21,83 +28,82 @@ class ProblemSettingManagement(QtWidgets.QFrame):
         self.op_type()
 
     def term_count(self):
-        variable_term_count = QtWidgets.QCheckBox("Variable Number of Terms")
-        variable_term_count.setCheckable(True)
-        variable_term_count.setChecked(self.settings.variable_term_count)
-        self.layout.addWidget(variable_term_count, 0, 0, 1, 2)
+        self.variable_term_count = QtWidgets.QCheckBox("Variable Number of Terms")
+        self.variable_term_count.setCheckable(True)
+        self.layout.addWidget(self.variable_term_count, 0, 0, 1, 2)
 
         term_count_label = QtWidgets.QLabel("Terms per Problem")
-        term_count_label_min = QtWidgets.QLabel("Minimum")
-        term_count_label_max = QtWidgets.QLabel("Maximum")
+        self.term_count_label_min = QtWidgets.QLabel("Minimum")
+        self.term_count_label_max = QtWidgets.QLabel("Maximum")
         self.layout.addWidget(term_count_label, 1, 0, 1, 2)
-        self.layout.addWidget(term_count_label_min, 2, 0)
-        self.layout.addWidget(term_count_label_max, 3, 0)
+        self.layout.addWidget(self.term_count_label_min, 2, 1)
+        self.layout.addWidget(self.term_count_label_max, 3, 1)
 
-        term_count_min = QtWidgets.QSpinBox()
-        term_count_max = QtWidgets.QSpinBox()
-        term_count_min.setValue(self.settings.term_count_min)
-        term_count_min.setMinimum(2)
-        term_count_max.setValue(self.settings.term_count_max)
-        term_count_max.setMinimum(term_count_min.value())
-        self.layout.addWidget(term_count_min, 2, 1)
-        self.layout.addWidget(term_count_max, 3, 1)
+        self.term_count_min = QtWidgets.QSpinBox()
+        self.term_count_max = QtWidgets.QSpinBox()
+        self.layout.addWidget(self.term_count_min, 2, 0)
+        self.layout.addWidget(self.term_count_max, 3, 0)
 
     def term_type(self):
-        multiple_type_option = QtWidgets.QCheckBox("Multiple Term Types")
-        multiple_type_option.setCheckable(True)
-        multi_term_types = len(self.settings.term_sets[0]) > 1 or len(self.settings.term_sets) > 1
-        multiple_type_option.setChecked(multi_term_types)
+        self.multiple_type_option = QtWidgets.QCheckBox("Multiple Term Types")
+        self.multiple_type_option.setCheckable(True)
 
-        self.layout.addWidget(multiple_type_option, 4, 0)
-        self.term_check = self.list_check(self.test_term_list, self.settings.term_sets)
-        self.term_radio = self.list_radio(self.test_term_list, self.settings.term_sets[0])
+        self.layout.addWidget(self.multiple_type_option, 4, 0)
+        self.term_check = self.list_check(self.test_term_list)
+        self.term_radio = self.list_radio(self.test_term_list)
         self.layout.addWidget(self.term_check, 5, 0)
         self.layout.addWidget(self.term_radio, 5, 0)
 
-        if multi_term_types:
-            self.term_radio.hide()
-        else:
-            self.term_check.hide()
-
     def op_type(self):
-        multiple_op_option = QtWidgets.QCheckBox("Multiple Operators")
-        multiple_op_option.setCheckable(True)
-        multi_ops = len(self.settings.operator_sets[0]) > 1 or len(self.settings.operator_sets) > 1
-        multiple_op_option.setChecked(multi_ops)
+        self.multiple_op_option = QtWidgets.QCheckBox("Multiple Operators")
+        self.multiple_op_option.setCheckable(True)
 
-        self.layout.addWidget(multiple_op_option, 4, 1)
-        self.op_check = self.list_check(self.test_op_list, self.settings.operator_sets)
-        self.op_radio = self.list_radio(self.test_op_list, self.settings.operator_sets[0])
+        self.layout.addWidget(self.multiple_op_option, 4, 1)
+        self.op_check = self.list_check(self.test_op_list)
+        self.op_radio = self.list_radio(self.test_op_list)
         self.layout.addWidget(self.op_check, 5, 1)
         self.layout.addWidget(self.op_radio, 5, 1)
 
-        if multi_ops:
-            self.op_radio.hide()
-        else:
-            self.op_check.hide()
-
-    def list_radio(self, vals, selected_val):
+    def list_radio(self, vals):
         frame = QtWidgets.QFrame()
         layout = QtWidgets.QVBoxLayout(frame)
         for i in vals:
-            but = QtWidgets.QRadioButton(i)
-            if i == selected_val[0]:
-                but.setChecked(True)
-            layout.addWidget(but)
+            layout.addWidget(QtWidgets.QRadioButton(i))
 
         return frame
 
-    def list_check(self, vals, selected_vals):
-        checked = []
-        for i in selected_vals:
-            checked.append(i[0])
+    def list_check(self, vals):
         frame = QtWidgets.QFrame()
         layout = QtWidgets.QVBoxLayout(frame)
-
         for i in vals:
-            but = QtWidgets.QCheckBox(i)
-            if i in checked:
-                but.setChecked(True)
-            layout.addWidget(but)
+            layout.addWidget(QtWidgets.QCheckBox(i))
 
         return frame
+
+    def get_term_radios(self):
+        r = []
+        for i in self.term_radio.children():
+            if type(i) == QtWidgets.QRadioButton:
+                r.append(i)
+        return r
+
+    def get_term_checks(self):
+        c = []
+        for i in self.term_check.children():
+            if type(i) == QtWidgets.QCheckBox:
+                c.append(i)
+        return c
+
+    def get_op_radios(self):
+        r = []
+        for i in self.op_radio.children():
+            if type(i) == QtWidgets.QRadioButton:
+                r.append(i)
+        return r
+
+    def get_op_checks(self):
+        c = []
+        for i in self.op_check.children():
+            if type(i) == QtWidgets.QCheckBox:
+                c.append(i)
+        return c

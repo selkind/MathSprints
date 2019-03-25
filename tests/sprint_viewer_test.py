@@ -7,6 +7,7 @@ from src.GUI.views.user_control_display import UserControlDisplay
 from src.worksheet import Worksheet
 from src.GUI.controllers.problem_set_layout_manager import ProblemSetLayoutManager
 from src.GUI.controllers.worksheet_set_manager import WorksheetSetManager
+from src.GUI.controllers.problem_settings_manager import ProblemSettingsManager
 import sys
 
 
@@ -18,6 +19,7 @@ class MainWindow:
         self.ctrl_panel = None
         self.sheet_set_manager = None
         self.set_layout_manager = None
+        self.problem_settings_manager = None
 
     def run(self):
         app = QApplication([])
@@ -54,12 +56,14 @@ class MainWindow:
 
         self.sheet_set_manager = WorksheetSetManager(self.ctrl_panel.set_management, self.worksheet_display)
 
+        self.problem_settings_manager = ProblemSettingsManager(self.ctrl_panel.problem_setting_controls,
+                                                               self.worksheet_display)
+
         self.set_layout_manager = ProblemSetLayoutManager(self.ctrl_panel.problem_set_layout_controls,
                                                           self.worksheet_display)
 
+        self.problem_settings_manager.set_current_model(sheet.problem_sets[0]["set"].settings)
         self.set_layout_manager.set_current_model(sheet.problem_sets[0]["settings"])
-
-        self.set_layout_manager.load_to_view()
 
         self.window.show()
 

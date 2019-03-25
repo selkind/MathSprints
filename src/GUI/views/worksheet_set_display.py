@@ -28,11 +28,6 @@ class WorksheetSetDisplay(QtWidgets.QFrame):
         size.setVerticalPolicy(QtWidgets.QSizePolicy.Maximum)
         self.set_list.setSizePolicy(size)
 
-        for i in self.worksheet.problem_sets:
-            QtWidgets.QListWidgetItem(i.name, self.set_list)
-
-        self.set_list.setCurrentRow(self.set_list.count() - 1)
-
         self.layout.addWidget(self.set_list, 0, 1)
 
     def add_item_to_set_list(self, name):

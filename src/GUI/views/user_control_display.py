@@ -22,8 +22,7 @@ class UserControlDisplay(QtWidgets.QFrame):
         self.sheet_controls = WorksheetLayoutManagement(sheet_layout_settings)
         self.layout.addWidget(self.sheet_controls)
 
-        worksheet = Worksheet()
-        self.set_management = WorksheetSetDisplay(worksheet)
+        self.set_management = WorksheetSetDisplay()
         self.layout.addWidget(self.set_management)
 
         set_settings = ProblemSettings()

@@ -11,7 +11,11 @@ class ProblemSet:
         self.problem_count = 0
         self.problems = []
 
-    def make_problem(self, term_set, operator_set):
+    def build_set(self):
+        for i in range(self.problem_count):
+            self.problems.append(self.make_problem())
+
+    def make_problem(self):
         term_count = 0
         if self.settings.term_count_min == self.settings.term_count_max:
             term_count = self.settings.term_count_min
@@ -19,16 +23,32 @@ class ProblemSet:
             term_count = randrange(self.settings.term_count_min, self.settings.term_count_max)
         prob = Problem(term_count)
         for i in range(term_count):
-            term = self.make_term(term_set)
+            term = self.make_term()
             prob.terms.append(term)
             if i != term_count - 1:
-                operator = choice(operator_set)
+                operator = self.choose_operator()
                 prob.operators.append(operator)
         self.problems.append(prob)
 
-    def make_term(self, term_set):
-        terms = {"Integer": self.make_integer, "Fraction": self.make_fraction, "Decimal": self.make_decimal}
-        return terms[choice(term_set)]()
+    def make_term(self):
+        term_map = {"Integer": self.make_integer, "Fraction": self.make_fraction, "Decimal": self.make_decimal}
+        term = self.choose_rand_term(self.settings.term_sets)
+        return term_map[term]()
+
+    def choose_rand_term(self, term_set):
+        if type(term_set) != list:
+            return term_set
+        term = choice(term_set)
+        self.choose_rand_term(term)
+
+    def choose_operator(self):
+        return self.choose_rand_operator(self.settings.operator_sets)
+
+    def choose_rand_operator(self, operator_set):
+        if type(operator_set) == str:
+            return operator_set
+        op = choice(operator_set)
+        self.choose_rand_operator(op)
 
     def make_integer(self):
         if self.settings.int_value_manual:

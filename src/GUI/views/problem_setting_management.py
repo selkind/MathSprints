@@ -15,7 +15,7 @@ class ProblemSettingManagement(QtWidgets.QFrame):
         self.term_count_min = None
         self.term_count_max = None
 
-        self.multiple_type_option = None
+        self.multiple_term_type_option = None
         self.term_check = None
         self.term_radio = None
 
@@ -45,10 +45,10 @@ class ProblemSettingManagement(QtWidgets.QFrame):
         self.layout.addWidget(self.term_count_max, 3, 0)
 
     def term_type(self):
-        self.multiple_type_option = QtWidgets.QCheckBox("Multiple Term Types")
-        self.multiple_type_option.setCheckable(True)
+        self.multiple_term_type_option = QtWidgets.QCheckBox("Multiple Term Types")
+        self.multiple_term_type_option.setCheckable(True)
 
-        self.layout.addWidget(self.multiple_type_option, 4, 0)
+        self.layout.addWidget(self.multiple_term_type_option, 4, 0)
         self.term_check = self.list_check(self.test_term_list)
         self.term_radio = self.list_radio(self.test_term_list)
         self.layout.addWidget(self.term_check, 5, 0)

@@ -18,8 +18,6 @@ class ProblemSettings:
         self.decimal_values = []
 
         # supported operators +, -, *, /
-        self.mixed_operators = False
         self.operator_sets = [["+"]]
 
-        self.allow_mixed_terms = False
         self.term_sets = [["Integer"]]

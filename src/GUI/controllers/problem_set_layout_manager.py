@@ -48,7 +48,6 @@ class ProblemSetLayoutManager:
         self.update_col_num()
         self.update_max_problems()
         self.update_problem_val()
-        self.sheet_display.load_pages_to_viewer()
 
     def update_v_space(self):
         self.current_model.v_answer_space = self.view.v_space.value()

@@ -14,7 +14,7 @@ class ProblemSettingsManager:
 
     def configure_buttons(self):
         self.view.variable_term_count.stateChanged.connect(self.switch_term_count_state)
-        self.view.multiple_type_option.stateChanged.connect(self.switch_term_list)
+        self.view.multiple_term_type_option.stateChanged.connect(self.switch_term_list)
         self.view.multiple_op_option.stateChanged.connect(self.switch_op_list)
 
     def load_to_view(self):
@@ -32,7 +32,7 @@ class ProblemSettingsManager:
         self.view.term_count_max.setValue(self.current_model.term_count_max)
 
         multi_term_types = len(self.current_model.term_sets[0]) > 1 or len(self.current_model.term_sets) > 1
-        self.view.multiple_type_option.setChecked(multi_term_types)
+        self.view.multiple_term_type_option.setChecked(multi_term_types)
 
         if multi_term_types:
             self.view.term_radio.hide()
@@ -62,7 +62,33 @@ class ProblemSettingsManager:
                     i.setChecked(True)
 
     def update_model(self):
-        pass
+        self.current_model.variable_term_count = self.view.variable_term_count.isChecked()
+        if self.current_model.variable_term_count:
+            self.current_model.term_count_min = self.view.term_count_min.value()
+            self.current_model.term_count_max = self.view.term_count_max.value()
+        else:
+            self.current_model.term_count_min = self.view.term_count_min.value()
+            self.current_model.term_count_max = self.current_model.term_count_min
+
+        self.current_model.term_sets = []
+        if self.view.multiple_term_type_option.isChecked():
+            for i in self.view.get_term_checks():
+                if i.isChecked():
+                    self.current_model.term_sets.append([i.text()])
+        else:
+            for i in self.view.get_term_radios:
+                if i.isChecked():
+                    self.current_model.term_sets.append([i.text()])
+
+        self.current_model.operator_sets = []
+        if self.view.multiple_op_option.isChecked():
+            for i in self.view.get_op_checks():
+                if i.isChecked():
+                    self.current_model.operator_sets.append([i.text()])
+        else:
+            for i in self.view.get_op_radios:
+                if i.isChecked():
+                    self.current_model.operator_sets.append([i.text()])
 
     def switch_term_count_state(self):
         if self.view.variable_term_count.isChecked():
@@ -92,7 +118,7 @@ class ProblemSettingsManager:
         self.view.term_count_min.setMaximum(self.view.term_count_max.value())
 
     def switch_term_list(self):
-        if self.view.multiple_type_option.isChecked():
+        if self.view.multiple_term_type_option.isChecked():
             self.view.term_check.show()
             self.view.term_radio.hide()
         else:

@@ -5,6 +5,7 @@ from tests.basic_problem_set import BasicProblemSet
 from src.GUI.controllers.printer import Printer
 from src.GUI.views.user_control_display import UserControlDisplay
 from src.worksheet import Worksheet
+from src.GUI.controllers.user_control_manager import UserControlManager
 from src.GUI.controllers.problem_set_layout_manager import ProblemSetLayoutManager
 from src.GUI.controllers.worksheet_set_manager import WorksheetSetManager
 from src.GUI.controllers.problem_settings_manager import ProblemSettingsManager
@@ -20,6 +21,7 @@ class MainWindow:
         self.sheet_set_manager = None
         self.set_layout_manager = None
         self.problem_settings_manager = None
+        self.user_control_manager = None
 
     def run(self):
         app = QApplication([])
@@ -31,6 +33,8 @@ class MainWindow:
         self.worksheet_display = WorksheetDisplay()
 
         set_page_settings = ProblemSetPageSettings()
+        set_page_settings2 = ProblemSetPageSettings()
+        set_page_settings2.max_problems_per_page = 5
         test_set = BasicProblemSet(100, "test100")
         test_set2 = BasicProblemSet(10, "test10")
 
@@ -41,7 +45,7 @@ class MainWindow:
 
         sheet.problem_sets.append({"name": test_set2.prob_set.name,
                                    "set": test_set2.prob_set,
-                                   "settings": set_page_settings})
+                                   "settings": set_page_settings2})
 
         self.worksheet_display.worksheet = sheet
 
@@ -51,19 +55,13 @@ class MainWindow:
 
         self.ctrl_panel = UserControlDisplay()
         self.main_layout.addWidget(self.ctrl_panel, 0, 0)
+        self.user_control_manager = UserControlManager(self.ctrl_panel, self.worksheet_display)
+        self.user_control_manager.configure_for_startup()
 
         self.configure_test_buttons()
 
-        self.sheet_set_manager = WorksheetSetManager(self.ctrl_panel.set_management, self.worksheet_display)
-
-        self.problem_settings_manager = ProblemSettingsManager(self.ctrl_panel.problem_setting_controls,
-                                                               self.worksheet_display)
-
-        self.set_layout_manager = ProblemSetLayoutManager(self.ctrl_panel.problem_set_layout_controls,
-                                                          self.worksheet_display)
-
-        self.problem_settings_manager.set_current_model(sheet.problem_sets[0]["set"].settings)
-        self.set_layout_manager.set_current_model(sheet.problem_sets[0]["settings"])
+        self.user_control_manager.problem_settings_manager.set_current_model(sheet.problem_sets[0]["set"].settings)
+        self.user_control_manager.set_layout_manager.set_current_model(sheet.problem_sets[0]["settings"])
 
         self.window.show()
 

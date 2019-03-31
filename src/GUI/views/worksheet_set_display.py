@@ -13,9 +13,7 @@ class WorksheetSetDisplay(QtWidgets.QFrame):
         self.del_button = None
         self.up_button = None
         self.down_button = None
-        self.create_set_name()
         self.create_set_list()
-        self.create_update_button()
         self.create_list_mod_buttons()
         self.create_shift_buttons()
 
@@ -32,15 +30,6 @@ class WorksheetSetDisplay(QtWidgets.QFrame):
 
     def add_item_to_set_list(self, name):
         QtWidgets.QListWidgetItem(name, self.set_list)
-
-    def create_set_name(self):
-        self.set_name = QtWidgets.QLineEdit()
-
-        self.layout.addWidget(self.set_name, 1, 1)
-
-    def create_update_button(self):
-        self.update_button = QtWidgets.QPushButton("Update Problem Set")
-        self.layout.addWidget(self.update_button, 1, 2)
 
     def create_list_mod_buttons(self):
         frame = QtWidgets.QFrame()

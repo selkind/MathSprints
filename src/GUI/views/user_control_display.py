@@ -1,13 +1,10 @@
 from PyQt5 import QtWidgets
 from src.GUI.views.problem_set_layout import ProblemSetLayout
-from src.problem_set_page_settings import ProblemSetPageSettings
 from src.GUI.views.problem_setting_management import ProblemSettingManagement
-from src.problem_settings import ProblemSettings
+from src.GUI.views.problem_set_display import ProblemSetDisplay
 from src.GUI.views.worksheet_layout_management import WorksheetLayoutManagement
 from src.worksheet_layout_settings import WorksheetLayoutSettings
 from src.GUI.views.worksheet_set_display import WorksheetSetDisplay
-from src.worksheet import Worksheet
-from tests.basic_problem_set import BasicProblemSet
 
 
 '''basically a container to hold all of the user input controls'''
@@ -24,6 +21,9 @@ class UserControlDisplay(QtWidgets.QFrame):
 
         self.set_management = WorksheetSetDisplay()
         self.layout.addWidget(self.set_management)
+
+        self.problem_set_display = ProblemSetDisplay()
+        self.layout.addWidget(self.problem_set_display)
 
         self.problem_setting_controls = ProblemSettingManagement()
         self.layout.addWidget(self.problem_setting_controls)

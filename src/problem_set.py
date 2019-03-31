@@ -14,7 +14,7 @@ class ProblemSet:
 
     def build_set(self):
         for i in range(self.problem_count):
-            self.problems.append(self.make_problem())
+            self.make_problem()
 
     def make_problem(self):
         term_count = 0

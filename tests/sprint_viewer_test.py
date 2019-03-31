@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton
 from src.GUI.views.worksheet_display import WorksheetDisplay
 from src.problem_set_page_settings import ProblemSetPageSettings
-from tests.basic_problem_set import BasicProblemSet
 from src.GUI.controllers.printer import Printer
 from src.GUI.views.user_control_display import UserControlDisplay
 from src.worksheet import Worksheet
@@ -9,6 +8,8 @@ from src.GUI.controllers.user_control_manager import UserControlManager
 from src.GUI.controllers.problem_set_layout_manager import ProblemSetLayoutManager
 from src.GUI.controllers.worksheet_set_manager import WorksheetSetManager
 from src.GUI.controllers.problem_settings_manager import ProblemSettingsManager
+from src.problem_set import ProblemSet
+from src.problem_settings import ProblemSettings
 import sys
 
 
@@ -35,16 +36,23 @@ class MainWindow:
         set_page_settings = ProblemSetPageSettings()
         set_page_settings2 = ProblemSetPageSettings()
         set_page_settings2.max_problems_per_page = 5
-        test_set = BasicProblemSet(10, "test100")
-        test_set2 = BasicProblemSet(10, "test10")
+        settings = ProblemSettings()
+        settings2 = ProblemSettings()
+        settings2.operator_sets = [["-"]]
+        test_set = ProblemSet(settings, "set1")
+        test_set2 = ProblemSet(settings2, "set2")
+        test_set.problem_count = 10
+        test_set2.problem_count = 5
+        test_set.build_set()
+        test_set2.build_set()
 
         sheet = Worksheet()
-        sheet.problem_sets.append({"name": test_set.prob_set.name,
-                                   "set": test_set.prob_set,
+        sheet.problem_sets.append({"name": test_set.name,
+                                   "set": test_set,
                                    "settings": set_page_settings})
 
-        sheet.problem_sets.append({"name": test_set2.prob_set.name,
-                                   "set": test_set2.prob_set,
+        sheet.problem_sets.append({"name": test_set2.name,
+                                   "set": test_set2,
                                    "settings": set_page_settings2})
 
         self.worksheet_display.worksheet = sheet

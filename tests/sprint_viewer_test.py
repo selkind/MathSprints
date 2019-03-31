@@ -35,7 +35,7 @@ class MainWindow:
         set_page_settings = ProblemSetPageSettings()
         set_page_settings2 = ProblemSetPageSettings()
         set_page_settings2.max_problems_per_page = 5
-        test_set = BasicProblemSet(100, "test100")
+        test_set = BasicProblemSet(10, "test100")
         test_set2 = BasicProblemSet(10, "test10")
 
         sheet = Worksheet()

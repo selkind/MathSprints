@@ -10,6 +10,7 @@ class ProblemSet:
         self.settings = settings
         self.problem_count = 0
         self.problems = []
+        self.term_map = {"Integer": self.make_integer, "Fraction": self.make_fraction, "Decimal": self.make_decimal}
 
     def build_set(self):
         for i in range(self.problem_count):
@@ -31,24 +32,16 @@ class ProblemSet:
         self.problems.append(prob)
 
     def make_term(self):
-        term_map = {"Integer": self.make_integer, "Fraction": self.make_fraction, "Decimal": self.make_decimal}
-        term = self.choose_rand_term(self.settings.term_sets)
-        return term_map[term]()
+        term = self.choose_rand(self.settings.term_sets)
+        return self.term_map[term]()
 
-    def choose_rand_term(self, term_set):
-        if type(term_set) != list:
+    def choose_rand(self, term_set):
+        if type(term_set) == str:
             return term_set
-        term = choice(term_set)
-        self.choose_rand_term(term)
+        return self.choose_rand(choice(term_set))
 
     def choose_operator(self):
-        return self.choose_rand_operator(self.settings.operator_sets)
-
-    def choose_rand_operator(self, operator_set):
-        if type(operator_set) == str:
-            return operator_set
-        op = choice(operator_set)
-        self.choose_rand_operator(op)
+        return self.choose_rand(self.settings.operator_sets)
 
     def make_integer(self):
         if self.settings.int_value_manual:

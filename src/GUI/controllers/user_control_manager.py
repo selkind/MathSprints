@@ -21,6 +21,19 @@ class UserControlManager:
                                                                self.sheet_display)
         self.set_layout_manager = ProblemSetLayoutManager(self.view.problem_set_layout_controls,
                                                           self.sheet_display)
+        self.configure_buttons()
+
+    def configure_buttons(self):
+        self.sheet_set_manager.view.set_list.itemSelectionChanged.connect(self.load_set_to_view)
 
     def load_set_to_view(self):
-        pass
+        row = self.sheet_set_manager.view.set_list.currentRow()
+        problem_set = self.sheet_display.worksheet.problem_sets[row]
+        self.problem_set_manager.set_current_model(problem_set["set"])
+        self.problem_settings_manager.set_current_model(problem_set["set"].settings)
+        self.set_layout_manager.set_current_model(problem_set["settings"])
+
+    def update_models(self):
+        self.problem_set_manager.update_model()
+        self.problem_settings_manager.update_model()
+        self.set_layout_manager.update_model()

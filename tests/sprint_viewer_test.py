@@ -65,12 +65,9 @@ class MainWindow:
         self.main_layout.addWidget(self.ctrl_panel, 0, 0)
         self.user_control_manager = UserControlManager(self.ctrl_panel, self.worksheet_display)
         self.user_control_manager.configure_for_startup()
+        self.user_control_manager.load_set_to_view()
 
         self.configure_test_buttons()
-
-        self.user_control_manager.problem_set_manager.set_current_model(sheet.problem_sets[-1]["set"])
-        self.user_control_manager.problem_settings_manager.set_current_model(sheet.problem_sets[-1]["set"].settings)
-        self.user_control_manager.set_layout_manager.set_current_model(sheet.problem_sets[-1]["settings"])
 
         self.window.show()
 

@@ -108,8 +108,10 @@ class ProblemSettingsManager:
 
             self.view.term_count_min.setMaximum(self.MAX_TERMS)
 
-            self.view.term_count_max.disconnect()
-            self.view.term_count_min.disconnect()
+            if self.view.term_count_max.receivers(self.view.term_count_max.valueChanged) > 0:
+                self.view.term_count_max.disconnect()
+            if self.view.term_count_min.receivers(self.view.term_count_min.valueChanged) > 0:
+                self.view.term_count_min.disconnect()
 
     def min_changed(self):
         self.view.term_count_max.setMinimum(self.view.term_count_min.value())

@@ -68,8 +68,9 @@ class MainWindow:
 
         self.configure_test_buttons()
 
-        self.user_control_manager.problem_settings_manager.set_current_model(sheet.problem_sets[0]["set"].settings)
-        self.user_control_manager.set_layout_manager.set_current_model(sheet.problem_sets[0]["settings"])
+        self.user_control_manager.problem_set_manager.set_current_model(sheet.problem_sets[-1]["set"])
+        self.user_control_manager.problem_settings_manager.set_current_model(sheet.problem_sets[-1]["set"].settings)
+        self.user_control_manager.set_layout_manager.set_current_model(sheet.problem_sets[-1]["settings"])
 
         self.window.show()
 
@@ -89,26 +90,8 @@ class MainWindow:
 
         self.main_layout.addWidget(print_but, 2, 0)
 
-        change_but = QPushButton("change problem_set")
-        change_but.clicked.connect(lambda: self.change_problem_set())
-
-        self.main_layout.addWidget(change_but, 3, 0)
-
     def clear_problem_set(self):
         self.worksheet_display.clear_layout(self.worksheet_display.layout)
-
-    def change_problem_set(self):
-        self.worksheet_display.clear_layout(self.worksheet_display.layout)
-
-        new_set_settings = ProblemSetPageSettings()
-        new_set = BasicProblemSet(20, "test20")
-
-        self.worksheet_display.problem_sets = []
-        self.worksheet_display.problem_set_settings = []
-
-        self.worksheet_display.problem_sets.append(new_set.prob_set)
-        self.worksheet_display.problem_set_settings.append(new_set_settings)
-        self.worksheet_display.load_pages_to_viewer()
 
     def toggle_visiblity(self, widget):
         if widget.isHidden():

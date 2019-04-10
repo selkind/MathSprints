@@ -76,7 +76,7 @@ class ProblemSettingsManager:
                 if i.isChecked():
                     self.current_model.term_sets.append([i.text()])
         else:
-            for i in self.view.get_term_radios:
+            for i in self.view.get_term_radios():
                 if i.isChecked():
                     self.current_model.term_sets.append([i.text()])
 
@@ -86,7 +86,7 @@ class ProblemSettingsManager:
                 if i.isChecked():
                     self.current_model.operator_sets.append([i.text()])
         else:
-            for i in self.view.get_op_radios:
+            for i in self.view.get_op_radios():
                 if i.isChecked():
                     self.current_model.operator_sets.append([i.text()])
 

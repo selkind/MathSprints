@@ -25,6 +25,7 @@ class UserControlManager:
 
     def configure_buttons(self):
         self.sheet_set_manager.view.set_list.itemSelectionChanged.connect(self.load_set_to_view)
+        self.problem_set_manager.view.update_but.clicked.connect(self.update_models)
 
     def load_set_to_view(self):
         row = self.sheet_set_manager.view.set_list.currentRow()
@@ -37,3 +38,4 @@ class UserControlManager:
         self.problem_set_manager.update_model()
         self.problem_settings_manager.update_model()
         self.set_layout_manager.update_model()
+        self.sheet_display.load_pages_to_viewer()

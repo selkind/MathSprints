@@ -47,12 +47,10 @@ class MainWindow:
         test_set2.build_set()
 
         sheet = Worksheet()
-        sheet.problem_sets.append({"name": test_set.name,
-                                   "set": test_set,
+        sheet.problem_sets.append({"set": test_set,
                                    "settings": set_page_settings})
 
-        sheet.problem_sets.append({"name": test_set2.name,
-                                   "set": test_set2,
+        sheet.problem_sets.append({"set": test_set2,
                                    "settings": set_page_settings2})
 
         self.worksheet_display.worksheet = sheet

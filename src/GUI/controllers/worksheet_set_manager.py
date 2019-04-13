@@ -18,14 +18,13 @@ class WorksheetSetManager:
 
     def configure_list(self):
         for i in self.sheet_display.worksheet.problem_sets:
-            self.view.add_item_to_set_list(i["name"])
+            self.view.add_item_to_set_list(i["set"].name)
         self.view.set_list.setCurrentRow(self.view.set_list.count() - 1)
 
     def add_item(self):
         page_settings = ProblemSetPageSettings()
         prob_set = BasicProblemSet(10, "default")
-        self.sheet_display.worksheet.problem_sets.append({"name": prob_set.prob_set.name,
-                                                          "set": prob_set.prob_set,
+        self.sheet_display.worksheet.problem_sets.append({"set": prob_set.prob_set,
                                                           "settings": page_settings})
         self.view.add_item_to_set_list(prob_set.prob_set.name)
         self.view.set_list.setCurrentRow(self.view.set_list.count() - 1)

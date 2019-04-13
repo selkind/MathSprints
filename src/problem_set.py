@@ -13,6 +13,7 @@ class ProblemSet:
         self.term_map = {"Integer": self.make_integer, "Fraction": self.make_fraction, "Decimal": self.make_decimal}
 
     def build_set(self):
+        self.problems = []
         for i in range(self.problem_count):
             self.make_problem()
 

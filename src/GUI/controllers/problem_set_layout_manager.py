@@ -7,15 +7,15 @@ class ProblemSetLayoutManager:
     def set_current_model(self, model):
         self.clear_connections()
         self.current_model = model
-        self.configure_buttons()
         self.load_to_view()
+        self.configure_buttons()
 
     def configure_buttons(self):
-        self.view.v_space.valueChanged.connect(lambda: self.update_v_space())
-        self.view.h_space.valueChanged.connect(lambda: self.update_h_space())
-        self.view.col_number.currentTextChanged.connect(lambda: self.update_col_num())
-        self.view.page_prob_count.valueChanged.connect(lambda: self.update_max_problems())
-        self.view.point_val.valueChanged.connect(lambda: self.update_problem_val())
+        self.view.v_space.valueChanged.connect(self.update_v_space)
+        self.view.h_space.valueChanged.connect(self.update_h_space)
+        self.view.col_number.currentTextChanged.connect(self.update_col_num)
+        self.view.page_prob_count.valueChanged.connect(self.update_max_problems)
+        self.view.point_val.valueChanged.connect(self.update_problem_val)
 
     def clear_connections(self):
         if self.current_model is None:
@@ -40,7 +40,6 @@ class ProblemSetLayoutManager:
 
         self.view.page_prob_count.setValue(self.current_model.max_problems_per_page)
         self.view.point_val.setValue(self.current_model.problem_value)
-        self.sheet_display.load_pages_to_viewer()
 
     def update_model(self):
         self.update_v_space()

@@ -53,10 +53,9 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
         for i in range(len(self.worksheet.problem_sets)):
             self.layout_problem_set(self.worksheet.problem_sets[i]["set"], self.worksheet.problem_sets[i]["settings"])
         for i in self.pages:
-            if len(i.children()) == 0:
-                pass
             i.setLayout(i.layout)
             page_layout.addWidget(i)
+        print(len(self.pages))
         self.layout.addWidget(self.current_frame)
         self.setWidget(self.current_frame)    # critical to make scroll area work
 
@@ -118,11 +117,10 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
         prob_count = len(problem_set.problems)
 
         set_label = self.generate_set_header(problem_set.name, set_page_settings.problem_value * prob_count)
-        set_height = set_label.height()
-
-        print([self.pages[-1].available_height, problem_height, set_height])
 
         has_room = self.pages[-1].available_height - problem_height - set_label.height() > 0
+
+        print(has_room)
 
         if has_room:
             current_page = self.pages.pop()
@@ -142,13 +140,8 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
         if col_count < 1:
             raise ValueError("largest problem in set is too large to fit on a single line with selected font size")
 
-        print("prob_page {}\ncol_count {}\navail_height {}\nprob_height {}".format(set_page_settings.max_problems_per_page,
-                                                                                  col_count,
-                                                                                  current_page.available_height,
-                                                                                  problem_height))
         row_count = min((set_page_settings.max_problems_per_page // col_count) + 1,
                         current_page.available_height // problem_height)
-        print(row_count)
 
         col = 0
         row = 0

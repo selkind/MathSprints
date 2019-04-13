@@ -92,7 +92,6 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
 
         layout.addWidget(name)
         layout.addWidget(date)
-        layout.setAlignment(QtCore.Qt.AlignTop)
         layout.setContentsMargins(0, 0, 0, 0)
         header.setFixedHeight(height)
 
@@ -248,6 +247,7 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
         page.setPalette(pal)
 
         page.setFixedSize(width, height)
+        page.layout.setAlignment(QtCore.Qt.AlignTop)
         margin = self.apply_scaling(self.sheet_layout_settings.margin_size)
         page.layout.setContentsMargins(margin, margin, margin, margin)
         page.available_height -= 2 * margin

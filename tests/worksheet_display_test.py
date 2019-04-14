@@ -1,6 +1,12 @@
 import unittest
 from tests.empty_page_repro import MainWindow
 
+'''
+The testing structure used here is pretty sloppy and not really unittesting. It's more about being able to reliably
+reproduce a state of the application and assert that certain properties of the app in that state are consistent with
+expectations. It works for now. It'll be interesting to see if this testing setup is extendable and maintainable.
+'''
+
 
 class WorksheetDisplayTest(unittest.TestCase):
     def setUp(self):

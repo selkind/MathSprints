@@ -24,7 +24,7 @@ class MainWindow:
         self.problem_settings_manager = None
         self.user_control_manager = None
 
-    def run(self):
+    def repro_blank_page(self):
         app = QApplication([])
 
         self.window = QWidget()
@@ -57,9 +57,7 @@ class MainWindow:
 
         self.configure_test_buttons()
 
-        self.window.show()
-
-        sys.exit(app.exec_())
+        return self.worksheet_display.pages
 
     def configure_panel_buttons(self):
         self.set_layout_manager = ProblemSetLayoutManager(self.ctrl_panel.problem_set_layout_controls)
@@ -87,8 +85,3 @@ class MainWindow:
     def print_sprint(self, widget):
         printer = Printer()
         printer.worksheet_to_pdf(widget)
-
-
-if __name__ == "__main__":
-    program = MainWindow()
-    program.run()

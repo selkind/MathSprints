@@ -8,5 +8,9 @@ class WorksheetDisplayTest(unittest.TestCase):
 
     def test_last_page_removed_when_empty(self):
         res = self.test_ob.repro_blank_page()
-        res = len(res)
-        self.assertEquals(1, res)
+        for i in res.pages:
+            print(i.available_height)
+            print(i.available_width)
+            print(i.children())
+        res = len(res.pages)
+        self.assertEqual(1, res)

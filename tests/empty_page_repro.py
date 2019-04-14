@@ -57,7 +57,7 @@ class MainWindow:
 
         self.configure_test_buttons()
 
-        return self.worksheet_display.pages
+        return self.worksheet_display
 
     def configure_panel_buttons(self):
         self.set_layout_manager = ProblemSetLayoutManager(self.ctrl_panel.problem_set_layout_controls)

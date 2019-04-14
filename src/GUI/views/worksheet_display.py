@@ -55,7 +55,6 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
         for i in self.pages:
             i.setLayout(i.layout)
             page_layout.addWidget(i)
-        print(len(self.pages))
         self.layout.addWidget(self.current_frame)
         self.setWidget(self.current_frame)    # critical to make scroll area work
 
@@ -120,8 +119,6 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
 
         has_room = self.pages[-1].available_height - problem_height - set_label.height() > 0
 
-        print(has_room)
-
         if has_room:
             current_page = self.pages.pop()
         else:
@@ -145,11 +142,13 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
 
         col = 0
         row = 0
+        problems_added = 0
 
         for i in problem_set.problems:
             problem = self.generate_problem_label(i, self.sheet_layout_settings.font_size)
             problem.setFixedSize(max_width, problem_height)
             layout.addWidget(problem, row, col)
+            problems_added += 1
 
             col += 1
 
@@ -160,7 +159,7 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
 
             if ((row == row_count
                 or current_page.available_height - problem_height < 0)
-                and i != problem_set.problem_count - 1):
+                and problems_added < problem_set.problem_count - 1):
 
                 # ensures current page will not have any problems added to it from another problem set
                 current_page.available_height = 0

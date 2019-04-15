@@ -158,9 +158,8 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
                 current_page.available_height -= problem_height
 
             if ((row == row_count
-                or current_page.available_height - problem_height < 0)
-                and problems_added < problem_set.problem_count - 1):
-
+                 or current_page.available_height - problem_height < 0)
+                 and problems_added < problem_set.problem_count):
                 # ensures current page will not have any problems added to it from another problem set
                 current_page.available_height = 0
                 widget.setLayout(layout)
@@ -169,7 +168,7 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
 
                 current_page = self.new_page()
                 current_page.available_width = current_page.size().width()
-                row_count = min(set_page_settings.max_problems_per_page // col_count,
+                row_count = min((set_page_settings.max_problems_per_page // col_count + 1),
                                 current_page.available_height // problem_height)
 
                 widget = QtWidgets.QWidget()

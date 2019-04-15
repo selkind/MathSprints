@@ -6,8 +6,6 @@ from src.GUI.views.user_control_display import UserControlDisplay
 from src.worksheet import Worksheet
 from src.GUI.controllers.user_control_manager import UserControlManager
 from src.GUI.controllers.problem_set_layout_manager import ProblemSetLayoutManager
-from src.GUI.controllers.worksheet_set_manager import WorksheetSetManager
-from src.GUI.controllers.problem_settings_manager import ProblemSettingsManager
 from src.problem_set import ProblemSet
 from src.problem_settings import ProblemSettings
 import sys
@@ -24,7 +22,7 @@ class MainWindow:
         self.problem_settings_manager = None
         self.user_control_manager = None
 
-    def repro_blank_page(self):
+    def repro_blank_page(self, render=False):
         app = QApplication([])
 
         self.window = QWidget()
@@ -57,7 +55,53 @@ class MainWindow:
 
         self.configure_test_buttons()
 
-        return self.worksheet_display
+        if render:
+            self.window.show()
+            sys.exit(app.exec_())
+
+        else:
+            return self.worksheet_display
+
+    def repro_overlapping_widgets(self, render=False):
+        app = QApplication([])
+
+        self.window = QWidget()
+        self.main_layout = QGridLayout()
+        self.window.setLayout(self.main_layout)
+
+        self.worksheet_display = WorksheetDisplay()
+
+        set_page_settings = ProblemSetPageSettings()
+        set_page_settings.v_answer_space = 167
+        set_page_settings.h_answer_space = 51
+        settings = ProblemSettings()
+        test_set = ProblemSet(settings, "set1")
+        test_set.problem_count = 9
+        test_set.build_set()
+
+        sheet = Worksheet()
+        sheet.problem_sets.append({"set": test_set,
+                                   "settings": set_page_settings})
+
+        self.worksheet_display.worksheet = sheet
+
+        self.worksheet_display.load_pages_to_viewer()
+
+        self.main_layout.addWidget(self.worksheet_display, 0, 1)
+
+        self.ctrl_panel = UserControlDisplay()
+        self.main_layout.addWidget(self.ctrl_panel, 0, 0)
+        self.user_control_manager = UserControlManager(self.ctrl_panel, self.worksheet_display)
+        self.user_control_manager.configure_for_startup()
+        self.user_control_manager.load_set_to_view()
+
+        self.configure_test_buttons()
+
+        if render:
+            self.window.show()
+            sys.exit(app.exec_())
+        else:
+            return self.worksheet_display
 
     def configure_panel_buttons(self):
         self.set_layout_manager = ProblemSetLayoutManager(self.ctrl_panel.problem_set_layout_controls)

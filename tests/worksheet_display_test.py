@@ -1,4 +1,5 @@
 import unittest
+from PyQt5.QtWidgets import QLabel, QWidget
 from tests.empty_page_repro import MainWindow
 
 '''
@@ -12,11 +13,25 @@ class WorksheetDisplayTest(unittest.TestCase):
     def setUp(self):
         self.test_ob = MainWindow()
 
-    def test_last_page_removed_when_empty(self):
-        res = self.test_ob.repro_blank_page()
+    def test_problem_widgets_dont_overlap(self):
+        res = self.test_ob.repro_overlapping_widgets()
         for i in res.pages:
             print(i.available_height)
-            print(i.available_width)
-            print(i.children())
-        res = len(res.pages)
-        self.assertEqual(1, res)
+            print(i.height())
+        widgets = [i for i in res.pages[1].children() if isinstance(i, QWidget)]
+        labels = []
+        for i in widgets:
+            labels += [j for j in i.children() if isinstance(j, QLabel)]
+        for i in labels:
+            print(i.rect().height())
+
+    def test_last_page_removed_when_empty(self):
+        res = self.test_ob.repro_blank_page()
+        page_count = len(res.pages)
+        has_problems = False
+        for i in res.pages[-1].children():
+            if isinstance(i, QWidget):
+                for j in i.children():
+                    if isinstance(j, QLabel):
+                        has_problems = True
+        self.assertTrue(has_problems)

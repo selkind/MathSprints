@@ -81,29 +81,13 @@ class ProblemSettingManagement(QtWidgets.QFrame):
         return frame
 
     def get_term_radios(self):
-        r = []
-        for i in self.term_radio.children():
-            if type(i) == QtWidgets.QRadioButton:
-                r.append(i)
-        return r
+        return [i for i in self.term_radio.children() if isinstance(i, QtWidgets.QRadioButton)]
 
     def get_term_checks(self):
-        c = []
-        for i in self.term_check.children():
-            if type(i) == QtWidgets.QCheckBox:
-                c.append(i)
-        return c
+        return [i for i in self.term_check.children() if isinstance(i, QtWidgets.QCheckBox)]
 
     def get_op_radios(self):
-        r = []
-        for i in self.op_radio.children():
-            if type(i) == QtWidgets.QRadioButton:
-                r.append(i)
-        return r
+        return [i for i in self.op_radio.children() if isinstance(i, QtWidgets.QRadioButton)]
 
     def get_op_checks(self):
-        c = []
-        for i in self.op_check.children():
-            if type(i) == QtWidgets.QCheckBox:
-                c.append(i)
-        return c
+        return [i for i in self.op_check.children() if isinstance(i, QtWidgets.QCheckBox)]

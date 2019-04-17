@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
 from src.GUI.views.problem_set_layout import ProblemSetLayout
-from src.GUI.views.problem_setting_management import ProblemSettingManagement
+from src.GUI.views.problem_setting_display import ProblemSettingDisplay
 from src.GUI.views.problem_set_display import ProblemSetDisplay
 from src.GUI.views.worksheet_layout_management import WorksheetLayoutManagement
 from src.worksheet_layout_settings import WorksheetLayoutSettings
@@ -25,7 +25,7 @@ class UserControlDisplay(QtWidgets.QFrame):
         self.problem_set_display = ProblemSetDisplay()
         self.layout.addWidget(self.problem_set_display)
 
-        self.problem_setting_controls = ProblemSettingManagement()
+        self.problem_setting_controls = ProblemSettingDisplay()
         self.layout.addWidget(self.problem_setting_controls)
 
         self.problem_set_layout_controls = ProblemSetLayout()

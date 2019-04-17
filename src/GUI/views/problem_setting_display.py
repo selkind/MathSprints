@@ -1,13 +1,15 @@
 from PyQt5 import QtWidgets
 
 
-class ProblemSettingManagement(QtWidgets.QFrame):
+class ProblemSettingDisplay(QtWidgets.QFrame):
     def __init__(self):
         QtWidgets.QFrame.__init__(self)
         self.layout = QtWidgets.QGridLayout(self)
 
         self.test_term_list = ["Integer", "Fraction", "Decimal"]
         self.test_op_list = ["+", "-", "X", "/"]
+
+        self.problem_elements = None
 
         self.term_count_label_min = None
         self.term_count_label_max = None
@@ -24,6 +26,7 @@ class ProblemSettingManagement(QtWidgets.QFrame):
         self.op_radio = None
 
         self.term_count()
+        self.create_problem_elements()
         self.term_type()
         self.op_type()
 
@@ -44,25 +47,37 @@ class ProblemSettingManagement(QtWidgets.QFrame):
         self.layout.addWidget(self.term_count_min, 2, 0)
         self.layout.addWidget(self.term_count_max, 3, 0)
 
+    def create_problem_elements(self):
+        self.problem_elements = QtWidgets.QListWidget()
+        self.problem_elements.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+
+        size = QtWidgets.QSizePolicy()
+        size.setHorizontalPolicy(QtWidgets.QSizePolicy.Minimum)
+        size.setVerticalPolicy(QtWidgets.QSizePolicy.Maximum)
+
+        self.problem_elements.setSizePolicy(size)
+
+        self.layout.addWidget(self.problem_elements, 4, 0)
+
     def term_type(self):
         self.multiple_term_type_option = QtWidgets.QCheckBox("Multiple Term Types")
         self.multiple_term_type_option.setCheckable(True)
 
-        self.layout.addWidget(self.multiple_term_type_option, 4, 0)
+        self.layout.addWidget(self.multiple_term_type_option, 4, 1)
         self.term_check = self.list_check(self.test_term_list)
         self.term_radio = self.list_radio(self.test_term_list)
-        self.layout.addWidget(self.term_check, 5, 0)
-        self.layout.addWidget(self.term_radio, 5, 0)
+        self.layout.addWidget(self.term_check, 5, 1)
+        self.layout.addWidget(self.term_radio, 5, 1)
 
     def op_type(self):
         self.multiple_op_option = QtWidgets.QCheckBox("Multiple Operators")
         self.multiple_op_option.setCheckable(True)
 
-        self.layout.addWidget(self.multiple_op_option, 4, 1)
+        self.layout.addWidget(self.multiple_op_option, 4, 2)
         self.op_check = self.list_check(self.test_op_list)
         self.op_radio = self.list_radio(self.test_op_list)
-        self.layout.addWidget(self.op_check, 5, 1)
-        self.layout.addWidget(self.op_radio, 5, 1)
+        self.layout.addWidget(self.op_check, 5, 2)
+        self.layout.addWidget(self.op_radio, 5, 2)
 
     def list_radio(self, vals):
         frame = QtWidgets.QFrame()

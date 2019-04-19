@@ -117,7 +117,7 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
 
         set_label = self.generate_set_header(problem_set.name, set_page_settings.problem_value * prob_count)
 
-        has_room = self.pages[-1].available_height - problem_height - set_label.height() > 0
+        has_room = self.pages[-1].available_height - (problem_height + set_label.height()) > 0
 
         if has_room:
             current_page = self.pages.pop()

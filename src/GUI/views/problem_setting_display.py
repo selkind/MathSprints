@@ -25,6 +25,10 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
         self.op_check = None
         self.op_radio = None
 
+        self.prob_element_layout = None
+        self.prob_element_widget = None
+
+        self.config_problem_element_frame()
         self.term_count()
         self.create_problem_elements()
         self.term_type()
@@ -47,6 +51,12 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
         self.layout.addWidget(self.term_count_min, 2, 0)
         self.layout.addWidget(self.term_count_max, 3, 0)
 
+    def config_problem_element_frame(self):
+        self.prob_element_layout = QtWidgets.QGridLayout()
+        self.prob_element_widget = QtWidgets.QWidget()
+        self.prob_element_widget.setLayout(self.prob_element_layout)
+        self.layout.addWidget(self.prob_element_widget, 4, 0)
+
     def create_problem_elements(self):
         self.problem_elements = QtWidgets.QListWidget()
         self.problem_elements.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
@@ -57,35 +67,15 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
         self.problem_elements.setSizePolicy(size)
 
-        self.layout.addWidget(self.problem_elements, 4, 0)
+        self.prob_element_layout.addWidget(self.problem_elements, 1, 0, 1, 2)
 
     def term_type(self):
-        self.multiple_term_type_option = QtWidgets.QCheckBox("Multiple Term Types")
-        self.multiple_term_type_option.setCheckable(True)
-
-        self.layout.addWidget(self.multiple_term_type_option, 4, 1)
         self.term_check = self.list_check(self.test_term_list)
-        self.term_radio = self.list_radio(self.test_term_list)
-        self.layout.addWidget(self.term_check, 5, 1)
-        self.layout.addWidget(self.term_radio, 5, 1)
+        self.prob_element_layout.addWidget(self.term_check, 2, 0)
 
     def op_type(self):
-        self.multiple_op_option = QtWidgets.QCheckBox("Multiple Operators")
-        self.multiple_op_option.setCheckable(True)
-
-        self.layout.addWidget(self.multiple_op_option, 4, 2)
         self.op_check = self.list_check(self.test_op_list)
-        self.op_radio = self.list_radio(self.test_op_list)
-        self.layout.addWidget(self.op_check, 5, 2)
-        self.layout.addWidget(self.op_radio, 5, 2)
-
-    def list_radio(self, vals):
-        frame = QtWidgets.QFrame()
-        layout = QtWidgets.QVBoxLayout(frame)
-        for i in vals:
-            layout.addWidget(QtWidgets.QRadioButton(i))
-
-        return frame
+        self.prob_element_layout.addWidget(self.op_check, 2, 1)
 
     def list_check(self, vals):
         frame = QtWidgets.QFrame()
@@ -95,14 +85,8 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
         return frame
 
-    def get_term_radios(self):
-        return [i for i in self.term_radio.children() if isinstance(i, QtWidgets.QRadioButton)]
-
     def get_term_checks(self):
         return [i for i in self.term_check.children() if isinstance(i, QtWidgets.QCheckBox)]
-
-    def get_op_radios(self):
-        return [i for i in self.op_radio.children() if isinstance(i, QtWidgets.QRadioButton)]
 
     def get_op_checks(self):
         return [i for i in self.op_check.children() if isinstance(i, QtWidgets.QCheckBox)]

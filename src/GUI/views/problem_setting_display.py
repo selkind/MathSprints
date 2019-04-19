@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-
+from src.GUI.views.integer_selection_display import IntegerSelectionDisplay
 
 class ProblemSettingDisplay(QtWidgets.QFrame):
     def __init__(self):
@@ -27,12 +27,14 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
         self.prob_element_layout = None
         self.prob_element_widget = None
+        self.integer_selection = None
 
         self.config_problem_element_frame()
         self.term_count()
         self.create_problem_elements()
         self.term_type()
         self.op_type()
+        self.config_integer_selection()
 
     def term_count(self):
         self.variable_term_count = QtWidgets.QCheckBox("Variable Number of Terms")
@@ -68,41 +70,14 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
         self.problem_elements.setSizePolicy(size)
 
         self.prob_element_layout.addWidget(self.problem_elements, 1, 0, 1, 2)
-        self.prob_element_layout.addWidget(self.integer_selection([0, 1, 2, 3, 4]), 4, 0)
+
+    def config_integer_selection(self):
+        self.integer_selection = IntegerSelectionDisplay()
+        self.prob_element_layout.addWidget(self.integer_selection, 4, 0)
 
     def term_type(self):
         self.term_check = self.list_check(self.test_term_list)
         self.prob_element_layout.addWidget(self.term_check, 3, 0)
-
-    def integer_selection(self, vals=[]):
-        minimum = min(vals)
-        maximum = max(vals)
-        widget = QtWidgets.QWidget()
-        layout = QtWidgets.QGridLayout(widget)
-
-        min_val = QtWidgets.QSpinBox()
-        min_val.setValue(minimum)
-        layout.addWidget(min_val, 0, 0)
-        min_label = QtWidgets.QLabel("Min")
-        layout.addWidget(min_label, 0, 1)
-
-        max_val = QtWidgets.QSpinBox()
-        max_val.setValue(maximum)
-        layout.addWidget(max_val, 0, 2)
-        max_label = QtWidgets.QLabel("Max")
-        layout.addWidget(max_label, 0, 3)
-
-        int_list = QtWidgets.QListWidget()
-        int_list.setSelectionMode(QtWidgets.QListWidget.SingleSelection)
-
-        for i in range(minimum, maximum + 1):
-            val = QtWidgets.QListWidgetItem(str(i))
-            if i in vals:
-                val.setCheckState(QtCore.Qt.Checked)
-            int_list.addItem(val)
-        layout.addWidget(int_list, 1, 0, 1, 2)
-        return widget
-
 
     def op_type(self):
         self.op_check = self.list_check(self.test_op_list)

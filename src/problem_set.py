@@ -45,10 +45,11 @@ class ProblemSet:
         return self.choose_rand(self.settings.operator_sets)
 
     def make_integer(self):
-        if self.settings.int_value_manual:
-            return choice(self.settings.int_values)
+        chosen_set = choice(self.settings.int_values)
+        if chosen_set["range"]:
+            return randrange(chosen_set["vals"][0], chosen_set["vals"][1] + 1)
         else:
-            return randrange(self.settings.int_values[0], self.settings.int_values[1] + 1)
+            return choice(chosen_set["vals"])
 
     def make_fraction(self):
         numerator = None

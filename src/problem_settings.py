@@ -5,8 +5,7 @@ class ProblemSettings:
         self.term_count_max = self.term_count_min
 
         # supported terms integer, fraction
-        self.int_value_manual = False
-        self.int_values = [0, 100]
+        self.int_values = [{"range": True, "vals": [0, 100]}]
 
         self.numerator_value_manual = False
         self.numerator_values = []

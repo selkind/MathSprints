@@ -33,11 +33,15 @@ class ProblemSettingsManager:
             for j in self.current_model.term_sets:
                 if i.text() in j:
                     i.setChecked(True)
+                else:
+                    i.setChecked(False)
 
         for i in self.view.get_op_checks():
             for j in self.current_model.operator_sets:
                 if i.text() in j:
                     i.setChecked(True)
+                else:
+                    i.setChecked(False)
 
     def update_model(self):
         self.current_model.variable_term_count = self.view.variable_term_count.isChecked()

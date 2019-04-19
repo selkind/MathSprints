@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 
 
 class ProblemSettingDisplay(QtWidgets.QFrame):
@@ -59,7 +59,7 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
     def create_problem_elements(self):
         self.problem_elements = QtWidgets.QListWidget()
-        self.problem_elements.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        self.problem_elements.setSelectionMode(QtWidgets.QListWidget.SingleSelection)
 
         size = QtWidgets.QSizePolicy()
         size.setHorizontalPolicy(QtWidgets.QSizePolicy.Minimum)
@@ -68,20 +68,51 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
         self.problem_elements.setSizePolicy(size)
 
         self.prob_element_layout.addWidget(self.problem_elements, 1, 0, 1, 2)
+        self.prob_element_layout.addWidget(self.integer_selection([0, 1, 2, 3, 4]), 4, 0)
 
     def term_type(self):
         self.term_check = self.list_check(self.test_term_list)
-        self.prob_element_layout.addWidget(self.term_check, 2, 0)
+        self.prob_element_layout.addWidget(self.term_check, 3, 0)
+
+    def integer_selection(self, vals=[]):
+        minimum = min(vals)
+        maximum = max(vals)
+        widget = QtWidgets.QWidget()
+        layout = QtWidgets.QGridLayout(widget)
+
+        min_val = QtWidgets.QSpinBox()
+        min_val.setValue(minimum)
+        layout.addWidget(min_val, 0, 0)
+        min_label = QtWidgets.QLabel("Min")
+        layout.addWidget(min_label, 0, 1)
+
+        max_val = QtWidgets.QSpinBox()
+        max_val.setValue(maximum)
+        layout.addWidget(max_val, 0, 2)
+        max_label = QtWidgets.QLabel("Max")
+        layout.addWidget(max_label, 0, 3)
+
+        int_list = QtWidgets.QListWidget()
+        int_list.setSelectionMode(QtWidgets.QListWidget.SingleSelection)
+
+        for i in range(minimum, maximum + 1):
+            val = QtWidgets.QListWidgetItem(str(i))
+            if i in vals:
+                val.setCheckState(QtCore.Qt.Checked)
+            int_list.addItem(val)
+        layout.addWidget(int_list, 1, 0, 1, 2)
+        return widget
+
 
     def op_type(self):
         self.op_check = self.list_check(self.test_op_list)
-        self.prob_element_layout.addWidget(self.op_check, 2, 1)
+        self.prob_element_layout.addWidget(self.op_check, 2, 0)
 
     def list_check(self, vals):
         frame = QtWidgets.QFrame()
-        layout = QtWidgets.QVBoxLayout(frame)
-        for i in vals:
-            layout.addWidget(QtWidgets.QCheckBox(i))
+        layout = QtWidgets.QGridLayout(frame)
+        for i in range(len(vals)):
+            layout.addWidget(QtWidgets.QCheckBox(vals[i]), 0, i)
 
         return frame
 

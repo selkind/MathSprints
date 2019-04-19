@@ -10,23 +10,28 @@ from src.GUI.views.worksheet_set_display import WorksheetSetDisplay
 '''basically a container to hold all of the user input controls'''
 
 
-class UserControlDisplay(QtWidgets.QFrame):
+class UserControlDisplay(QtWidgets.QScrollArea):
     def __init__(self):
-        QtWidgets.QFrame.__init__(self)
+        QtWidgets.QScrollArea.__init__(self)
+        self.setWidgetResizable(True)
         self.layout = QtWidgets.QVBoxLayout(self)
+        widget = QtWidgets.QWidget()
+        layout = QtWidgets.QVBoxLayout(widget)
+        self.layout.addWidget(widget)
+        self.setWidget(widget)
 
         sheet_layout_settings = WorksheetLayoutSettings()
         self.sheet_controls = WorksheetLayoutManagement(sheet_layout_settings)
-        self.layout.addWidget(self.sheet_controls)
+        layout.addWidget(self.sheet_controls)
 
         self.set_management = WorksheetSetDisplay()
-        self.layout.addWidget(self.set_management)
+        layout.addWidget(self.set_management)
 
         self.problem_set_display = ProblemSetDisplay()
-        self.layout.addWidget(self.problem_set_display)
+        layout.addWidget(self.problem_set_display)
 
         self.problem_setting_controls = ProblemSettingDisplay()
-        self.layout.addWidget(self.problem_setting_controls)
+        layout.addWidget(self.problem_setting_controls)
 
         self.problem_set_layout_controls = ProblemSetLayout()
-        self.layout.addWidget(self.problem_set_layout_controls)
+        layout.addWidget(self.problem_set_layout_controls)

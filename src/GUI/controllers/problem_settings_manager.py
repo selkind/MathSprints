@@ -29,13 +29,6 @@ class ProblemSettingsManager:
         self.switch_term_count_state()
         self.view.term_count_max.setValue(self.current_model.term_count_max)
 
-        for i in self.view.get_term_checks():
-            for j in self.current_model.term_sets:
-                if i.text() in j:
-                    i.setChecked(True)
-                else:
-                    i.setChecked(False)
-
         for i in self.view.get_op_checks():
             for j in self.current_model.operator_sets:
                 if i.text() in j:

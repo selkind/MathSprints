@@ -31,4 +31,4 @@ class IntegerSelectionDisplay(QtWidgets.QWidget):
         self.int_list = QtWidgets.QListWidget()
         self.int_list.setSelectionMode(QtWidgets.QListWidget.SingleSelection)
 
-        self.layout.addWidget(self.int_list, 1, 0, 1, 3)
+        self.layout.addWidget(self.int_list, 1, 0, 1, 4)

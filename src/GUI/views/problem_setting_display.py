@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from src.GUI.views.integer_selection_display import IntegerSelectionDisplay
 
+
 class ProblemSettingDisplay(QtWidgets.QFrame):
     def __init__(self):
         QtWidgets.QFrame.__init__(self)
@@ -27,14 +28,24 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
         self.prob_element_layout = None
         self.prob_element_widget = None
+
+        self.integer_option = None
         self.integer_selection = None
+
+        self.fraction_option = None
+        self.numerator_selection = None
+        self.denominator_selection = None
+
+        self.decimal_option = None
+        self.decimal_selection = None
 
         self.config_problem_element_frame()
         self.term_count()
         self.create_problem_elements()
-        self.term_type()
         self.op_type()
         self.config_integer_selection()
+        self.config_fraction_selection()
+        self.config_decimal_selection()
 
     def term_count(self):
         self.variable_term_count = QtWidgets.QCheckBox("Variable Number of Terms")
@@ -69,19 +80,41 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
         self.problem_elements.setSizePolicy(size)
 
+        label = QtWidgets.QLabel("Problem Elements")
+        self.prob_element_layout.addWidget(label, 0, 0)
         self.prob_element_layout.addWidget(self.problem_elements, 1, 0, 1, 2)
 
     def config_integer_selection(self):
-        self.integer_selection = IntegerSelectionDisplay()
-        self.prob_element_layout.addWidget(self.integer_selection, 4, 0)
+        self.integer_option = QtWidgets.QCheckBox("Integer")
+        self.prob_element_layout.addWidget(self.integer_option, 3, 0)
 
-    def term_type(self):
-        self.term_check = self.list_check(self.test_term_list)
-        self.prob_element_layout.addWidget(self.term_check, 3, 0)
+        self.integer_selection = IntegerSelectionDisplay()
+        self.prob_element_layout.addWidget(self.integer_selection, 5, 0)
+
+    def config_fraction_selection(self):
+        self.fraction_option = QtWidgets.QCheckBox("Fraction")
+        self.prob_element_layout.addWidget(self.fraction_option, 3, 1, 1, 2)
+
+        numerator_label = QtWidgets.QLabel("Numerator Values")
+        self.prob_element_layout.addWidget(numerator_label, 4, 1)
+        self.numerator_selection = IntegerSelectionDisplay()
+        self.prob_element_layout.addWidget(self.numerator_selection, 5, 1)
+
+        denominator_label = QtWidgets.QLabel("Denominator Values")
+        self.prob_element_layout.addWidget(denominator_label, 4, 2)
+        self.denominator_selection = IntegerSelectionDisplay()
+        self.prob_element_layout.addWidget(self.denominator_selection, 5, 2)
+
+    def config_decimal_selection(self):
+        self.decimal_option = QtWidgets.QCheckBox("Decimal")
+        self.prob_element_layout.addWidget(self.decimal_option, 3, 3)
+
+        self.decimal_selection = IntegerSelectionDisplay()
+        self.prob_element_layout.addWidget(self.decimal_selection, 5, 3)
 
     def op_type(self):
         self.op_check = self.list_check(self.test_op_list)
-        self.prob_element_layout.addWidget(self.op_check, 2, 0)
+        self.prob_element_layout.addWidget(self.op_check, 2, 0, 1, 3)
 
     def list_check(self, vals):
         frame = QtWidgets.QFrame()

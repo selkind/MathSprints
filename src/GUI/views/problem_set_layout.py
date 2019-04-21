@@ -43,17 +43,17 @@ class ProblemSetLayout(QtWidgets.QFrame):
         h_label = QtWidgets.QLabel("Horizontal")
         h_unit = QtWidgets.QLabel("Pixels")
 
-        self.layout.addWidget(h_label, 2, 0)
-        self.layout.addWidget(self.h_space, 2, 1)
-        self.layout.addWidget(h_unit, 2, 2)
+        self.layout.addWidget(h_label, 1, 3)
+        self.layout.addWidget(self.h_space, 1, 4)
+        self.layout.addWidget(h_unit, 1, 5)
 
     def add_col_limiter(self):
         col_label = QtWidgets.QLabel("Set Number of Columns:")
         self.col_number = QtWidgets.QComboBox()
         self.col_number.addItems(self.test_col_options)
 
-        self.layout.addWidget(col_label, 3, 0)
-        self.layout.addWidget(self.col_number, 3, 1)
+        self.layout.addWidget(col_label, 2, 2)
+        self.layout.addWidget(self.col_number, 2, 3)
 
     def add_problem_limiter(self):
         page_prob_count_label = QtWidgets.QLabel("Maximum Problems Per Page:")
@@ -61,8 +61,8 @@ class ProblemSetLayout(QtWidgets.QFrame):
         self.page_prob_count.setMaximum(200)
         self.page_prob_count.setMinimum(1)
 
-        self.layout.addWidget(page_prob_count_label, 4, 0)
-        self.layout.addWidget(self.page_prob_count, 4, 1)
+        self.layout.addWidget(page_prob_count_label, 2, 0)
+        self.layout.addWidget(self.page_prob_count, 2, 1)
 
     def add_point_val(self):
         point_label = QtWidgets.QLabel("Points per Problem:")
@@ -70,6 +70,6 @@ class ProblemSetLayout(QtWidgets.QFrame):
         self.point_val.setMaximum(100)
         self.point_val.setMinimum(1)
 
-        self.layout.addWidget(point_label, 5, 0)
-        self.layout.addWidget(self.point_val, 5, 1)
+        self.layout.addWidget(point_label, 3, 0)
+        self.layout.addWidget(self.point_val, 3, 1)
 

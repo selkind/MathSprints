@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets
 from src.GUI.views.integer_selection_display import IntegerSelectionDisplay
 
 
@@ -28,6 +28,8 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
         self.prob_element_layout = None
         self.prob_element_widget = None
+        self.add_button = None
+        self.del_button = None
 
         self.integer_option = None
         self.integer_selection = None
@@ -41,6 +43,7 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
         self.config_problem_element_frame()
         self.term_count()
+        self.create_list_mod_buttons()
         self.create_problem_elements()
         self.op_type()
         self.config_integer_selection()
@@ -80,41 +83,52 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
         self.problem_elements.setSizePolicy(size)
 
+        self.prob_element_layout.addWidget(self.problem_elements, 0, 1, 1, 2)
+
+    def create_list_mod_buttons(self):
+        frame = QtWidgets.QFrame()
+        layout = QtWidgets.QVBoxLayout(frame)
+
+        self.add_button = QtWidgets.QPushButton("+")
         label = QtWidgets.QLabel("Problem Elements")
-        self.prob_element_layout.addWidget(label, 0, 0)
-        self.prob_element_layout.addWidget(self.problem_elements, 1, 0, 1, 2)
+        self.del_button = QtWidgets.QPushButton("-")
+
+        layout.addWidget(self.add_button)
+        layout.addWidget(label)
+        layout.addWidget(self.del_button)
+        self.prob_element_layout.addWidget(frame, 0, 0)
 
     def config_integer_selection(self):
         self.integer_option = QtWidgets.QCheckBox("Integer")
-        self.prob_element_layout.addWidget(self.integer_option, 3, 0)
+        self.prob_element_layout.addWidget(self.integer_option, 2, 0)
 
         self.integer_selection = IntegerSelectionDisplay()
-        self.prob_element_layout.addWidget(self.integer_selection, 5, 0)
+        self.prob_element_layout.addWidget(self.integer_selection, 4, 0)
 
     def config_fraction_selection(self):
         self.fraction_option = QtWidgets.QCheckBox("Fraction")
-        self.prob_element_layout.addWidget(self.fraction_option, 3, 1, 1, 2)
+        self.prob_element_layout.addWidget(self.fraction_option, 2, 1, 1, 2)
 
         numerator_label = QtWidgets.QLabel("Numerator Values")
-        self.prob_element_layout.addWidget(numerator_label, 4, 1)
+        self.prob_element_layout.addWidget(numerator_label, 3, 1)
         self.numerator_selection = IntegerSelectionDisplay()
-        self.prob_element_layout.addWidget(self.numerator_selection, 5, 1)
+        self.prob_element_layout.addWidget(self.numerator_selection, 4, 1)
 
         denominator_label = QtWidgets.QLabel("Denominator Values")
-        self.prob_element_layout.addWidget(denominator_label, 4, 2)
+        self.prob_element_layout.addWidget(denominator_label, 3, 2)
         self.denominator_selection = IntegerSelectionDisplay()
-        self.prob_element_layout.addWidget(self.denominator_selection, 5, 2)
+        self.prob_element_layout.addWidget(self.denominator_selection, 4, 2)
 
     def config_decimal_selection(self):
         self.decimal_option = QtWidgets.QCheckBox("Decimal")
-        self.prob_element_layout.addWidget(self.decimal_option, 3, 3)
+        self.prob_element_layout.addWidget(self.decimal_option, 2, 3)
 
         self.decimal_selection = IntegerSelectionDisplay()
-        self.prob_element_layout.addWidget(self.decimal_selection, 5, 3)
+        self.prob_element_layout.addWidget(self.decimal_selection, 4, 3)
 
     def op_type(self):
         self.op_check = self.list_check(self.test_op_list)
-        self.prob_element_layout.addWidget(self.op_check, 2, 0, 1, 3)
+        self.prob_element_layout.addWidget(self.op_check, 1, 0, 1, 3)
 
     def list_check(self, vals):
         frame = QtWidgets.QFrame()

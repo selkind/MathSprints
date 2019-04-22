@@ -19,7 +19,7 @@ class ProblemSet:
 
     def make_problem(self):
         term_count = 0
-        if self.settings.term_count_min == self.settings.term_count_max:
+        if self.settings.variable_term_count:
             term_count = self.settings.term_count_min
         else:
             term_count = randrange(self.settings.term_count_min, self.settings.term_count_max)

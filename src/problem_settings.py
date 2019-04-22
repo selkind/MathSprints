@@ -6,14 +6,27 @@ class ProblemSettings:
 
         '''
         draft of problem element data structure.
+        
+        self.problem_elements = \
         [
-            [{"Integer": {"range": True, "vals": [0, 100]}, 
-            "Integer": {"range": False, "vals": [-1, 2, 5]},
-            "Fraction": {"Numerator": ["Integer": {"range": True, "vals": [-3, 10]}], 
-                        "Denominator": ["Integer": {"range": True, "vals": [-3, 10]}, ]}
-            }],
-            [{"Decimal": {"precision": 3, "vals": [0, 100]}
-            }]
+            {
+            "terms":
+                [
+                    {"Integer": [{"range": True, "vals": [0, 100]}, 
+                                 {"range": False, "vals": [-1, -2, -5]}]}, 
+                    {"Fraction": {"Numerator": {"Integer": {"range": True, "vals": [-3, 10]}}, 
+                                "Denominator": {"Integer": {"range": True, "vals": [-3, 10]}}}}
+                    {"Decimal": {"precision": 3, "vals": [0, 100]}}
+                ],
+            "operators": ["+", "-"]
+            },
+            {
+            "terms":
+                [
+                    {"Integer": {"range": True, "vals": [100, 200]}}
+                ],
+            "operators": ["/", "*"]
+            }
         ]
         
         **Notes:

@@ -11,20 +11,20 @@ class ProblemSettings:
         [
             {
             "terms":
-                [
+                {
                     {"Integer": [{"range": True, "vals": [0, 100]}, 
                                  {"range": False, "vals": [-1, -2, -5]}]}, 
                     {"Fraction": {"Numerator": {"Integer": {"range": True, "vals": [-3, 10]}}, 
                                 "Denominator": {"Integer": {"range": True, "vals": [-3, 10]}}}}
                     {"Decimal": {"precision": 3, "vals": [0, 100]}}
-                ],
+                },
             "operators": ["+", "-"]
             },
             {
             "terms":
-                [
+                {
                     {"Integer": {"range": True, "vals": [100, 200]}}
-                ],
+                },
             "operators": ["/", "*"]
             }
         ]
@@ -37,6 +37,15 @@ class ProblemSettings:
             Also a good idea to support integer-like user controlled selection/limitation of decimal values. 
         '''
         # supported terms integer, fraction
+        self.problem_elements = [
+            {"terms":
+                 {
+                     {"Integer": {"range": True, "vals": [0, 100]}}
+                 }
+             },
+            {"operators": ["+"]}
+        ]
+
         self.int_values = [{"range": True, "vals": [0, 100]}]
 
         self.numerator_value_manual = False

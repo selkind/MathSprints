@@ -10,7 +10,9 @@ class ProblemSet:
         self.settings = settings
         self.problem_count = 0
         self.problems = []
-        self.term_map = {"Integer": self.make_integer, "Fraction": self.make_fraction, "Decimal": self.make_decimal}
+        self.term_map = {"Integer": lambda x: self.make_integer(x),
+                         "Fraction": lambda x: self.make_fraction(x),
+                         "Decimal": lambda x: self.make_decimal(x)}
 
     def build_set(self):
         self.problems = []
@@ -20,32 +22,37 @@ class ProblemSet:
     def make_problem(self):
         term_count = 0
         if self.settings.variable_term_count:
-            term_count = self.settings.term_count_min
-        else:
             term_count = randrange(self.settings.term_count_min, self.settings.term_count_max)
+        else:
+            term_count = self.settings.term_count_min
+
         prob = Problem(term_count)
         for i in range(term_count):
-            term = self.make_term()
+            element_group = choice(self.settings.problem_elements)
+            term = self.make_term(element_group["terms"])
             prob.terms.append(term)
             if i != term_count - 1:
-                operator = self.choose_operator()
+                operator = self.choose_operator(element_group["operators"])
                 prob.operators.append(operator)
         self.problems.append(prob)
 
-    def make_term(self):
-        term = self.choose_rand(self.settings.term_sets)
-        return self.term_map[term]()
+    def make_term(self, terms):
+        term_type = self.get_term_type(terms)
+        return self.term_map[term_type](terms[term_type])
+
+    def get_term_type(self, type_dict):
+        return choice(list(type_dict.keys()))
 
     def choose_rand(self, term_set):
         if type(term_set) == str:
             return term_set
         return self.choose_rand(choice(term_set))
 
-    def choose_operator(self):
-        return self.choose_rand(self.settings.operator_sets)
+    def choose_operator(self, operators):
+        return self.choose_rand(operators)
 
-    def make_integer(self):
-        chosen_set = choice(self.settings.int_values)
+    def make_integer(self, int_settings):
+        chosen_set = choice(int_settings)
         if chosen_set["range"]:
             return randrange(chosen_set["vals"][0], chosen_set["vals"][1] + 1)
         else:

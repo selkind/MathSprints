@@ -27,8 +27,8 @@ class ProblemSet:
             term_count = self.settings.term_count_min
 
         prob = Problem(term_count)
+        element_group = choice(self.settings.problem_elements)
         for i in range(term_count):
-            element_group = choice(self.settings.problem_elements)
             term = self.make_term(element_group["terms"])
             prob.terms.append(term)
             if i != term_count - 1:
@@ -58,24 +58,9 @@ class ProblemSet:
         else:
             return choice(chosen_set["vals"])
 
-    def make_fraction(self):
-        numerator = None
-        denominator = None
-
-        if self.settings.numerator_value_manual:
-            numerator = choice(self.settings.numerator_values)
-        else:
-            numerator = randrange(self.settings.numerator_values[0], self.settings.numerator_values[1] + 1)
-
-        if self.settings.denominator_value_manual:
-            denominator = choice(self.settings.denominator_values)
-        else:
-            if self.settings.denominator_values[0] > 0:
-                denominator = randrange(self.settings.denominator_values[0], self.settings.denominator_values[1] + 1)
-            else:
-                neg = list(range(self.settings.denominator_values[0], 0))
-                pos = list(range(1, self.settings.denominator_values[1] + 1))
-                denominator = choice(neg + pos)
+    def make_fraction(self, frac_settings):
+        numerator = self.make_term(frac_settings["Numerator"])
+        denominator = self.make_term(frac_settings["Denominator"])
 
         return Fraction(numerator, denominator)
 

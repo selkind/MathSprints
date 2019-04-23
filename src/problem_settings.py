@@ -43,7 +43,16 @@ class ProblemSettings:
                      "Integer": [{"range": True, "vals": [0, 100]}]
                  },
              "operators": ["+"]
-            }
+            },
+            {"terms":
+                 {
+                     "Fraction": {
+                         "Numerator": {"Integer": [{"range": False, "vals": [0, 5, 10]}]},
+                         "Denominator": {"Integer": [{"range": True, "vals": [-30, -20]}]}
+                     }
+                 },
+             "operators": ["-"]
+             }
         ]
 
         self.int_values = [{"range": True, "vals": [0, 100]}]

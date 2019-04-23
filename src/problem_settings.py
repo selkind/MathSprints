@@ -52,6 +52,12 @@ class ProblemSettings:
                      }
                  },
              "operators": ["-"]
+             },
+            {"terms":
+                 {
+                     "Decimal": [{"precision": 3, "vals": [-4, -1]}]
+                 },
+             "operators": ["X"]
              }
         ]
 

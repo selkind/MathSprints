@@ -64,8 +64,14 @@ class ProblemSet:
 
         return Fraction(numerator, denominator)
 
-    def make_decimal(self):
-        return 0
+    def make_decimal(self, dec_settings):
+        chosen_set = choice(dec_settings)
+
+        adjustment = chosen_set["precision"]
+        low = chosen_set["vals"][0] * (10 ** (adjustment))
+        high = chosen_set["vals"][1] * (10 ** (adjustment))
+
+        return randrange(low, high) / (10 ** adjustment)
 
     def get_largest_problem(self):
         return max(self.problems, key=lambda item: len(item.__str__()))

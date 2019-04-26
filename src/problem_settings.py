@@ -55,7 +55,7 @@ class ProblemSettings:
              },
             {"terms":
                  {
-                     "Decimal": [{"precision": 3, "vals": [-4, -1]}]
+                     "Decimal": [{"precision": 3, "range": True, "vals": [-4, -1]}]
                  },
              "operators": ["X"]
              }

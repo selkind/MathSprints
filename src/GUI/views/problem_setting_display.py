@@ -98,6 +98,14 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
         layout.addWidget(self.del_button)
         self.prob_element_layout.addWidget(frame, 0, 0)
 
+    def add_problem_element_item(self, text):
+        item = QtWidgets.QListWidgetItem(self.problem_elements)
+        item.setText(text)
+
+    def remove_selected_element_item(self, row):
+        self.problem_elements.takeItem(row).deleteLater()
+
+
     def config_integer_selection(self):
         self.integer_option = QtWidgets.QCheckBox("Integer")
         self.prob_element_layout.addWidget(self.integer_option, 2, 0)

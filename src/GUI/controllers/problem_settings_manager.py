@@ -1,19 +1,33 @@
+from src.GUI.controllers.integer_selection_manager import IntegerSelectionManager
+
+
 class ProblemSettingsManager:
     MIN_TERMS = 2
     MAX_TERMS = 10
 
     def __init__(self, view, sheet_display):
         self.view = view
+        self.integer_ctrl = IntegerSelectionManager(self.view.integer_selection)
+        self.decimal_ctrl = IntegerSelectionManager(self.view.decimal_selection)
+        self.numerator_ctrl = IntegerSelectionManager(self.view.numerator_selection)
+        self.denominator_ctrl = IntegerSelectionManager(self.view.denominator_selection)
         self.sheet_display = sheet_display
         self.current_model = None
 
     def set_current_model(self, model):
         self.current_model = model
         self.configure_buttons()
+        self.configure_element_list()
         self.load_to_view()
 
     def configure_buttons(self):
         self.view.variable_term_count.stateChanged.connect(self.switch_term_count_state)
+
+    def configure_element_list(self):
+        self.view.problem_elements.clear()
+        for i in range(len(self.current_model.problem_elements)):
+            self.view.add_problem_element_item("Element Group {}".format(i + 1))
+        self.view.problem_elements.setCurrentRow(self.view.problem_elements.count() - 1)
 
     def load_to_view(self):
         if self.current_model is None:
@@ -30,8 +44,8 @@ class ProblemSettingsManager:
         self.view.term_count_max.setValue(self.current_model.term_count_max)
 
         for i in self.view.get_op_checks():
-            for j in self.current_model.operator_sets:
-                if i.text() in j:
+            for j in self.current_model.problem_elements:
+                if i.text() in j["operators"]:
                     i.setChecked(True)
                 else:
                     i.setChecked(False)

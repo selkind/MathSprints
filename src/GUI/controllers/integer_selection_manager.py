@@ -4,6 +4,7 @@ class IntegerSelectionManager:
         self.current_model = None
 
     def set_current_model(self, model):
+        self.view.clear_list()
         self.clear_connections()
         self.current_model = model
         self.load_to_view()
@@ -28,6 +29,7 @@ class IntegerSelectionManager:
     def load_to_view(self):
         if self.current_model is None:
             return
+        self.view.clear_list()
 
         checked = []
         for i in self.current_model:

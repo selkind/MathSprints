@@ -37,9 +37,12 @@ class IntegerSelectionDisplay(QtWidgets.QWidget):
         checked_ptr = 0
         for i in range(vals[0], vals[-1] + 1):
             item = QtWidgets.QListWidgetItem(self.int_list)
-            item.setText(i)
+            item.setText(str(i))
             if i == vals[checked_ptr]:
                 item.setCheckState(QtCore.Qt.Checked)
                 checked_ptr += 1
             else:
                 item.setCheckState(QtCore.Qt.Unchecked)
+
+    def clear_list(self):
+        self.int_list.clear()

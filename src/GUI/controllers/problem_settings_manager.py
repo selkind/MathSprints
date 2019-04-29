@@ -22,12 +22,43 @@ class ProblemSettingsManager:
 
     def configure_buttons(self):
         self.view.variable_term_count.stateChanged.connect(self.switch_term_count_state)
+        self.view.problem_elements.itemSelectionChanged.connect(self.load_term_display_state)
 
     def configure_element_list(self):
         self.view.problem_elements.clear()
         for i in range(len(self.current_model.problem_elements)):
             self.view.add_problem_element_item("Element Group {}".format(i + 1))
         self.view.problem_elements.setCurrentRow(self.view.problem_elements.count() - 1)
+
+    def load_term_display_state(self):
+        row = self.view.problem_elements.currentRow()
+        selected_element = self.current_model.problem_elements[row]
+        self.load_operators(selected_element["operators"])
+        self.load_terms(selected_element["terms"])
+
+    def load_operators(self, model_operators):
+        for i in self.view.get_op_checks():
+            if i.text() in model_operators:
+                i.setChecked(True)
+            else:
+                i.setChecked(False)
+
+    def load_terms(self, model_terms):
+        term_types = model_terms.keys()
+        if "Integer" in term_types:
+            self.view.integer_option.setChecked(True)
+            self.integer_ctrl.set_current_model(model_terms["Integer"])
+            self.integer_ctrl.load_to_view()
+        if "Fraction" in term_types:
+            self.view.fraction_option.setChecked(True)
+            self.numerator_ctrl.set_current_model(model_terms["Fraction"]["Numerator"]["Integer"])
+            self.denominator_ctrl.set_current_model(model_terms["Fraction"]["Numerator"]["Integer"])
+            self.numerator_ctrl.load_to_view()
+            self.denominator_ctrl.load_to_view()
+        if "Decimal" in term_types:
+            self.view.decimal_option.setChecked(True)
+            self.decimal_ctrl.set_current_model(model_terms["Decimal"])
+            self.decimal_ctrl.load_to_view()
 
     def load_to_view(self):
         if self.current_model is None:
@@ -43,12 +74,6 @@ class ProblemSettingsManager:
         self.switch_term_count_state()
         self.view.term_count_max.setValue(self.current_model.term_count_max)
 
-        for i in self.view.get_op_checks():
-            for j in self.current_model.problem_elements:
-                if i.text() in j["operators"]:
-                    i.setChecked(True)
-                else:
-                    i.setChecked(False)
 
     def update_model(self):
         self.current_model.variable_term_count = self.view.variable_term_count.isChecked()

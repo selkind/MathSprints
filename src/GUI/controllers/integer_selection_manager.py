@@ -6,8 +6,8 @@ class IntegerSelectionManager:
     def set_current_model(self, model):
         self.clear_connections()
         self.current_model = model
-        self.load_to_view()
         self.configure_buttons()
+        self.load_to_view()
 
     def clear_connections(self):
         if self.current_model is None:
@@ -16,14 +16,14 @@ class IntegerSelectionManager:
         self.view.max_val.disconnect()
 
     def configure_buttons(self):
-        self.view.min_val.valueChanged.connect(self.set_min_max)
-        self.view.max_val.valueChanged.connect(self.set_max_min)
+        self.view.max_val.valueChanged.connect(self.set_min_max)
+        self.view.min_val.valueChanged.connect(self.set_max_min)
 
     def set_min_max(self):
-        self.view.min_val.setMaximum(self.view.max_val.Value() - 1)
+        self.view.min_val.setMaximum(self.view.max_val.value() - 1)
 
     def set_max_min(self):
-        self.view.max_val.setMinimum(self.view.min_val.Value() + 1)
+        self.view.max_val.setMinimum(self.view.min_val.value() + 1)
 
     def load_to_view(self):
         if self.current_model is None:

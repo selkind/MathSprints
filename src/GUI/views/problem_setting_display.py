@@ -29,16 +29,6 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
         self.add_button = None
         self.del_button = None
 
-        self.integer_option = None
-        self.integer_selection = None
-
-        self.fraction_option = None
-        self.numerator_selection = None
-        self.denominator_selection = None
-
-        self.decimal_option = None
-        self.decimal_selection = None
-
         self.problem_element_selection = None
 
         self.term_count()

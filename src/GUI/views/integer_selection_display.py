@@ -2,6 +2,9 @@ from PyQt5 import QtWidgets, QtCore
 
 
 class IntegerSelectionDisplay(QtWidgets.QWidget):
+    MINIMUM = -100000
+    MAXIMUM = 100000
+
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
         self.layout = QtWidgets.QGridLayout(self)
@@ -15,6 +18,8 @@ class IntegerSelectionDisplay(QtWidgets.QWidget):
 
     def config_min_val(self):
         self.min_val = QtWidgets.QSpinBox()
+        self.min_val.setMinimum(self.MINIMUM)
+        self.min_val.setMaximum(self.MAXIMUM)
         self.layout.addWidget(self.min_val, 0, 0)
 
         min_label = QtWidgets.QLabel("Min")
@@ -22,6 +27,8 @@ class IntegerSelectionDisplay(QtWidgets.QWidget):
 
     def config_max_val(self):
         self.max_val = QtWidgets.QSpinBox()
+        self.max_val.setMinimum(self.MINIMUM)
+        self.max_val.setMaximum(self.MAXIMUM)
         self.layout.addWidget(self.max_val, 0, 2)
 
         max_label = QtWidgets.QLabel("Max")

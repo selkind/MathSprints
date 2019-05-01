@@ -1,4 +1,4 @@
-from src.GUI.controllers.integer_selection_manager import IntegerSelectionManager
+from src.GUI.controllers.problem_element_manager import ProblemElementManager
 
 
 class ProblemSettingsManager:
@@ -7,11 +7,8 @@ class ProblemSettingsManager:
 
     def __init__(self, view, sheet_display):
         self.view = view
-        self.integer_ctrl = IntegerSelectionManager(self.view.integer_selection)
-        self.decimal_ctrl = IntegerSelectionManager(self.view.decimal_selection)
-        self.numerator_ctrl = IntegerSelectionManager(self.view.numerator_selection)
-        self.denominator_ctrl = IntegerSelectionManager(self.view.denominator_selection)
         self.sheet_display = sheet_display
+        self.problem_element_ctrl = ProblemElementManager(self.view.problem_element_selection)
         self.current_model = None
 
     def set_current_model(self, model):
@@ -31,41 +28,9 @@ class ProblemSettingsManager:
         self.view.problem_elements.setCurrentRow(self.view.problem_elements.count() - 1)
 
     def load_term_display_state(self):
-        self.clear_int_selections()
         row = self.view.problem_elements.currentRow()
         selected_element = self.current_model.problem_elements[row]
-        self.load_operators(selected_element["operators"])
-        self.load_terms(selected_element["terms"])
-
-    def clear_int_selections(self):
-        self.view.problem_element_selection.integer_selection.clear_list()
-        self.view.problem_element_selection.numerator_selection.clear_list()
-        self.view.problem_element_selection.denominator_selection.clear_list()
-        self.view.problem_element_selection.decimal_selection.clear_list()
-
-    def load_operators(self, model_operators):
-        for i in self.view.problem_element_selection.get_op_checks():
-            if i.text() in model_operators:
-                i.setChecked(True)
-            else:
-                i.setChecked(False)
-
-    def load_terms(self, model_terms):
-        term_types = model_terms.keys()
-        if "Integer" in term_types:
-            self.view.integer_option.setChecked(True)
-            self.integer_ctrl.set_current_model(model_terms["Integer"])
-            self.integer_ctrl.load_to_view()
-        if "Fraction" in term_types:
-            self.view.fraction_option.setChecked(True)
-            self.numerator_ctrl.set_current_model(model_terms["Fraction"]["Numerator"]["Integer"])
-            self.denominator_ctrl.set_current_model(model_terms["Fraction"]["Numerator"]["Integer"])
-            self.numerator_ctrl.load_to_view()
-            self.denominator_ctrl.load_to_view()
-        if "Decimal" in term_types:
-            self.view.decimal_option.setChecked(True)
-            self.decimal_ctrl.set_current_model(model_terms["Decimal"])
-            self.decimal_ctrl.load_to_view()
+        self.problem_element_ctrl.set_current_model(selected_element)
 
     def load_to_view(self):
         if self.current_model is None:
@@ -80,7 +45,6 @@ class ProblemSettingsManager:
 
         self.switch_term_count_state()
         self.view.term_count_max.setValue(self.current_model.term_count_max)
-
 
     def update_model(self):
         self.current_model.variable_term_count = self.view.variable_term_count.isChecked()

@@ -4,7 +4,6 @@ class IntegerSelectionManager:
         self.current_model = None
 
     def set_current_model(self, model):
-        self.view.clear_list()
         self.clear_connections()
         self.current_model = model
         self.load_to_view()

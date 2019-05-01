@@ -31,13 +31,20 @@ class ProblemSettingsManager:
         self.view.problem_elements.setCurrentRow(self.view.problem_elements.count() - 1)
 
     def load_term_display_state(self):
+        self.clear_int_selections()
         row = self.view.problem_elements.currentRow()
         selected_element = self.current_model.problem_elements[row]
         self.load_operators(selected_element["operators"])
         self.load_terms(selected_element["terms"])
 
+    def clear_int_selections(self):
+        self.view.problem_element_selection.integer_selection.clear_list()
+        self.view.problem_element_selection.numerator_selection.clear_list()
+        self.view.problem_element_selection.denominator_selection.clear_list()
+        self.view.problem_element_selection.decimal_selection.clear_list()
+
     def load_operators(self, model_operators):
-        for i in self.view.get_op_checks():
+        for i in self.view.problem_element_selection.get_op_checks():
             if i.text() in model_operators:
                 i.setChecked(True)
             else:

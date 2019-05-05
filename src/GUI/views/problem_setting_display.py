@@ -39,7 +39,7 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
     def term_count(self):
         self.variable_term_count = QtWidgets.QCheckBox("Variable Number of Terms")
         self.variable_term_count.setCheckable(True)
-        self.layout.addWidget(self.variable_term_count, 0, 0, 1, 2)
+        self.layout.addWidget(self.variable_term_count, 0, 0)
 
         term_count_label = QtWidgets.QLabel("Terms per Problem")
         self.term_count_label_min = QtWidgets.QLabel("Minimum")
@@ -48,8 +48,14 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
         self.layout.addWidget(self.term_count_label_min, 2, 1)
         self.layout.addWidget(self.term_count_label_max, 3, 1)
 
+        size = QtWidgets.QSizePolicy()
+        size.setVerticalPolicy(QtWidgets.QSizePolicy.Maximum)
+        size.setHorizontalPolicy(QtWidgets.QSizePolicy.Maximum)
         self.term_count_min = QtWidgets.QSpinBox()
+        self.term_count_min.setSizePolicy(size)
         self.term_count_max = QtWidgets.QSpinBox()
+        self.term_count_min.setSizePolicy(size)
+
         self.layout.addWidget(self.term_count_min, 2, 0)
         self.layout.addWidget(self.term_count_max, 3, 0)
 
@@ -70,7 +76,7 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
         layout = QtWidgets.QVBoxLayout(frame)
 
         size = QtWidgets.QSizePolicy()
-        size.setHorizontalPolicy(QtWidgets.QSizePolicy.Minimum)
+        size.setHorizontalPolicy(QtWidgets.QSizePolicy.Maximum)
         size.setVerticalPolicy(QtWidgets.QSizePolicy.Maximum)
 
         frame.setSizePolicy(size)
@@ -92,4 +98,4 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
     def config_problem_element_selection(self):
         self.problem_element_selection = ProblemElementDisplay()
-        self.layout.addWidget(self.problem_element_selection, 5, 0)
+        self.layout.addWidget(self.problem_element_selection, 5, 0, 1, 2)

@@ -23,17 +23,9 @@ class ProblemElementManager:
 
     def clear_view(self):
         self.view.integer_selection.clear_list()
-        self.view.integer_selection.min_val.setValue(0)
-        self.view.integer_selection.max_val.setValue(0)
         self.view.numerator_selection.clear_list()
-        self.view.numerator_selection.min_val.setValue(0)
-        self.view.numerator_selection.max_val.setValue(0)
         self.view.denominator_selection.clear_list()
-        self.view.denominator_selection.min_val.setValue(0)
-        self.view.denominator_selection.max_val.setValue(0)
         self.view.decimal_selection.clear_list()
-        self.view.decimal_selection.min_val.setValue(0)
-        self.view.decimal_selection.max_val.setValue(0)
 
     def load_operators(self):
         for i in self.view.get_op_checks():

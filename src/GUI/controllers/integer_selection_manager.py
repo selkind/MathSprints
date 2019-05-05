@@ -20,10 +20,10 @@ class IntegerSelectionManager:
         self.view.min_val.valueChanged.connect(self.set_max_min)
 
     def set_min_max(self):
-        self.view.min_val.setMaximum(self.view.max_val.value() - 1)
+        self.view.min_val.setMaximum(self.view.max_val.value())
 
     def set_max_min(self):
-        self.view.max_val.setMinimum(self.view.min_val.value() + 1)
+        self.view.max_val.setMinimum(self.view.min_val.value())
 
     def load_to_view(self):
         if self.current_model is None:

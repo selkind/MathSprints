@@ -53,3 +53,9 @@ class IntegerSelectionDisplay(QtWidgets.QWidget):
 
     def clear_list(self):
         self.int_list.clear()
+        self.min_val.setMaximum(self.MAXIMUM)
+        self.min_val.setMinimum(self.MINIMUM)
+        self.min_val.setValue(0)
+        self.max_val.setMaximum(self.MAXIMUM)
+        self.max_val.setMinimum(self.MINIMUM)
+        self.max_val.setValue(0)

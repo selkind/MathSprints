@@ -41,3 +41,7 @@ class IntegerSelectionManager:
 
         self.view.min_val.setValue(checked[0])
         self.view.max_val.setValue(checked[-1])
+
+    def update_model(self):
+        pass
+

@@ -13,12 +13,18 @@ class IntegerSelectionDisplay(QtWidgets.QWidget):
         self.int_list = None
         self.save_button = None
         self.reset_button = None
+        self.display_state_test = None
 
         self.config_min_val()
         self.config_max_val()
         self.config_int_list()
         self.config_save_button()
         self.config_reset_button()
+        self.config_display_test()
+
+    def config_display_test(self):
+        self.display_state_test = QtWidgets.QPushButton("test")
+        self.layout.addWidget(self.display_state_test, 2, 2)
 
     def config_min_val(self):
         self.min_val = QtWidgets.QSpinBox()

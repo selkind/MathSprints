@@ -50,9 +50,9 @@ class IntegerSelectionDisplay(QtWidgets.QWidget):
 
         self.layout.addWidget(self.int_list, 1, 0, 1, 4)
 
-    def populate_list(self, vals):
+    def populate_list(self, low, high, vals):
         checked_ptr = 0
-        for i in range(vals[0], vals[-1] + 1):
+        for i in range(low, high + 1):
             item = QtWidgets.QListWidgetItem(self.int_list)
             item.setText(str(i))
             if i == vals[checked_ptr]:

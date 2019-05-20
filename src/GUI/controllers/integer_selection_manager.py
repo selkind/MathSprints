@@ -1,4 +1,6 @@
 class IntegerSelectionManager:
+    STREAK_MIN = 10
+
     def __init__(self, view):
         self.view = view
         self.current_model = None
@@ -76,5 +78,52 @@ class IntegerSelectionManager:
         return checked
 
     def update_model(self):
-        pass
+        if self.display_state is None:
+            return
 
+        discontinuous = {"range": False, "vals": []}
+
+        val_count = len(self.display_state["checked"])
+
+        # model format "optimization" algorithm is unnecessary for small user selection of values
+        if val_count <= self.STREAK_MIN:
+            discontinuous["vals"] = self.display_state["checked"]
+            self.current_model = [discontinuous]
+            return
+
+        continuous = []
+
+        last_val = self.display_state["checked"][0]
+        batch = []
+        streak = 1
+        i = 1
+        while i < val_count:
+            if self.display_state["checked"][i] - last_val == 1:
+                streak += 1
+                if streak < self.STREAK_MIN:
+                    batch.append(self.display_state["checked"][i])
+            else:
+                if streak == 1:
+                    discontinuous["vals"].append(last_val)
+
+                elif streak < self.STREAK_MIN:
+                    batch.append(self.display_state["checked"][i])
+                    discontinuous["vals"] += batch
+
+                else:
+                    continuous.append({"range": True, "vals": [batch[0], batch[0] + streak]})
+                # reset tracking vars to default states
+                streak = 1
+                batch = []
+                if i >= val_count - 2:
+                    discontinuous["vals"] += [self.display_state["checked"][-2], self.display_state["checked"][-1]]
+                    break
+                i += 1
+                batch.append(self.display_state["checked"][i])
+
+            last_val = self.display_state["checked"][i]
+            i += 1
+        if len(discontinuous["vals"]) != 0:
+            continuous.append(discontinuous)
+        self.current_model = continuous
+        self.display_state = None

@@ -123,11 +123,13 @@ class IntegerSelectionManager:
             last_val = self.display_state["checked"][i]
             i += 1
 
+        # handle stranded batch or streak information when loop ends
         if streak <= self.STREAK_MIN:
             discontinuous["vals"] += batch
         else:
             continuous.append({"range": True, "vals": [batch[0], batch[0] + streak]})
 
+        # handle continuous selections larger than STREAK_MIN
         if len(discontinuous["vals"]) != 0:
             continuous.append(discontinuous)
         self.current_model = continuous

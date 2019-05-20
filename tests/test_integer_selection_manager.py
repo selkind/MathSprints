@@ -59,14 +59,16 @@ class IntegerSelectionManagerTest(unittest.TestCase):
 
     def create_streak_min_con_val_case(self):
         name = "streak min continuous"
-        vals = list(range(1,11))
+        start = 1
+        vals = list(range(start, self.ism.STREAK_MIN + 1))
         state = {"checked": vals}
         model = [{"range": False, "vals": vals}]
         return self.create_test_case(name, state, model)
 
     def create_one_greater_than_streak_min_discon_val_case(self):
         name = "One val more than streak min discontinuous"
-        vals = list(range(1, 10))
+        start = 1
+        vals = list(range(start, self.ism.STREAK_MIN))
         vals.append(13)
         vals.append(14)
         state = {"checked": vals}
@@ -75,7 +77,8 @@ class IntegerSelectionManagerTest(unittest.TestCase):
 
     def create_one_greater_than_streak_min_con_val_case(self):
         name = "One val more than streak min continuous"
-        vals = list(range(1, 12))
+        start = 1
+        vals = list(range(start, self.ism.STREAK_MIN + start + 1))
         state = {"checked": vals}
         model = [{"range": True, "vals": [1, 12]}]
         return self.create_test_case(name, state, model)

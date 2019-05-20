@@ -94,7 +94,7 @@ class IntegerSelectionManager:
         continuous = []
 
         last_val = self.display_state["checked"][0]
-        batch = []
+        batch = [last_val]
         streak = 1
         i = 1
         while i < val_count:
@@ -107,7 +107,6 @@ class IntegerSelectionManager:
                     discontinuous["vals"].append(last_val)
 
                 elif streak < self.STREAK_MIN:
-                    batch.append(self.display_state["checked"][i])
                     discontinuous["vals"] += batch
 
                 else:
@@ -123,6 +122,12 @@ class IntegerSelectionManager:
 
             last_val = self.display_state["checked"][i]
             i += 1
+
+        if streak <= self.STREAK_MIN:
+            discontinuous["vals"] += batch
+        else:
+            continuous.append({"range": True, "vals": [batch[0], batch[0] + streak]})
+
         if len(discontinuous["vals"]) != 0:
             continuous.append(discontinuous)
         self.current_model = continuous

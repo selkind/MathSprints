@@ -66,8 +66,9 @@ class IntegerSelectionManagerTest(unittest.TestCase):
 
     def create_one_greater_than_streak_min_discon_val_case(self):
         name = "One val more than streak min discontinuous"
-        vals = list(range(1, 11))
+        vals = list(range(1, 10))
         vals.append(13)
+        vals.append(14)
         state = {"checked": vals}
         model = [{"range": False, "vals": vals}]
         return self.create_test_case(name, state, model)

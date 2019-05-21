@@ -110,26 +110,32 @@ class IntegerSelectionManager:
                     discontinuous["vals"] += batch
 
                 else:
-                    continuous.append({"range": True, "vals": [batch[0], batch[0] + streak]})
+                    continuous.append({"range": True, "vals": [batch[0], batch[0] + streak - 1]})
+
                 # reset tracking vars to default states
                 streak = 1
-                batch = []
-                if i >= val_count - 2:
-                    discontinuous["vals"] += [self.display_state["checked"][-2], self.display_state["checked"][-1]]
+
+                '''
+                if another streak set cannot be formed before the loop terminates, 
+                exit loop where all remaining vals are appended
+                '''
+                if i >= val_count - self.STREAK_MIN:
                     break
-                i += 1
-                batch.append(self.display_state["checked"][i])
+
+                batch = [self.display_state["checked"][i]]
 
             last_val = self.display_state["checked"][i]
             i += 1
 
-        # handle stranded batch or streak information when loop ends
+        """
+        Handle remaining checked vals or streak information when loop terminates
+        """
         if streak <= self.STREAK_MIN:
-            discontinuous["vals"] += batch
+            discontinuous["vals"] += self.display_state["checked"][i:]
         else:
-            continuous.append({"range": True, "vals": [batch[0], batch[0] + streak]})
+            continuous.append({"range": True, "vals": [batch[0], batch[0] + streak - 1]})
 
-        # handle continuous selections larger than STREAK_MIN
+        # handle continuous selections larger than STREAK_MIN with no discontinuous vals
         if len(discontinuous["vals"]) != 0:
             continuous.append(discontinuous)
         self.current_model = continuous

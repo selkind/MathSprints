@@ -11,9 +11,11 @@ class ProblemElementManager:
         self.denominator_ctrl = IntegerSelectionManager(self.view.denominator_selection)
 
         self.current_model = None
+        self.model_row = None
 
-    def set_current_model(self, model):
+    def set_current_model(self, model, row):
         self.current_model = model
+        self.model_row = row
         self.load_to_view()
 
     def load_to_view(self):
@@ -54,4 +56,20 @@ class ProblemElementManager:
             self.view.decimal_option.setChecked(False)
 
     def update_model(self):
-        pass
+        new_model = {"terms": {}, "operators": []}
+        for i in self.view.get_op_checks():
+            if i.checkState():
+                new_model["operators"].append(i.text())
+
+        if self.view.integer_option.checkState():
+            new_model["terms"]["Integer"] = self.integer_ctrl.current_model
+
+        if self.view.fraction_option.checkState():
+            new_model["terms"]["Fraction"] = {"Numerator": {"Integer": self.numerator_ctrl.current_model}}
+            new_model["terms"]["Fraction"]["Denominator"] = {"Integer": self.denominator_ctrl.current_model}
+
+        if self.view.decimal_option.checkState():
+            new_model["terms"]["Decimal"] = self.decimal_ctrl.current_model
+            for i in new_model["terms"]["Decimal"]:
+                i["precision"] = 3
+        self.current_model = new_model

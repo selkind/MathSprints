@@ -30,11 +30,14 @@ class IntegerSelectionManager:
     def clear_connections(self):
         if self.current_model is None:
             return
-        self.view.display_state_test.disconnect()
-        self.view.min_val.disconnect()
-        self.view.max_val.disconnect()
-        self.view.save_button.disconnect()
-        self.view.reset_button.disconnect()
+        try:
+            self.view.display_state_test.disconnect()
+            self.view.min_val.disconnect()
+            self.view.max_val.disconnect()
+            self.view.save_button.disconnect()
+            self.view.reset_button.disconnect()
+        except TypeError:
+            pass
 
     def configure_buttons(self):
         self.view.display_state_test.clicked.connect(self.test_print)
@@ -61,8 +64,10 @@ class IntegerSelectionManager:
 
     def save_selection_changes(self):
         self.capture_display_state()
-        self.update_model()
-        self.display_state = None
+        # a valid model cannot be generated if no values are selected by the user.
+        if len(self.display_state["checked"]) != 0:
+            self.update_model()
+            self.display_state = None
         self.load_to_view()
 
     def reset_selection_changes(self):
@@ -97,7 +102,6 @@ class IntegerSelectionManager:
             else:
                 checked += i["vals"]
         checked.sort()
-        print("meow")
         return checked
 
     def update_model(self):

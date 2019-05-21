@@ -55,7 +55,7 @@ class IntegerSelectionDisplay(QtWidgets.QWidget):
         for i in range(low, high + 1):
             item = QtWidgets.QListWidgetItem(self.int_list)
             item.setText(str(i))
-            if i == vals[checked_ptr]:
+            if checked_ptr < len(vals) and i == vals[checked_ptr]:
                 item.setCheckState(QtCore.Qt.Checked)
                 checked_ptr += 1
             else:

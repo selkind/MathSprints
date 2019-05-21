@@ -44,15 +44,12 @@ class ProblemElementManager:
             self.view.fraction_option.setChecked(True)
             self.numerator_ctrl.set_current_model(self.current_model["terms"]["Fraction"]["Numerator"]["Integer"])
             self.denominator_ctrl.set_current_model(self.current_model["terms"]["Fraction"]["Denominator"]["Integer"])
-            self.numerator_ctrl.load_to_view()
-            self.denominator_ctrl.load_to_view()
         else:
             self.view.fraction_option.setChecked(False)
 
         if "Decimal" in term_types:
             self.view.decimal_option.setChecked(True)
             self.decimal_ctrl.set_current_model(self.current_model["terms"]["Decimal"])
-            self.decimal_ctrl.load_to_view()
         else:
             self.view.decimal_option.setChecked(False)
 

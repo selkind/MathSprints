@@ -7,6 +7,8 @@ class IntegerSelectionManager:
         self.display_state = None
 
     def capture_display_state(self):
+        if self.current_model is None:
+            return
         if self.display_state is None:
             self.display_state = {}
 
@@ -23,7 +25,6 @@ class IntegerSelectionManager:
     def set_current_model(self, model):
         self.clear_connections()
         self.current_model = model
-        self.configure_buttons()
         self.load_to_view()
 
     def clear_connections(self):
@@ -32,11 +33,17 @@ class IntegerSelectionManager:
         self.view.display_state_test.disconnect()
         self.view.min_val.disconnect()
         self.view.max_val.disconnect()
+        self.view.save_button.disconnect()
+        self.view.reset_button.disconnect()
 
     def configure_buttons(self):
         self.view.display_state_test.clicked.connect(self.test_print)
         self.view.max_val.valueChanged.connect(self.set_min_max)
         self.view.min_val.valueChanged.connect(self.set_max_min)
+        self.view.save_button.clicked.connect(self.save_selection_changes)
+        self.view.reset_button.clicked.connect(self.reset_selection_changes)
+        self.view.max_val.valueChanged.connect(self.capture_range_changes)
+        self.view.min_val.valueChanged.connect(self.capture_range_changes)
 
     def test_print(self):
         self.capture_display_state()
@@ -45,12 +52,27 @@ class IntegerSelectionManager:
     def set_min_max(self):
         self.view.min_val.setMaximum(self.view.max_val.value())
 
+    def capture_range_changes(self):
+        self.capture_display_state()
+        self.load_to_view()
+
     def set_max_min(self):
         self.view.max_val.setMinimum(self.view.min_val.value())
+
+    def save_selection_changes(self):
+        self.capture_display_state()
+        self.update_model()
+        self.display_state = None
+        self.load_to_view()
+
+    def reset_selection_changes(self):
+        self.display_state = None
+        self.load_to_view()
 
     def load_to_view(self):
         if self.current_model is None:
             return
+        self.clear_connections()
         self.view.clear_list()
 
         if self.display_state is None:
@@ -63,9 +85,9 @@ class IntegerSelectionManager:
             high = self.display_state["high"]
 
         self.view.populate_list(low, high, checked)
-
-        self.view.min_val.setValue(checked[0])
-        self.view.max_val.setValue(checked[-1])
+        self.view.min_val.setValue(low)
+        self.view.max_val.setValue(high)
+        self.configure_buttons()
 
     def generate_model_checks(self):
         checked = []
@@ -75,6 +97,7 @@ class IntegerSelectionManager:
             else:
                 checked += i["vals"]
         checked.sort()
+        print("meow")
         return checked
 
     def update_model(self):

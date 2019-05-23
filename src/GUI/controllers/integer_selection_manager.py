@@ -25,7 +25,6 @@ class IntegerSelectionManager:
     def set_current_model(self, model):
         self.clear_connections()
         self.current_model = model
-        self.load_to_view()
 
     def clear_connections(self):
         if self.current_model is None:

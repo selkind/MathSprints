@@ -69,3 +69,7 @@ class ProblemElementDisplay(QtWidgets.QFrame):
 
     def get_op_checks(self):
         return [i for i in self.op_check.children() if isinstance(i, QtWidgets.QCheckBox)]
+
+    def clear_op_checks(self):
+        for i in self.get_op_checks():
+            i.setChecked(False)

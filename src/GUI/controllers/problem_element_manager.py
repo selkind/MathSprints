@@ -20,9 +20,15 @@ class ProblemElementManager:
 
     def load_to_view(self):
         self.clear_view()
+
+        for i in self.view.get_op_checks():
+            if i.text() in self.current_model["operators"]:
+                i.setChecked(True)
+
         self.load_terms()
 
     def clear_view(self):
+        self.view.clear_op_checks()
         self.view.integer_option.setChecked(False)
         self.view.fraction_option.setChecked(False)
         self.view.decimal_option.setChecked(False)
@@ -63,7 +69,7 @@ class ProblemElementManager:
     def update_model(self):
         new_model = {"terms": {}, "operators": []}
         for i in self.view.get_op_checks():
-            if i.checkState():
+            if i.checkState() == 2:
                 new_model["operators"].append(i.text())
 
         if self.view.integer_option.checkState():

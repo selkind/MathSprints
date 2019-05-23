@@ -17,7 +17,9 @@ class ProblemElementDisplay(QtWidgets.QFrame):
 
         self.fraction_option = None
         self.numerator_selection = None
+        self.numerator_label = None
         self.denominator_selection = None
+        self.denominator_label = None
 
         self.decimal_option = None
         self.decimal_selection = None
@@ -38,13 +40,13 @@ class ProblemElementDisplay(QtWidgets.QFrame):
         self.fraction_option = QtWidgets.QCheckBox("Fraction")
         self.layout.addWidget(self.fraction_option, 2, 1, 1, 2)
 
-        numerator_label = QtWidgets.QLabel("Numerator Values")
-        self.layout.addWidget(numerator_label, 3, 1)
+        self.numerator_label = QtWidgets.QLabel("Numerator Values")
+        self.layout.addWidget(self.numerator_label, 3, 1)
         self.numerator_selection = IntegerSelectionDisplay()
         self.layout.addWidget(self.numerator_selection, 4, 1)
 
-        denominator_label = QtWidgets.QLabel("Denominator Values")
-        self.layout.addWidget(denominator_label, 3, 2)
+        self.denominator_label = QtWidgets.QLabel("Denominator Values")
+        self.layout.addWidget(self.denominator_label, 3, 2)
         self.denominator_selection = IntegerSelectionDisplay()
         self.layout.addWidget(self.denominator_selection, 4, 2)
 

@@ -122,7 +122,7 @@ class ProblemElementManager:
         for i in self.view.get_op_checks():
             if i.checkState() == 2:
                 new_model["operators"].append(i.text())
-
+        # The null checks are necessary in the case that a user checks an option box but does not select any values.
         if self.view.integer_option.checkState() == 2 and self.integer_ctrl.current_model is not None:
             new_model["terms"]["Integer"] = self.integer_ctrl.current_model
             self.integer_ctrl.display_state = None

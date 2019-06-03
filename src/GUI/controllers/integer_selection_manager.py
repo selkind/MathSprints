@@ -2,7 +2,6 @@ class IntegerSelectionManager:
     STREAK_MIN = 10
 
     def __init__(self, view):
-        self.default_display_state = {"low": 0, "high": 10, "checked": []}
         self.view = view
         self.current_model = None
         self.display_state = None
@@ -24,6 +23,12 @@ class IntegerSelectionManager:
     def set_current_model(self, model):
         self.clear_connections()
         self.current_model = model
+
+    def reset(self):
+        self.clear_connections()
+        self.current_model = None
+        self.display_state = None
+        self.view.clear_list()
 
     def clear_connections(self):
         """
@@ -83,7 +88,7 @@ class IntegerSelectionManager:
      a user has turned on a new element type for an element group.
      """
     def load_default_view(self):
-        self.display_state = self.default_display_state
+        self.display_state = {"low": 0, "high": 10, "checked": []}
         self.load_to_view()
 
     def load_to_view(self):
@@ -123,6 +128,11 @@ class IntegerSelectionManager:
         discontinuous = {"range": False, "vals": []}
 
         val_count = len(self.display_state["checked"])
+
+        # prevents a model with no vals being captured just in case a parent calls this method directly and not through
+        # self.save_selection_changes()
+        if val_count == 0:
+            return
 
         # model format "optimization" algorithm is unnecessary for small user selection of values
         if val_count <= self.STREAK_MIN:

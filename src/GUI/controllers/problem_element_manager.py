@@ -30,10 +30,21 @@ class ProblemElementManager:
         self.load_terms()
 
     def configure_buttons(self):
-        self.view.integer_option.stateChanged.connect(lambda: self.toggle_visibility(self.integer_ctrl.view))
-        self.view.fraction_option.stateChanged.connect(lambda: self.toggle_visibility(self.numerator_ctrl.view))
-        self.view.fraction_option.stateChanged.connect(lambda: self.toggle_visibility(self.denominator_ctrl.view))
-        self.view.decimal_option.stateChanged.connect(lambda: self.toggle_visibility(self.decimal_ctrl.view))
+        self.view.integer_option.stateChanged.connect(lambda: self.toggle_visibility(
+                                                        self.view.integer_option,
+                                                        self.integer_ctrl))
+
+        self.view.fraction_option.stateChanged.connect(lambda: self.toggle_visibility(
+                                                        self.view.fraction_option,
+                                                        self.numerator_ctrl))
+
+        self.view.fraction_option.stateChanged.connect(lambda: self.toggle_visibility(
+                                                        self.view.fraction_option,
+                                                        self.denominator_ctrl))
+
+        self.view.decimal_option.stateChanged.connect(lambda: self.toggle_visibility(
+                                                        self.view.decimal_option,
+                                                        self.decimal_ctrl))
 
     def clear_connections(self):
         if self.current_model is None:
@@ -42,11 +53,21 @@ class ProblemElementManager:
         self.view.fraction_option.disconnect()
         self.view.decimal_option.disconnect()
 
-    def toggle_visibility(self, widget):
-        if widget.isVisible():
-            widget.hide()
+    """
+    This method only changes the visibility state of the integer selection displays to match the check state
+    of the element option checkbox. It does not need to handle any updates to the integer selection model.
+    When updating the entire element selection model, the check state determines whether or not to include
+    the integer selection model.
+    """
+
+    def toggle_visibility(self, check_widget, widget):
+        if check_widget.checkState() == 2:
+            if widget.current_model is None:
+                widget.load_default_view()
+            widget.view.show()
+
         else:
-            widget.show()
+            widget.view.hide()
 
     def clear_view(self):
         self.view.clear_op_checks()

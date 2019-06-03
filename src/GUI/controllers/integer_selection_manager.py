@@ -2,13 +2,12 @@ class IntegerSelectionManager:
     STREAK_MIN = 10
 
     def __init__(self, view):
+        self.default_display_state = {"low": 0, "high": 10, "checked": []}
         self.view = view
         self.current_model = None
         self.display_state = None
 
     def capture_display_state(self):
-        if self.current_model is None:
-            return
         if self.display_state is None:
             self.display_state = {}
 
@@ -27,8 +26,11 @@ class IntegerSelectionManager:
         self.current_model = model
 
     def clear_connections(self):
-        if self.current_model is None:
-            return
+        """
+        Don't use a null check on current model here. If a default display state is loaded and then hidden without a
+        model being created, a null check would prevent the connections from being cleared leading to a recursive stack
+        overflow with capture_range_changes and load_to_view.
+        """
         try:
             self.view.display_state_test.disconnect()
             self.view.min_val.disconnect()
@@ -71,10 +73,21 @@ class IntegerSelectionManager:
 
     def reset_selection_changes(self):
         self.display_state = None
+        if self.current_model is None:
+            self.load_default_view()
+        else:
+            self.load_to_view()
+
+    """
+    This loads the view for a special case where no model for the integer selection exists. This happens when
+     a user has turned on a new element type for an element group.
+     """
+    def load_default_view(self):
+        self.display_state = self.default_display_state
         self.load_to_view()
 
     def load_to_view(self):
-        if self.current_model is None:
+        if self.current_model is None and self.display_state is None:
             return
         self.clear_connections()
         self.view.clear_list()

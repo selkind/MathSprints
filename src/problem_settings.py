@@ -60,19 +60,3 @@ class ProblemSettings:
              "operators": ["X"]
              }
         ]
-
-        self.int_values = [{"range": True, "vals": [0, 100]}]
-
-        self.numerator_value_manual = False
-        self.numerator_values = []
-
-        self.denominator_value_manual = False
-        self.denominator_values = []
-
-        self.decimal_value_manual = False
-        self.decimal_values = []
-
-        # supported operators +, -, *, /
-        self.operator_sets = [["+"]]
-
-        self.term_sets = [["Integer"]]

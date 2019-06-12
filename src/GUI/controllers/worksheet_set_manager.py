@@ -34,7 +34,7 @@ class WorksheetSetManager:
         row = self.view.set_list.currentRow()
         self.sheet_display.worksheet.problem_sets.pop(row)
         # refactor the deleteLater line into worksheet_set_display
-        self.view.set_list.takeItem(row).deleteLater()
+        self.view.set_list.takeItem(row)
         self.sheet_display.load_pages_to_viewer()
 
     def shift_up(self):

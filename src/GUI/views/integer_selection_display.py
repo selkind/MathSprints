@@ -1,20 +1,35 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 
 
 class IntegerSelectionDisplay(QtWidgets.QWidget):
+    MINIMUM = -100000
+    MAXIMUM = 100000
+
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
         self.layout = QtWidgets.QGridLayout(self)
         self.min_val = None
         self.max_val = None
         self.int_list = None
+        self.save_button = None
+        self.reset_button = None
+        self.display_state_test = None
 
         self.config_min_val()
         self.config_max_val()
         self.config_int_list()
+        self.config_save_button()
+        self.config_reset_button()
+        self.config_display_test()
+
+    def config_display_test(self):
+        self.display_state_test = QtWidgets.QPushButton("test")
+        self.layout.addWidget(self.display_state_test, 2, 2)
 
     def config_min_val(self):
         self.min_val = QtWidgets.QSpinBox()
+        self.min_val.setMinimum(self.MINIMUM)
+        self.min_val.setMaximum(self.MAXIMUM)
         self.layout.addWidget(self.min_val, 0, 0)
 
         min_label = QtWidgets.QLabel("Min")
@@ -22,6 +37,8 @@ class IntegerSelectionDisplay(QtWidgets.QWidget):
 
     def config_max_val(self):
         self.max_val = QtWidgets.QSpinBox()
+        self.max_val.setMinimum(self.MINIMUM)
+        self.max_val.setMaximum(self.MAXIMUM)
         self.layout.addWidget(self.max_val, 0, 2)
 
         max_label = QtWidgets.QLabel("Max")
@@ -32,3 +49,31 @@ class IntegerSelectionDisplay(QtWidgets.QWidget):
         self.int_list.setSelectionMode(QtWidgets.QListWidget.SingleSelection)
 
         self.layout.addWidget(self.int_list, 1, 0, 1, 4)
+
+    def populate_list(self, low, high, vals):
+        checked_ptr = 0
+        for i in range(low, high + 1):
+            item = QtWidgets.QListWidgetItem(self.int_list)
+            item.setText(str(i))
+            if checked_ptr < len(vals) and i == vals[checked_ptr]:
+                item.setCheckState(QtCore.Qt.Checked)
+                checked_ptr += 1
+            else:
+                item.setCheckState(QtCore.Qt.Unchecked)
+
+    def config_save_button(self):
+        self.save_button = QtWidgets.QPushButton("Save Changes")
+        self.layout.addWidget(self.save_button, 2, 0)
+
+    def config_reset_button(self):
+        self.reset_button = QtWidgets.QPushButton("Reset Changes")
+        self.layout.addWidget(self.reset_button, 2, 1)
+
+    def clear_list(self):
+        self.int_list.clear()
+        self.min_val.setMaximum(self.MAXIMUM)
+        self.min_val.setMinimum(self.MINIMUM)
+        self.min_val.setValue(0)
+        self.max_val.setMaximum(self.MAXIMUM)
+        self.max_val.setMinimum(self.MINIMUM)
+        self.max_val.setValue(0)

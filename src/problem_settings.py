@@ -55,24 +55,8 @@ class ProblemSettings:
              },
             {"terms":
                  {
-                     "Decimal": [{"precision": 3, "vals": [-4, -1]}]
+                     "Decimal": [{"precision": 3, "range": True, "vals": [-4, -1]}]
                  },
              "operators": ["X"]
              }
         ]
-
-        self.int_values = [{"range": True, "vals": [0, 100]}]
-
-        self.numerator_value_manual = False
-        self.numerator_values = []
-
-        self.denominator_value_manual = False
-        self.denominator_values = []
-
-        self.decimal_value_manual = False
-        self.decimal_values = []
-
-        # supported operators +, -, *, /
-        self.operator_sets = [["+"]]
-
-        self.term_sets = [["Integer"]]

@@ -1,3 +1,6 @@
+from src.GUI.controllers.problem_element_manager import ProblemElementManager
+
+
 class ProblemSettingsManager:
     MIN_TERMS = 2
     MAX_TERMS = 10
@@ -5,15 +8,33 @@ class ProblemSettingsManager:
     def __init__(self, view, sheet_display):
         self.view = view
         self.sheet_display = sheet_display
+        self.problem_element_ctrl = ProblemElementManager(self.view.problem_element_selection)
         self.current_model = None
 
     def set_current_model(self, model):
         self.current_model = model
         self.configure_buttons()
+        self.configure_element_list()
         self.load_to_view()
 
     def configure_buttons(self):
         self.view.variable_term_count.stateChanged.connect(self.switch_term_count_state)
+        self.view.problem_elements.itemSelectionChanged.connect(self.load_term_display_state)
+
+    def configure_element_list(self):
+        self.view.problem_elements.clear()
+        for i in range(len(self.current_model.problem_elements)):
+            self.view.add_problem_element_item("Element Group {}".format(i + 1))
+        self.view.problem_elements.setCurrentRow(self.view.problem_elements.count() - 1)
+
+    def load_term_display_state(self):
+        if self.problem_element_ctrl.current_model is not None:
+            self.problem_element_ctrl.update_model()
+            self.current_model.problem_elements[self.problem_element_ctrl.model_row] = self.problem_element_ctrl.current_model
+
+        row = self.view.problem_elements.currentRow()
+        selected_element = self.current_model.problem_elements[row]
+        self.problem_element_ctrl.set_current_model(selected_element, row)
 
     def load_to_view(self):
         if self.current_model is None:
@@ -29,13 +50,6 @@ class ProblemSettingsManager:
         self.switch_term_count_state()
         self.view.term_count_max.setValue(self.current_model.term_count_max)
 
-        for i in self.view.get_op_checks():
-            for j in self.current_model.operator_sets:
-                if i.text() in j:
-                    i.setChecked(True)
-                else:
-                    i.setChecked(False)
-
     def update_model(self):
         self.current_model.variable_term_count = self.view.variable_term_count.isChecked()
         if self.current_model.variable_term_count:
@@ -44,16 +58,8 @@ class ProblemSettingsManager:
         else:
             self.current_model.term_count_min = self.view.term_count_min.value()
             self.current_model.term_count_max = self.current_model.term_count_min
-
-        self.current_model.term_sets = []
-        for i in self.view.get_term_checks():
-            if i.isChecked():
-                self.current_model.term_sets.append([i.text()])
-
-        self.current_model.operator_sets = []
-        for i in self.view.get_op_checks():
-            if i.isChecked():
-                self.current_model.operator_sets.append([i.text()])
+        self.problem_element_ctrl.update_model()
+        self.current_model.problem_elements[self.problem_element_ctrl.model_row] = self.problem_element_ctrl.current_model
 
     def switch_term_count_state(self):
         if self.view.variable_term_count.isChecked():

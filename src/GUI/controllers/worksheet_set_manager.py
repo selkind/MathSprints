@@ -6,7 +6,7 @@ from src.problem_set_page_settings import ProblemSetPageSettings
 class WorksheetSetManager:
     def __init__(self, view, sheet_display):
         self.view = view
-        self.sheet_display = sheet_display
+        self.sheet_display = sheet_display # In this case, the sheet_display is the "current_model" and never changes.
         self.configure_list()
         self.configure_buttons()
 
@@ -33,6 +33,7 @@ class WorksheetSetManager:
     def remove_item(self):
         row = self.view.set_list.currentRow()
         self.sheet_display.worksheet.problem_sets.pop(row)
+        # refactor the deleteLater line into worksheet_set_display
         self.view.set_list.takeItem(row)
         self.sheet_display.load_pages_to_viewer()
 

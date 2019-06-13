@@ -11,6 +11,10 @@ This class manages the distribution of problem sets on pages and displays those 
 class WorksheetDisplay(QtWidgets.QScrollArea):
     def __init__(self):
         QtWidgets.QScrollArea.__init__(self)
+        size = QtWidgets.QSizePolicy()
+        size.setHorizontalPolicy(QtWidgets.QSizePolicy.Maximum)
+        size.setVerticalPolicy(QtWidgets.QSizePolicy.Minimum)
+        self.setSizePolicy(size)
         self.page_background = QtGui.QColor(10, 100, 10, 50)
         self.problem_background = QtGui.QColor(10, 10, 100, 50)
         self.header_background = QtGui.QColor(100, 10, 10, 50)

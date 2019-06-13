@@ -1,6 +1,5 @@
 from tests.basic_problem_set import BasicProblemSet
-from src.problem_settings import ProblemSettings
-from src.problem_set_page_settings import ProblemSetPageSettings
+from src.models.problem_set_page_settings import ProblemSetPageSettings
 
 
 class WorksheetSetManager:

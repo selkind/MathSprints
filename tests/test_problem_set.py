@@ -1,6 +1,6 @@
 import unittest
-from src.problem_settings import ProblemSettings
-from src.problem_set import ProblemSet
+from src.models.problem_settings import ProblemSettings
+from src.models.problem_set import ProblemSet
 
 
 class ProblemSetTest(unittest.TestCase):

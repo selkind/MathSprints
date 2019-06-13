@@ -1,13 +1,13 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton
 from src.GUI.views.worksheet_display import WorksheetDisplay
-from src.problem_set_page_settings import ProblemSetPageSettings
+from src.models.problem_set_page_settings import ProblemSetPageSettings
 from src.GUI.controllers.printer import Printer
 from src.GUI.views.user_control_display import UserControlDisplay
-from src.worksheet import Worksheet
+from src.models.worksheet import Worksheet
 from src.GUI.controllers.user_control_manager import UserControlManager
 from src.GUI.controllers.problem_set_layout_manager import ProblemSetLayoutManager
-from src.problem_set import ProblemSet
-from src.problem_settings import ProblemSettings
+from src.models.problem_set import ProblemSet
+from src.models.problem_settings import ProblemSettings
 import sys
 
 

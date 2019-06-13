@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from src.GUI.views.page import Page
-from src.worksheet_layout_settings import WorksheetLayoutSettings
+from src.models.worksheet_layout_settings import WorksheetLayoutSettings
 
 """
 This class manages the distribution of problem sets on pages and displays those pages as a 

@@ -1,4 +1,4 @@
-from src.problem_set import *
+from src.models.problem_set import *
 
 
 class BasicProblemSet:

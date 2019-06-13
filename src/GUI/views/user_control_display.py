@@ -3,7 +3,7 @@ from src.GUI.views.problem_set_layout import ProblemSetLayout
 from src.GUI.views.problem_setting_display import ProblemSettingDisplay
 from src.GUI.views.problem_set_display import ProblemSetDisplay
 from src.GUI.views.worksheet_layout_management import WorksheetLayoutManagement
-from src.worksheet_layout_settings import WorksheetLayoutSettings
+from src.models.worksheet_layout_settings import WorksheetLayoutSettings
 from src.GUI.views.worksheet_set_display import WorksheetSetDisplay
 
 

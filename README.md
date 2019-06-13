@@ -25,4 +25,4 @@ This project is an endeavour to learn how to create GUIs, practice my git workfl
 I would be very happy to incorporate the contributions of others into this project. I will do my best to actively communicate
 with potential contributors and keep the issues tab active with known bugs, and specifications for new or modified features.
 
-If you would like to pitch in, please read the contributor guidelines [here]()
+If you would like to pitch in, please read the contributor guidelines [here](CONTRIBUTING.md)

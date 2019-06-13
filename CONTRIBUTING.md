@@ -28,4 +28,4 @@ I have been developing exclusively on Ubuntu, so I'd be interested to hear of an
 I'll get around to testing on these platforms eventually, but one of the main reasons for using PyQT as the GUI engine is their
 advertised cross-platform capabilities.
 
-For a basic overview of the project, please consult the developer [Wiki](https://github.com/selkind/MathSprints/wiki)
+For a basic overview of the project, please consult the developer [Wiki](https://github.com/selkind/MathSprints/wiki/Developer-Docs)

@@ -1,29 +1,28 @@
 # MathSprints
-Generate math problem sets at different difficulty
+### A module that enables the creation of highly-customizeable mathematical problem sets with: 
 
-This README will be hashed out further in the next 2 weeks - 1 month
+* #### Desktop application with intuitive UI for user-generated worksheets (in progress)
+* #### tools that facilitate grading (future development)
+* #### loadable problem sets that target mastery of common-core standard modules (future development)
+* #### A web UI for user-generated worksheets (future development)
 
-This repository is for code that facilitates Primary and Secondary mathematics education.
 
-The current projects under development are a backend library that can be used to generate 
-worksheets that are designed to target specific math skills (basic arithmetic, times tables, fractional arithmetic, etc...)
 
-The idea is that these fundamental math skills are cultivated mainly through 
-repetitious practice to develop pattern recognition. These types of teaching materials are tedious to create and tedious
-to assess/grade. Automating these processes through worksheet a worksheet and answer-sheet generator can allow instructors
-to spend more time with other aspects of mathematical instruction as well as provide ample 
-practice materials that are closely aligned with a wide range of abilities.
+This repository originated in response to a problem described to me by an elementary school math teacher.
+The thing that their students needed most was repetitious practice with problem sets that focused on a single concept. 
+This sort of exercise would expose students to the patterns of fundamental arithmetic for which mastery is
+necessary in order to progress to more complex mathematical topics.
 
-Currently, the repo contains:
-* a backend problem generator that supports basic arithmetic problems for integers and fractions. 
-* a desktop GUI written in PYQT5 that is in development. This GUI provides flexible worksheet-layout controls and supports 
-worksheet publishing to PDFs
+There are several problems for the teacher with this kind of class exercise; even for 5-10 minutes of daily practice:
+* It generates excessive material for grading. (relatively immediate feedback is valuable for instructors to gauge students' progress)
+* Finding material that corresponds to the current topic is time consuming, especially in a class with students who's abilities
+can vary by multiple grade level.
+* Availibility of material that directly matches the fine-granularity of concepts defined by common-core standards can be 
+difficult or impossible to find.
+* The solutions to these problems (that I've researched in a very limited capacity) are behind paywalls. 
 
-Areas for further development include:
-* Extension of backed capabilities for more advanced problem types 
-  (incorporation of parentheses, one-step algebra, mulit-step algebra, exponents, roots, logs and many others)
-* Extension of the backend to output problems in MathML (https://www.w3.org/Math/)
-* Extension of the backend to calculate the answers to the problems to facilitate answer-sheet generation
-* An alternative web-hosted front end including user accounts, saved problem set configs, etc...
-* Using a Handwriting-to-text ML model to implement photo-based auto-grader
-* A database of Worksheet/problem set configs that are aligned to common-core standards and other educational standards.
+This project is an endeavour to learn how to create GUIs, practice my git workflow, and work on a larger-scale project.
+I would be very happy to incorporate the contributions of others into this project. I will do my best to actively communicate
+with potential contributors and keep the issues tab active with known bugs, and specifications for new or modified features.
+
+If you would like to pitch in, please read the contributor guidelines [here]()

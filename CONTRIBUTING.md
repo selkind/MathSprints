@@ -1,6 +1,6 @@
 # Welcome!
 **To get build of the project on your local environment, as long as you have PyQT5 and the latest(ish) version of Python 3 you should
-be able to [clone](https://github.com/selkind/MathSprints) the repository and start the most complete version of the desktop app by running [src/main.py](src/main.py).
+be able to [clone](https://github.com/selkind/MathSprints) the repository and start the most complete version of the desktop app by running [src/main.py](main.py).
 Create your own development branch and when you're done, open a PR to merge the branch into master. I will also keep my own active development branch
 updated on this repo. I will only merge my own contributions into the master branch once my active developments have reached a relatively stable state**
 
@@ -15,7 +15,7 @@ I will keep the [issues section](https://github.com/selkind/MathSprints/issues) 
 branch off with your own feature or a feature that I've set aside for future development, I may be less actively engaged in your
 development (until you submit a PR) in an effort to avoid feature creep.
 
-[SRC/main.py](src/main.py) is the simplest entry point for a whole-project perspective. However, in the [tests](tests) directory, you can find several
+[SRC/main.py](main.py) is the simplest entry point for a whole-project perspective. However, in the [tests](tests) directory, you can find several
 other scripts that render individual elements of the GUI or load the application into a state that was previously or is currently
 buggy (there may be unittests that specifically test these cases, but I've found that to not be a reliable debugging method).
 

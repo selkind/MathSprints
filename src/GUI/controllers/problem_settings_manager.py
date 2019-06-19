@@ -13,6 +13,7 @@ class ProblemSettingsManager:
 
     def set_current_model(self, model):
         self.current_model = model
+        self.load_term_display_state()
         self.configure_buttons()
         self.configure_element_list()
         self.load_to_view()
@@ -20,6 +21,19 @@ class ProblemSettingsManager:
     def configure_buttons(self):
         self.view.variable_term_count.stateChanged.connect(self.switch_term_count_state)
         self.view.problem_elements.itemSelectionChanged.connect(self.load_term_display_state)
+        self.view.add_button.clicked.connect(self.add_element)
+        self.view.del_button.clicked.connect(self.del_element)
+
+    def add_element(self):
+        self.view.add_problem_element_item("Element Group {}".format(self.view.problem_elements.count() + 1))
+        self.current_model.problem_elements.append({"terms": {}, "operators": []})
+
+    def del_element(self):
+        selected = self.view.problem_elements.currentRow()
+        print(selected)
+        self.view.remove_selected_element_item(selected)
+        self.current_model.problem_elements.pop(selected)
+        self.problem_element_ctrl.model_row = self.view.problem_elements.currentRow()
 
     def configure_element_list(self):
         self.view.problem_elements.clear()

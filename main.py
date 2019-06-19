@@ -36,7 +36,6 @@ class MainWindow:
         set_page_settings2.max_problems_per_page = 5
         settings = ProblemSettings()
         settings2 = ProblemSettings()
-        settings2.operator_sets = [["-"]]
         test_set = ProblemSet(settings, "set1")
         test_set2 = ProblemSet(settings2, "set2")
         test_set.problem_count = 10

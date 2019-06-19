@@ -94,7 +94,7 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
         item.setText(text)
 
     def remove_selected_element_item(self, row):
-        self.problem_elements.takeItem(row).deleteLater()
+        self.problem_elements.takeItem(row)
 
     def config_problem_element_selection(self):
         self.problem_element_selection = ProblemElementDisplay()

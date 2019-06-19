@@ -75,3 +75,9 @@ class ProblemSet:
     def get_largest_problem(self):
         return max(self.problems, key=lambda item: len(item.__str__()))
 
+    def __str__(self):
+        return "PROBLEM_SET\n" \
+               "name: {}\n" \
+               "settings: {}\n" \
+               "problem count: {}\n" \
+               "problems: {}\n".format(self.name, self.settings, self.problem_count, self.problems)

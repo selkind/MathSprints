@@ -28,14 +28,13 @@ class UserControlManager:
         self.problem_set_manager.view.update_but.clicked.connect(self.update_models)
 
     def load_set_to_view(self):
-        print("Problem_set: {}\nProblem_settings: {}\nset_layout: {}".format(self.problem_set_manager.current_model,
-                                                                             self.problem_settings_manager.current_model,
-                                                                             self.set_layout_manager.current_model))
+        print("Problem_set: {}".format(self.problem_set_manager.current_model))
         row = self.sheet_set_manager.view.set_list.currentRow()
         problem_set = self.sheet_display.worksheet.problem_sets[row]
         self.problem_set_manager.set_current_model(problem_set["set"])
         self.problem_settings_manager.set_current_model(problem_set["set"].settings)
         self.set_layout_manager.set_current_model(problem_set["settings"])
+        print("Problem_set: {}".format(self.problem_set_manager.current_model))
 
     def update_models(self):
         self.problem_set_manager.update_model()

@@ -60,3 +60,11 @@ class ProblemSettings:
              "operators": ["X"]
              }
         ]
+
+    def __str__(self):
+        return "PROBLEM_SETTINGS\n" \
+                "var term count: {}\n" \
+                "min term: {}\n" \
+                "max term: {}\n" \
+                "elements: {}\n".format(self.variable_term_count, self.term_count_min, self.term_count_max,
+                                        self.problem_elements)

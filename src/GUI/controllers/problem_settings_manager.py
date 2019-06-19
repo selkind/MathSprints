@@ -24,16 +24,27 @@ class ProblemSettingsManager:
         self.view.add_button.clicked.connect(self.add_element)
         self.view.del_button.clicked.connect(self.del_element)
 
+    def clear_connections(self):
+        try:
+            self.view.variable_term_count.disconnect()
+            self.view.problem_elements.disconnect()
+            self.view.add_button.disconnect()
+            self.view.del_button.disconnect()
+        except TypeError:
+            pass
+
     def add_element(self):
         self.view.add_problem_element_item("Element Group {}".format(self.view.problem_elements.count() + 1))
         self.current_model.problem_elements.append({"terms": {}, "operators": []})
 
     def del_element(self):
+        self.clear_connections()
         selected = self.view.problem_elements.currentRow()
         print(selected)
         self.view.remove_selected_element_item(selected)
         self.current_model.problem_elements.pop(selected)
         self.problem_element_ctrl.model_row = self.view.problem_elements.currentRow()
+        self.configure_buttons()
 
     def configure_element_list(self):
         self.view.problem_elements.clear()

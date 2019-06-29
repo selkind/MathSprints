@@ -84,7 +84,6 @@ class ProblemSettingsManager:
             self.current_model.term_count_max = self.current_model.term_count_min
         self.problem_element_ctrl.update_model()
         self.current_model.problem_elements[self.problem_element_ctrl.model_row] = self.problem_element_ctrl.current_model
-        print(self.current_model.problem_elements)
 
     def switch_term_count_state(self):
         if self.view.variable_term_count.isChecked():

@@ -53,7 +53,12 @@ class ProblemSet:
     def make_integer(self, int_settings):
         chosen_set = choice(int_settings)
         if chosen_set["range"]:
-            return randrange(chosen_set["vals"][0], chosen_set["vals"][1] + 1)
+            low = chosen_set["vals"][0]
+            try:
+                high = chosen_set["vals"][1]
+            except IndexError:
+                high = low
+            return randrange(low, high + 1)
         else:
             return choice(chosen_set["vals"])
 
@@ -65,12 +70,15 @@ class ProblemSet:
 
     def make_decimal(self, dec_settings):
         chosen_set = choice(dec_settings)
+        adjustment = 10 ** chosen_set["precision"]
+        low = chosen_set["vals"][0] * adjustment
+        try:
+            high = chosen_set["vals"][1] * adjustment
+        except IndexError:
+            # when only one value is given it is treated as a lower bound
+            high = (chosen_set["vals"][0] + 1) * adjustment
 
-        adjustment = chosen_set["precision"]
-        low = chosen_set["vals"][0] * (10 ** (adjustment))
-        high = chosen_set["vals"][1] * (10 ** (adjustment))
-
-        return randrange(low, high) / (10 ** adjustment)
+        return randrange(low, high + 1) / adjustment
 
     def get_largest_problem(self):
         return max(self.problems, key=lambda item: len(item.__str__()))

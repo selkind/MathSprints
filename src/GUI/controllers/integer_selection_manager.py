@@ -21,7 +21,6 @@ class IntegerSelectionManager:
                 self.display_state["checked"].append(val)
 
     def set_current_model(self, model):
-        self.clear_connections()
         self.current_model = model
 
     def reset(self):
@@ -179,5 +178,5 @@ class IntegerSelectionManager:
         # handle continuous selections larger than STREAK_MIN with no discontinuous vals
         if len(discontinuous["vals"]) != 0:
             continuous.append(discontinuous)
-        self.current_model = continuous
+        self.set_current_model(continuous)
         self.display_state = None

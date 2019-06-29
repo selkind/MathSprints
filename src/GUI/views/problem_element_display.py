@@ -24,10 +24,13 @@ class ProblemElementDisplay(QtWidgets.QFrame):
         self.decimal_option = None
         self.decimal_selection = None
 
+        self.element_save = None
+
         self.op_type()
         self.config_integer_selection()
         self.config_fraction_selection()
         self.config_decimal_selection()
+        self.config_element_save()
 
     def config_integer_selection(self):
         self.integer_option = QtWidgets.QCheckBox("Integer")
@@ -60,6 +63,10 @@ class ProblemElementDisplay(QtWidgets.QFrame):
     def op_type(self):
         self.op_check = self.list_check(self.test_op_list)
         self.layout.addWidget(self.op_check, 1, 0, 1, 3)
+
+    def config_element_save(self):
+        self.element_save = QtWidgets.QPushButton("Save Changes")
+        self.layout.addWidget(self.element_save, 5, 0)
 
     def list_check(self, vals):
         frame = QtWidgets.QFrame()

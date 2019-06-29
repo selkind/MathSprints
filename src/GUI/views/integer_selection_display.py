@@ -11,20 +11,12 @@ class IntegerSelectionDisplay(QtWidgets.QWidget):
         self.min_val = None
         self.max_val = None
         self.int_list = None
-        self.save_button = None
         self.reset_button = None
-        self.display_state_test = None
 
         self.config_min_val()
         self.config_max_val()
         self.config_int_list()
-        self.config_save_button()
         self.config_reset_button()
-        self.config_display_test()
-
-    def config_display_test(self):
-        self.display_state_test = QtWidgets.QPushButton("test")
-        self.layout.addWidget(self.display_state_test, 2, 2)
 
     def config_min_val(self):
         self.min_val = QtWidgets.QSpinBox()
@@ -61,13 +53,9 @@ class IntegerSelectionDisplay(QtWidgets.QWidget):
             else:
                 item.setCheckState(QtCore.Qt.Unchecked)
 
-    def config_save_button(self):
-        self.save_button = QtWidgets.QPushButton("Save Changes")
-        self.layout.addWidget(self.save_button, 2, 0)
-
     def config_reset_button(self):
         self.reset_button = QtWidgets.QPushButton("Reset Changes")
-        self.layout.addWidget(self.reset_button, 2, 1)
+        self.layout.addWidget(self.reset_button, 2, 0)
 
     def clear_list(self):
         self.int_list.clear()

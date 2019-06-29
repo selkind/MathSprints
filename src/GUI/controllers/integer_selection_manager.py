@@ -37,26 +37,18 @@ class IntegerSelectionManager:
         overflow with capture_range_changes and load_to_view.
         """
         try:
-            self.view.display_state_test.disconnect()
             self.view.min_val.disconnect()
             self.view.max_val.disconnect()
-            self.view.save_button.disconnect()
             self.view.reset_button.disconnect()
         except TypeError:
             pass
 
     def configure_buttons(self):
-        self.view.display_state_test.clicked.connect(self.test_print)
         self.view.max_val.valueChanged.connect(self.set_min_max)
         self.view.min_val.valueChanged.connect(self.set_max_min)
-        self.view.save_button.clicked.connect(self.save_selection_changes)
         self.view.reset_button.clicked.connect(self.reset_selection_changes)
         self.view.max_val.valueChanged.connect(self.capture_range_changes)
         self.view.min_val.valueChanged.connect(self.capture_range_changes)
-
-    def test_print(self):
-        self.capture_display_state()
-        print(self.display_state)
 
     def set_min_max(self):
         self.view.min_val.setMaximum(self.view.max_val.value())

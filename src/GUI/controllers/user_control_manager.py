@@ -44,3 +44,4 @@ class UserControlManager:
         problem_set = self.sheet_display.worksheet.problem_sets[row]
         problem_set["set"].build_set()
         self.sheet_display.load_pages_to_viewer()
+

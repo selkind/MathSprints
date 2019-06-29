@@ -15,18 +15,29 @@ class ProblemSet:
 
     def build_set(self):
         self.problems = []
-        for i in range(self.problem_count):
-            self.make_problem()
+        filtered_elements = []
+        """
+        this loop handles the case when a model is added in which the user has an integer_selection widget activated but
+        no values selected
+        """
+        for i in self.settings.problem_elements:
+            if i["terms"] != {}:
+                filtered_elements.append(i)
 
-    def make_problem(self):
-        term_count = 0
+        if len(filtered_elements) == 0:
+            return
+
+        for i in range(self.problem_count):
+            self.make_problem(filtered_elements)
+
+    def make_problem(self, filtered_elements):
         if self.settings.variable_term_count:
             term_count = randrange(self.settings.term_count_min, self.settings.term_count_max)
         else:
             term_count = self.settings.term_count_min
 
         prob = Problem(term_count)
-        element_group = choice(self.settings.problem_elements)
+        element_group = choice(filtered_elements)
         for i in range(term_count):
             term = self.make_term(element_group["terms"])
             prob.terms.append(term)
@@ -81,7 +92,12 @@ class ProblemSet:
         return randrange(low, high + 1) / adjustment
 
     def get_largest_problem(self):
-        return max(self.problems, key=lambda item: len(item.__str__()))
+        try:
+            longest_problem = max(self.problems, key=lambda item: len(item.__str__()))
+        except ValueError:
+            return
+
+        return longest_problem
 
     def __str__(self):
         return "PROBLEM_SET\n" \

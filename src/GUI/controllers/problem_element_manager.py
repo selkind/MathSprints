@@ -152,6 +152,8 @@ class ProblemElementManager:
                 i["precision"] = 3
             self.decimal_ctrl.load_to_view()
 
+        if new_model["terms"] == {}:
+            self.current_model = None
+
         self.current_model = new_model
-        print(self.current_model)
 

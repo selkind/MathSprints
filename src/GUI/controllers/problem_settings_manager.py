@@ -40,9 +40,11 @@ class ProblemSettingsManager:
     def del_element(self):
         self.clear_connections()
         self.problem_element_ctrl.clear_view()
+
         selected = self.view.problem_elements.currentRow()
         self.view.remove_selected_element_item(selected)
         self.current_model.problem_elements.pop(selected)
+
         new_row = self.view.problem_elements.currentRow()
         self.problem_element_ctrl.set_current_model(self.current_model.problem_elements[new_row], new_row)
         self.configure_buttons()

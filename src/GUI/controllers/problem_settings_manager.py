@@ -14,9 +14,9 @@ class ProblemSettingsManager:
     def set_current_model(self, model):
         self.current_model = model
         self.load_term_display_state()
-        self.configure_buttons()
         self.configure_element_list()
         self.load_to_view()
+        self.configure_buttons()
 
     def configure_buttons(self):
         self.view.variable_term_count.stateChanged.connect(self.switch_term_count_state)
@@ -56,9 +56,11 @@ class ProblemSettingsManager:
         self.view.problem_elements.setCurrentRow(self.view.problem_elements.count() - 1)
 
     def load_term_display_state(self):
+        """
         if self.problem_element_ctrl.current_model is not None:
             self.problem_element_ctrl.update_model()
             self.current_model.problem_elements[self.problem_element_ctrl.model_row] = self.problem_element_ctrl.current_model
+        """
 
         row = self.view.problem_elements.currentRow()
         selected_element = self.current_model.problem_elements[row]

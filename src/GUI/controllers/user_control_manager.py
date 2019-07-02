@@ -34,8 +34,8 @@ class UserControlManager:
         self.problem_set_manager.set_current_model(problem_set["set"])
         self.problem_settings_manager.set_current_model(problem_set["set"].settings)
         self.set_layout_manager.set_current_model(problem_set["settings"])
-        for i in self.sheet_display.worksheet.problem_sets:
-            print(i["set"].settings)
+        #for i in self.sheet_display.worksheet.problem_sets:
+            #print(i["set"].settings)
         #print("Problem_set: {}".format(self.problem_set_manager.current_model))
 
     def update_models(self):

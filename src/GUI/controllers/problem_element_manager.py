@@ -14,6 +14,7 @@ class ProblemElementManager:
         self.model_row = None
 
     def set_current_model(self, model, row):
+        print(model)
         self.clear_connections()
         self.current_model = model
         self.model_row = row

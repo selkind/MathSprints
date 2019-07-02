@@ -33,15 +33,32 @@ class MainWindow:
 
         set_page_settings = ProblemSetPageSettings()
         set_page_settings2 = ProblemSetPageSettings()
+        set_page_settings3 = ProblemSetPageSettings()
+        set_page_settings.max_problems_per_page = 5
         set_page_settings2.max_problems_per_page = 5
+        set_page_settings3.max_problems_per_page = 5
+
         settings = ProblemSettings()
+        settings.problem_elements = [{"terms": {"Integer": [{"range": False, "vals": [0, 1, 2, 3, 4, 5]}]},
+                                      "operators": ["+"]}]
         settings2 = ProblemSettings()
+        settings2.problem_elements = [{"terms": {"Decimal": [{"precision": 3, "range": True, "vals": [5, 10]}]},
+                                      "operators": ["-"]}]
+        settings3 = ProblemSettings()
+        settings3.problem_elements = [{"terms": {"Fraction": {
+                                                    "Numerator": {"Integer": [{"range": False, "vals": [0, 1, 2, 3, 4, 5]}]},
+                                                    "Denominator": {"Integer": [{"range": False, "vals": [-1, -2, -3, -4, -5]}]}}},
+                                      "operators": ["X"]}]
+
         test_set = ProblemSet(settings, "set1")
         test_set2 = ProblemSet(settings2, "set2")
-        test_set.problem_count = 10
+        test_set3 = ProblemSet(settings3, "set3")
+        test_set.problem_count = 5
         test_set2.problem_count = 5
+        test_set3.problem_count = 5
         test_set.build_set()
         test_set2.build_set()
+        test_set3.build_set()
 
         sheet = Worksheet()
         sheet.problem_sets.append({"set": test_set,
@@ -49,6 +66,9 @@ class MainWindow:
 
         sheet.problem_sets.append({"set": test_set2,
                                    "settings": set_page_settings2})
+
+        sheet.problem_sets.append({"set": test_set3,
+                                   "settings": set_page_settings3})
 
         self.worksheet_display.worksheet = sheet
 

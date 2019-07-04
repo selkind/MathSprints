@@ -13,6 +13,7 @@ class ProblemSettingsManager:
 
     def set_current_model(self, model):
         self.clear_connections()
+        self.clear_view()
         self.current_model = model
         self.load_term_display_state()
         self.configure_element_list()
@@ -33,6 +34,10 @@ class ProblemSettingsManager:
             self.view.del_button.disconnect()
         except TypeError:
             pass
+
+    def clear_view(self):
+        self.problem_element_ctrl.clear_view()
+        self.view.problem_elements.clear()
 
     def add_element(self):
         self.view.add_problem_element_item("Element Group {}".format(self.view.problem_elements.count() + 1))

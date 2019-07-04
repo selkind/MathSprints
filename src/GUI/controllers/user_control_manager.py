@@ -28,7 +28,6 @@ class UserControlManager:
         self.problem_set_manager.view.update_but.clicked.connect(self.update_models)
 
     def load_set_to_view(self):
-        #print("Problem_set: {}".format(self.problem_set_manager.current_model))
         # this is needed so that the problem_element_manager does not overwrite the model of the newly selected
         # problem set
         self.problem_settings_manager.problem_element_ctrl.current_model = None
@@ -38,9 +37,6 @@ class UserControlManager:
         self.problem_set_manager.set_current_model(problem_set["set"])
         self.problem_settings_manager.set_current_model(problem_set["set"].settings)
         self.set_layout_manager.set_current_model(problem_set["settings"])
-        for i in self.sheet_display.worksheet.problem_sets:
-            print(i["set"].settings)
-        print("Problem_set: {}".format(self.problem_set_manager.current_model))
 
     def update_models(self):
         self.problem_set_manager.update_model()

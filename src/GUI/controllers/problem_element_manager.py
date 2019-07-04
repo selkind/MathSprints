@@ -14,7 +14,6 @@ class ProblemElementManager:
         self.model_row = None
 
     def set_current_model(self, model, row):
-        # print(model)
         self.clear_connections()
         self.current_model = model
         self.model_row = row
@@ -50,12 +49,13 @@ class ProblemElementManager:
         self.view.element_save.clicked.connect(self.update_model)
 
     def clear_connections(self):
-        if self.current_model is None:
-            return
-        self.view.element_save.disconnect()
-        self.view.integer_option.disconnect()
-        self.view.fraction_option.disconnect()
-        self.view.decimal_option.disconnect()
+        try:
+            self.view.element_save.disconnect()
+            self.view.integer_option.disconnect()
+            self.view.fraction_option.disconnect()
+            self.view.decimal_option.disconnect()
+        except TypeError:
+            pass
 
     """
     This method only changes the visibility state of the integer selection displays to match the check state

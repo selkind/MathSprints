@@ -12,6 +12,7 @@ class ProblemSettingsManager:
         self.current_model = None
 
     def set_current_model(self, model):
+        self.clear_connections()
         self.current_model = model
         self.load_term_display_state()
         self.configure_element_list()
@@ -56,11 +57,9 @@ class ProblemSettingsManager:
         self.view.problem_elements.setCurrentRow(self.view.problem_elements.count() - 1)
 
     def load_term_display_state(self):
-        """
         if self.problem_element_ctrl.current_model is not None:
             self.problem_element_ctrl.update_model()
             self.current_model.problem_elements[self.problem_element_ctrl.model_row] = self.problem_element_ctrl.current_model
-        """
 
         row = self.view.problem_elements.currentRow()
         selected_element = self.current_model.problem_elements[row]

@@ -1,9 +1,10 @@
 from src.models.problem import Problem
-from src.models.fraction import Fraction
 from random import randrange, choice
+from fractions import Fraction
 
 
 class ProblemSet:
+    DENOMINATOR_LIMIT = 10000
     def __init__(self, settings, name):
         self.name = name
         self.settings = settings
@@ -77,7 +78,7 @@ class ProblemSet:
         numerator = self.make_term(frac_settings["Numerator"])
         denominator = self.make_term(frac_settings["Denominator"])
 
-        return Fraction(numerator, denominator)
+        return Fraction(numerator, denominator).limit_denominator(self.DENOMINATOR_LIMIT)
 
     def make_decimal(self, dec_settings):
         chosen_set = choice(dec_settings)

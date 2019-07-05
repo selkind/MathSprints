@@ -1,18 +1,22 @@
 from src.models.problem import Problem
+from src.models.problem_solver import ProblemSolver
 from random import randrange, choice
 from fractions import Fraction
 
 
 class ProblemSet:
     DENOMINATOR_LIMIT = 10000
+
     def __init__(self, settings, name):
         self.name = name
         self.settings = settings
         self.problem_count = 0
         self.problems = []
+        self.answers = []
         self.term_map = {"Integer": lambda x: self.make_integer(x),
                          "Fraction": lambda x: self.make_fraction(x),
                          "Decimal": lambda x: self.make_decimal(x)}
+        self.solver = ProblemSolver()
 
     def build_set(self):
         self.problems = []
@@ -45,6 +49,7 @@ class ProblemSet:
             if i != term_count - 1:
                 operator = self.choose_operator(element_group["operators"])
                 prob.operators.append(operator)
+        prob.answer = self.solver.solve_problem(prob.expression())
         self.problems.append(prob)
 
     def make_term(self, terms):

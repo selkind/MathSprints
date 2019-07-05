@@ -48,7 +48,7 @@ class MainWindow:
         settings3.problem_elements = [{"terms": {"Fraction": {
                                                     "Numerator": {"Integer": [{"range": False, "vals": [0, 1, 2, 3, 4, 5]}]},
                                                     "Denominator": {"Integer": [{"range": False, "vals": [-1, -2, -3, -4, -5]}]}}},
-                                      "operators": ["X"]}]
+                                      "operators": ["*"]}]
 
         test_set = ProblemSet(settings, "set1")
         test_set2 = ProblemSet(settings2, "set2")

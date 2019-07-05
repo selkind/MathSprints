@@ -13,3 +13,13 @@ class Problem:
             else:
                 problem += str(self.terms[i]) + " = "
         return problem
+
+    def expression(self):
+        problem = ""
+        for i in range(self.term_count):
+            if i != self.term_count - 1:
+                problem += str(self.terms[i]) + " " + self.operators[i] + " "
+            else:
+                problem += str(self.terms[i])
+
+        return problem

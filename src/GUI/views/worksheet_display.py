@@ -226,7 +226,7 @@ class WorksheetDisplay(QtWidgets.QScrollArea):
         font = QtGui.QFont()
         font.setPointSize(font_size)
 
-        problem = QtWidgets.QLabel(problem.__str__())
+        problem = QtWidgets.QLabel(problem.__str__() + str(problem.answer))
 
         problem.setAlignment(QtCore.Qt.AlignLeft)
 

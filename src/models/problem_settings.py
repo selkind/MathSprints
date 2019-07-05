@@ -57,7 +57,7 @@ class ProblemSettings:
                  {
                      "Decimal": [{"precision": 3, "range": True, "vals": [-4, -1]}]
                  },
-             "operators": ["X"]
+             "operators": ["*"]
              }
         ]
 

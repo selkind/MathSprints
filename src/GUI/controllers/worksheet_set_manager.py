@@ -1,5 +1,6 @@
-from tests.basic_problem_set import BasicProblemSet
 from src.models.problem_set_page_settings import ProblemSetPageSettings
+from src.models.problem_settings import ProblemSettings
+from src.models.problem_set import ProblemSet
 
 
 class WorksheetSetManager:
@@ -22,18 +23,25 @@ class WorksheetSetManager:
 
     def add_item(self):
         page_settings = ProblemSetPageSettings()
-        prob_set = BasicProblemSet(10, "default")
-        self.sheet_display.worksheet.problem_sets.append({"set": prob_set.prob_set,
+        page_settings.max_problems_per_page = 5
+        settings = ProblemSettings()
+        settings.problem_elements = [{"terms": {"Integer": [{"range": False, "vals": [0, 1, 2, 3, 4, 5]}]},
+                                      "operators": ["+"]}]
+
+        new_set = ProblemSet(settings, "New Set")
+        new_set.problem_count = 5
+        new_set.build_set()
+        self.sheet_display.worksheet.problem_sets.append({"set": new_set,
                                                           "settings": page_settings})
-        self.view.add_item_to_set_list(prob_set.prob_set.name)
+        self.view.add_item_to_set_list(new_set.name)
         self.view.set_list.setCurrentRow(self.view.set_list.count() - 1)
         self.sheet_display.load_pages_to_viewer()
 
     def remove_item(self):
         row = self.view.set_list.currentRow()
+        self.view.set_list.takeItem(row)
         self.sheet_display.worksheet.problem_sets.pop(row)
         # refactor the deleteLater line into worksheet_set_display
-        self.view.set_list.takeItem(row)
         self.sheet_display.load_pages_to_viewer()
 
     def shift_up(self):

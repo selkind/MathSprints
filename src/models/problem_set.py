@@ -62,7 +62,16 @@ class ProblemSet:
         self.problems.append(prob)
 
     def make_ordered_problem(self, filtered_elements):
-        pass
+        prob = Problem(self.settings.term_count_min)
+
+        for i in range(self.settings.term_count_min):
+            term = self.make_term(choice(filtered_elements[i]))
+            prob.terms.append(term)
+            if i != self.settings.term_count_min - 1:
+                operator = self.choose_operator(self.settings.ordered_operators[i])
+                prob.operators.append(operator)
+        prob.answer = self.solver.solve_problem(prob.expression())
+        self.problems.append(prob)
 
     def make_term(self, terms):
         term_type = self.get_term_type(terms)

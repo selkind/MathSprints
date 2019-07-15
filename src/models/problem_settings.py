@@ -1,9 +1,9 @@
 class ProblemSettings:
     def __init__(self):
         self.variable_term_count = False
-        self.term_count_min = 2
+        self.term_count_min = 3
         self.term_count_max = self.term_count_min
-        self.ordered = False
+        self.ordered = True
 
         '''
         draft of problem element data structure.
@@ -87,7 +87,7 @@ class ProblemSettings:
             ]
 
         ]
-        self.ordered_operators = [[["+"], ["+"]], [["*"]]]
+        self.ordered_operators = [[["+"], ["-"]], [["*"]]]
 
     def __str__(self):
         return "PROBLEM_SETTINGS\n" \

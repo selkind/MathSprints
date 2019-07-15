@@ -87,7 +87,7 @@ class ProblemSettings:
             ]
 
         ]
-        self.ordered_operators = [[["+", "-"], ["/"]], [["*"]]]
+        self.ordered_operators = [[["+"], ["+"]], [["*"]]]
 
     def __str__(self):
         return "PROBLEM_SETTINGS\n" \

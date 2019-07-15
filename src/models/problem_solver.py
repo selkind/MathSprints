@@ -19,7 +19,10 @@ class ProblemSolver:
         if isinstance(node, ast.Num):
             return node.n
         elif isinstance(node, ast.BinOp):
-            return self.operators[type(node.op)](self.evaluate(node.left), self.evaluate(node.right))
+            try:
+                return self.operators[type(node.op)](self.evaluate(node.left), self.evaluate(node.right))
+            except ZeroDivisionError:
+                return "N/A"
         elif isinstance(node, ast.UnaryOp):
             return self.operators[type(node.op)](self.evaluate(node.operand))
         else:

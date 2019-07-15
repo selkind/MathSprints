@@ -25,15 +25,24 @@ class ProblemSet:
         this loop handles the case when a model is added in which the user has an integer_selection widget activated but
         no values selected
         """
-        for i in self.settings.problem_elements:
-            if i["terms"] != {}:
-                filtered_elements.append(i)
+        for i in self.settings.ordered_terms:
+            if len(i) > 0:
+                term_set = []
+                for j in i:
+                    if j != {}:
+                        term_set.append(j)
+
+                if len(term_set) > 0:
+                    filtered_elements.append(term_set)
 
         if len(filtered_elements) == 0:
             return
-
-        for i in range(self.problem_count):
-            self.make_rand_problem(filtered_elements)
+        if self.settings.ordered:
+            for i in range(self.problem_count):
+                self.make_ordered_problem(filtered_elements)
+        else:
+            for i in range(self.problem_count):
+                self.make_rand_problem(filtered_elements)
 
     def make_rand_problem(self, filtered_elements):
         if self.settings.variable_term_count:
@@ -42,12 +51,12 @@ class ProblemSet:
             term_count = self.settings.term_count_min
 
         prob = Problem(term_count)
-        element_group = choice(filtered_elements)
+        element_group = choice(filtered_elements[0])
         for i in range(term_count):
-            term = self.make_term(element_group["terms"])
+            term = self.make_term(element_group)
             prob.terms.append(term)
             if i != term_count - 1:
-                operator = self.choose_operator(element_group["operators"])
+                operator = self.choose_operator(self.settings.ordered_operators[0])
                 prob.operators.append(operator)
         prob.answer = self.solver.solve_problem(prob.expression())
         self.problems.append(prob)

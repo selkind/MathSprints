@@ -33,9 +33,9 @@ class ProblemSet:
             return
 
         for i in range(self.problem_count):
-            self.make_problem(filtered_elements)
+            self.make_rand_problem(filtered_elements)
 
-    def make_problem(self, filtered_elements):
+    def make_rand_problem(self, filtered_elements):
         if self.settings.variable_term_count:
             term_count = randrange(self.settings.term_count_min, self.settings.term_count_max)
         else:
@@ -51,6 +51,9 @@ class ProblemSet:
                 prob.operators.append(operator)
         prob.answer = self.solver.solve_problem(prob.expression())
         self.problems.append(prob)
+
+    def make_ordered_problem(self, filtered_elements):
+        pass
 
     def make_term(self, terms):
         term_type = self.get_term_type(terms)

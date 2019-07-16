@@ -12,6 +12,7 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
         self.problem_elements = None
 
+        self.ordered_term_check = None
         self.term_count_label_min = None
         self.term_count_label_max = None
         self.variable_term_count = None
@@ -31,6 +32,7 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
         self.problem_element_selection = None
 
+        self.config_ordered_term_check()
         self.term_count()
         self.create_problem_elements()
         self.create_list_mod_buttons()
@@ -39,14 +41,14 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
     def term_count(self):
         self.variable_term_count = QtWidgets.QCheckBox("Variable Number of Terms")
         self.variable_term_count.setCheckable(True)
-        self.layout.addWidget(self.variable_term_count, 0, 0)
+        self.layout.addWidget(self.variable_term_count, 1, 0)
 
         term_count_label = QtWidgets.QLabel("Terms per Problem")
         self.term_count_label_min = QtWidgets.QLabel("Minimum")
         self.term_count_label_max = QtWidgets.QLabel("Maximum")
-        self.layout.addWidget(term_count_label, 1, 0, 1, 2)
-        self.layout.addWidget(self.term_count_label_min, 2, 1)
-        self.layout.addWidget(self.term_count_label_max, 3, 1)
+        self.layout.addWidget(term_count_label, 2, 0, 1, 2)
+        self.layout.addWidget(self.term_count_label_min, 3, 1)
+        self.layout.addWidget(self.term_count_label_max, 4, 1)
 
         size = QtWidgets.QSizePolicy()
         size.setVerticalPolicy(QtWidgets.QSizePolicy.Maximum)
@@ -56,8 +58,13 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
         self.term_count_max = QtWidgets.QSpinBox()
         self.term_count_min.setSizePolicy(size)
 
-        self.layout.addWidget(self.term_count_min, 2, 0)
-        self.layout.addWidget(self.term_count_max, 3, 0)
+        self.layout.addWidget(self.term_count_min, 3, 0)
+        self.layout.addWidget(self.term_count_max, 4, 0)
+
+    def config_ordered_term_check(self):
+        self.ordered_term_check = QtWidgets.QCheckBox("Assign Settings to Terms")
+        self.ordered_term_check.setCheckable(True)
+        self.layout.addWidget(self.ordered_term_check, 0, 0)
 
     def create_problem_elements(self):
         self.problem_elements = QtWidgets.QListWidget()
@@ -69,7 +76,7 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
         self.problem_elements.setSizePolicy(size)
 
-        self.layout.addWidget(self.problem_elements, 4, 1)
+        self.layout.addWidget(self.problem_elements, 5, 1)
 
     def create_list_mod_buttons(self):
         frame = QtWidgets.QFrame()
@@ -87,7 +94,7 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
         layout.addWidget(self.add_button)
         layout.addWidget(label)
         layout.addWidget(self.del_button)
-        self.layout.addWidget(frame, 4, 0, 1, 1)
+        self.layout.addWidget(frame, 5, 0, 1, 1)
 
     def add_problem_element_item(self, text):
         item = QtWidgets.QListWidgetItem(self.problem_elements)
@@ -98,4 +105,4 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
 
     def config_problem_element_selection(self):
         self.problem_element_selection = ProblemElementDisplay()
-        self.layout.addWidget(self.problem_element_selection, 5, 0, 1, 2)
+        self.layout.addWidget(self.problem_element_selection, 6, 0, 1, 2)

@@ -100,6 +100,22 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
         item = QtWidgets.QListWidgetItem(self.problem_elements)
         item.setText(text)
 
+    def add_ordered_term_group(self, text):
+        item = QtWidgets.QListWidgetItem(self.problem_elements)
+        item.setText(text)
+
+    def add_term_element_item(self, text):
+        item = QtWidgets.QListWidgetItem(self.problem_elements)
+        item.setText(text)
+
+    def add_ordered_operator_group(self, text):
+        item = QtWidgets.QListWidgetItem(self.problem_elements)
+        item.setText(text)
+
+    def add_operator_element_item(self, text):
+        item = QtWidgets.QListWidgetItem(self.problem_elements)
+        item.setText(text)
+
     def remove_selected_element_item(self, row):
         self.problem_elements.takeItem(row)
 

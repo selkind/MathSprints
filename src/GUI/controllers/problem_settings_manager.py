@@ -57,8 +57,18 @@ class ProblemSettingsManager:
 
     def configure_element_list(self):
         self.view.problem_elements.clear()
-        for i in range(len(self.current_model.problem_elements)):
-            self.view.add_problem_element_item("Element Group {}".format(i + 1))
+
+        term_count = len(self.current_model.ordered_terms)
+
+        for i in range(term_count):
+            self.view.add_ordered_term_group("Term {}".format(i + 1))
+            for j in range(len(self.current_model.ordered_terms[i])):
+                self.view.add_term_element_item("Term Group {}".format(j + 1))
+            if i < term_count - 1:
+                self.view.add_ordered_operator_group("Operator {}".format(i + 1))
+                for k in range(len(self.current_model.ordered_operators[i])):
+                    self.view.add_operator_element_item("Operator Group {}".format(k + 1))
+
         self.view.problem_elements.setCurrentRow(self.view.problem_elements.count() - 1)
 
     def load_term_display_state(self):

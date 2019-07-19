@@ -1,3 +1,4 @@
+from PyQt5 import QtWidgets, QtCore
 from src.GUI.controllers.problem_element_manager import ProblemElementManager
 
 
@@ -61,22 +62,37 @@ class ProblemSettingsManager:
         term_count = len(self.current_model.ordered_terms)
 
         for i in range(term_count):
-            self.view.add_ordered_term_group("Term {}".format(i + 1))
+            term_widget = QtWidgets.QTreeWidgetItem(self.view.problem_elements)
+            term_widget.setText(0, "Term {}".format(i + 1))
             for j in range(len(self.current_model.ordered_terms[i])):
-                self.view.add_term_element_item("Term Group {}".format(j + 1))
+                term_setting = QtWidgets.QTreeWidgetItem(term_widget)
+                term_setting.setText(0, "Term Group {}".format(j + 1))
             if i < term_count - 1:
-                self.view.add_ordered_operator_group("Operator {}".format(i + 1))
+                operator_widget = QtWidgets.QTreeWidgetItem(self.view.problem_elements)
+                operator_widget.setText(0, "Operator {}".format(i + 1))
                 for k in range(len(self.current_model.ordered_operators[i])):
-                    self.view.add_operator_element_item("Operator Group {}".format(k + 1))
+                    operator_setting = QtWidgets.QTreeWidgetItem(operator_widget)
+                    operator_setting.setText(0, "Operator Group {}".format(k + 1))
 
-        self.view.problem_elements.setCurrentRow(self.view.problem_elements.count() - 1)
+        self.view.problem_elements.setCurrentItem(term_widget)
 
     def load_term_display_state(self):
         if self.problem_element_ctrl.current_model is not None:
             self.problem_element_ctrl.update_model()
             self.current_model.problem_elements[self.problem_element_ctrl.model_row] = self.problem_element_ctrl.current_model
 
-        row = self.view.problem_elements.currentRow()
+        try:
+            parent = self.view.problem_elements.currentItem().parent()
+            parent_row = self.view.problem_elements.indexOfTopLevelItem(parent)
+            selected_item_row = self.view.problem_elements.selectionModel().selectedIndexes()[0].row()
+            print(selected_item_row, parent_row)
+        except IndexError as e:
+            row = self.view.problem_elements.indexOfTopLevelItem(self.view.problem_elements.currentItem())
+            print(e)
+        except AttributeError as e:
+            row = self.view.problem_elements.indexOfTopLevelItem(self.view.problem_elements.currentItem())
+            print(e)
+
         selected_element = self.current_model.problem_elements[row]
         self.problem_element_ctrl.set_current_model(selected_element, row)
 

@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from src.GUI.views.problem_element_display import ProblemElementDisplay
 
 
@@ -67,12 +67,12 @@ class ProblemSettingDisplay(QtWidgets.QFrame):
         self.layout.addWidget(self.ordered_term_check, 0, 0)
 
     def create_problem_elements(self):
-        self.problem_elements = QtWidgets.QListWidget()
-        self.problem_elements.setSelectionMode(QtWidgets.QListWidget.SingleSelection)
+        self.problem_elements = QtWidgets.QTreeWidget()
+        self.problem_elements.setColumnCount(1)
 
         size = QtWidgets.QSizePolicy()
         size.setHorizontalPolicy(QtWidgets.QSizePolicy.Minimum)
-        size.setVerticalPolicy(QtWidgets.QSizePolicy.Maximum)
+        size.setVerticalPolicy(QtWidgets.QSizePolicy.Minimum)
 
         self.problem_elements.setSizePolicy(size)
 

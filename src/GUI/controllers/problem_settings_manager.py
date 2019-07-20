@@ -93,7 +93,6 @@ class ProblemSettingsManager:
             parent = self.view.problem_elements.currentItem().parent()
             parent_row = self.view.problem_elements.indexOfTopLevelItem(parent)
             selected_item_row = self.view.problem_elements.selectionModel().selectedIndexes()[0].row()
-            print(selected_item_row, parent_row)
         except IndexError as e:
             logging.log(logging.DEBUG, e)
         except AttributeError as e:
@@ -101,9 +100,11 @@ class ProblemSettingsManager:
 
         # if nothing is selected, select the last possible item to load into the view
         if parent_row is None:
-            parent_row = len(self.current_model.ordered_terms) - 1
-            selected_item_row = len(self.current_model.ordered_terms[parent_row]) - 1
-            selected_element = self.current_model.ordered_terms[parent_row][selected_item_row]
+            # I know this looks dumb, but having the parent row is important so that the correct indices
+            # are used to update the model in the first iteration.
+            parent_row = (len(self.current_model.ordered_terms) - 1) * 2
+            selected_item_row = len(self.current_model.ordered_terms[parent_row // 2]) - 1
+            selected_element = self.current_model.ordered_terms[parent_row // 2][selected_item_row]
         else:
             if parent_row == -1:
                 return

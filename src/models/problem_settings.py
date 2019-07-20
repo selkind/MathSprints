@@ -39,5 +39,6 @@ class ProblemSettings:
                 "var term count: {}\n" \
                 "min term: {}\n" \
                 "max term: {}\n" \
-                "elements: {}\n".format(self.variable_term_count, self.term_count_min, self.term_count_max,
-                                        self.problem_elements)
+                "terms: {}\n" \
+                "operators: {}\n".format(self.variable_term_count, self.term_count_min, self.term_count_max,
+                                         self.ordered_terms, self.ordered_operators)

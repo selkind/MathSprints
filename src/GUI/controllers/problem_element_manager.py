@@ -25,11 +25,13 @@ class ProblemElementManager:
 
         if self.model_row[0] % 2 == 0:
             self.load_terms()
+            self.show_term_selection()
 
         else:
             for i in self.view.get_op_checks():
                 if i.text() in self.current_model:
                     i.setChecked(True)
+            self.view.op_check.show()
 
     def configure_buttons(self):
         self.view.integer_option.stateChanged.connect(lambda: self.toggle_visibility(
@@ -77,6 +79,8 @@ class ProblemElementManager:
 
     def clear_view(self):
         self.view.clear_op_checks()
+        self.view.op_check.hide()
+
         self.view.integer_option.setChecked(False)
         self.view.fraction_option.setChecked(False)
         self.view.decimal_option.setChecked(False)
@@ -85,6 +89,26 @@ class ProblemElementManager:
         self.numerator_ctrl.reset()
         self.denominator_ctrl.reset()
         self.decimal_ctrl.reset()
+        self.hide_term_selection()
+
+    def hide_term_selection(self):
+        self.view.integer_option.hide()
+        self.integer_ctrl.view.hide()
+        self.view.fraction_option.hide()
+        self.numerator_ctrl.view.hide()
+        self.denominator_ctrl.view.hide()
+        self.view.decimal_option.hide()
+        self.decimal_ctrl.view.hide()
+
+    def show_term_selection(self):
+        self.view.integer_option.show()
+        self.view.fraction_option.show()
+        self.view.decimal_option.show()
+
+        self.toggle_visibility(self.view.integer_option, self.integer_ctrl)
+        self.toggle_visibility(self.view.decimal_option, self.decimal_ctrl)
+        self.toggle_visibility(self.view.fraction_option, self.numerator_ctrl)
+        self.toggle_visibility(self.view.fraction_option, self.denominator_ctrl)
 
     def load_terms(self):
         term_types = self.current_model.keys()
@@ -124,14 +148,15 @@ class ProblemElementManager:
             self.decimal_ctrl.view.hide()
 
     def update_model(self):
-        new_model = {}
         if self.model_row[0] % 2 != 0:
+            new_model = []
             for i in self.view.get_op_checks():
                 if i.checkState() == 2:
                     new_model.append(i.text())
 
         # The null checks are necessary in the case that a user checks an option box but does not select any values.
         else:
+            new_model = {}
             if self.view.integer_option.checkState() == 2 and (self.integer_ctrl.current_model is not None
                                                                or self.integer_ctrl.display_state is not None):
                 self.integer_ctrl.save_selection_changes()
@@ -161,8 +186,8 @@ class ProblemElementManager:
                         i["precision"] = 3
                 self.decimal_ctrl.load_to_view()
 
-            if new_model == {}:
-                self.current_model = None
+        if new_model == {} or new_model == []:
+            self.current_model = None
 
-            self.current_model = new_model
+        self.current_model = new_model
 

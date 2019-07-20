@@ -125,7 +125,7 @@ class ProblemElementManager:
 
     def update_model(self):
         new_model = {}
-        if self.model_row[0] % 2 == 0:
+        if self.model_row[0] % 2 != 0:
             for i in self.view.get_op_checks():
                 if i.checkState() == 2:
                     new_model.append(i.text())

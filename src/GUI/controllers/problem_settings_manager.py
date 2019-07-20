@@ -87,31 +87,14 @@ class ProblemSettingsManager:
             else:
                 self.current_model.ordered_operators[(first_level - 1) // 2][second_level] = self.problem_element_ctrl.current_model
 
-        parent_row = None
-        selected_item_row = None
-        try:
-            parent = self.view.problem_elements.currentItem().parent()
-            parent_row = self.view.problem_elements.indexOfTopLevelItem(parent)
-            selected_item_row = self.view.problem_elements.selectionModel().selectedIndexes()[0].row()
-        except IndexError as e:
-            logging.log(logging.DEBUG, e)
-        except AttributeError as e:
-            logging.log(logging.DEBUG, e)
+        parent_row, selected_item_row = self.get_selection_coordinates()
 
-        # if nothing is selected, select the last possible item to load into the view
-        if parent_row is None:
-            # I know this looks dumb, but having the parent row is important so that the correct indices
-            # are used to update the model in the first iteration.
-            parent_row = (len(self.current_model.ordered_terms) - 1) * 2
-            selected_item_row = len(self.current_model.ordered_terms[parent_row // 2]) - 1
+        if parent_row == -1:
+            return
+        elif parent_row % 2 == 0:
             selected_element = self.current_model.ordered_terms[parent_row // 2][selected_item_row]
         else:
-            if parent_row == -1:
-                return
-            elif parent_row % 2 == 0:
-                selected_element = self.current_model.ordered_terms[parent_row // 2][selected_item_row]
-            else:
-                selected_element = self.current_model.ordered_operators[(parent_row - 1) // 2][selected_item_row]
+            selected_element = self.current_model.ordered_operators[(parent_row - 1) // 2][selected_item_row]
 
         self.problem_element_ctrl.set_current_model(selected_element, (parent_row, selected_item_row))
 
@@ -137,8 +120,14 @@ class ProblemSettingsManager:
         else:
             self.current_model.term_count_min = self.view.term_count_min.value()
             self.current_model.term_count_max = self.current_model.term_count_min
+
         self.problem_element_ctrl.update_model()
-        self.current_model.problem_elements[self.problem_element_ctrl.model_row] = self.problem_element_ctrl.current_model
+
+        parent_row, setting_row = self.problem_element_ctrl.model_row
+        if parent_row % 2 == 0:
+            self.current_model.ordered_terms[parent_row // 2][setting_row] = self.problem_element_ctrl.current_model
+        else:
+            self.current_model.ordered_operators[(parent_row - 1) // 2][setting_row] = self.problem_element_ctrl.current_model
 
     def switch_term_count_state(self):
         if self.view.variable_term_count.isChecked():
@@ -168,3 +157,25 @@ class ProblemSettingsManager:
 
     def max_changed(self):
         self.view.term_count_min.setMaximum(self.view.term_count_max.value())
+
+    def get_selection_coordinates(self):
+        parent_row = None
+        selected_item_row = None
+
+        try:
+            parent = self.view.problem_elements.currentItem().parent()
+            parent_row = self.view.problem_elements.indexOfTopLevelItem(parent)
+            selected_item_row = self.view.problem_elements.selectionModel().selectedIndexes()[0].row()
+        except IndexError as e:
+            logging.log(logging.DEBUG, e)
+        except AttributeError as e:
+            logging.log(logging.DEBUG, e)
+
+        # if nothing is selected, select the last setting from the last term to load into the view
+        if parent_row is None:
+            # I know this looks dumb, but having the parent row is important so that the correct indices
+            # are used to update the model in the first iteration.
+            parent_row = (len(self.current_model.ordered_terms) - 1) * 2
+            selected_item_row = len(self.current_model.ordered_terms[parent_row // 2]) - 1
+
+        return parent_row, selected_item_row

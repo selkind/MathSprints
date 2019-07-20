@@ -8,7 +8,7 @@ class ProblemElementDisplay(QtWidgets.QFrame):
         self.layout = QtWidgets.QGridLayout(self)
 
         self.test_term_list = ["Integer", "Fraction", "Decimal"]
-        self.test_op_list = ["+", "-", "X", "/"]
+        self.test_op_list = ["+", "-", "*", "/"]
 
         self.op_check = None
 

@@ -23,11 +23,13 @@ class ProblemElementManager:
     def load_to_view(self):
         self.clear_view()
 
-        for i in self.view.get_op_checks():
-            if i.text() in self.current_model["operators"]:
-                i.setChecked(True)
+        if self.model_row[0] % 2 == 0:
+            self.load_terms()
 
-        self.load_terms()
+        else:
+            for i in self.view.get_op_checks():
+                if i.text() in self.current_model:
+                    i.setChecked(True)
 
     def configure_buttons(self):
         self.view.integer_option.stateChanged.connect(lambda: self.toggle_visibility(
@@ -85,10 +87,10 @@ class ProblemElementManager:
         self.decimal_ctrl.reset()
 
     def load_terms(self):
-        term_types = self.current_model["terms"].keys()
+        term_types = self.current_model.keys()
         if "Integer" in term_types:
             self.view.integer_option.setChecked(True)
-            self.integer_ctrl.set_current_model(self.current_model["terms"]["Integer"])
+            self.integer_ctrl.set_current_model(self.current_model["Integer"])
             self.integer_ctrl.load_to_view()
             self.integer_ctrl.view.show()
         else:
@@ -97,9 +99,9 @@ class ProblemElementManager:
 
         if "Fraction" in term_types:
             self.view.fraction_option.setChecked(True)
-            self.numerator_ctrl.set_current_model(self.current_model["terms"]["Fraction"]["Numerator"]["Integer"])
+            self.numerator_ctrl.set_current_model(self.current_model["Fraction"]["Numerator"]["Integer"])
             self.numerator_ctrl.load_to_view()
-            self.denominator_ctrl.set_current_model(self.current_model["terms"]["Fraction"]["Denominator"]["Integer"])
+            self.denominator_ctrl.set_current_model(self.current_model["Fraction"]["Denominator"]["Integer"])
             self.denominator_ctrl.load_to_view()
             self.numerator_ctrl.view.show()
             self.view.numerator_label.show()
@@ -114,7 +116,7 @@ class ProblemElementManager:
 
         if "Decimal" in term_types:
             self.view.decimal_option.setChecked(True)
-            self.decimal_ctrl.set_current_model(self.current_model["terms"]["Decimal"])
+            self.decimal_ctrl.set_current_model(self.current_model["Decimal"])
             self.decimal_ctrl.load_to_view()
             self.decimal_ctrl.view.show()
         else:
@@ -122,43 +124,45 @@ class ProblemElementManager:
             self.decimal_ctrl.view.hide()
 
     def update_model(self):
-        new_model = {"terms": {}, "operators": []}
-        for i in self.view.get_op_checks():
-            if i.checkState() == 2:
-                new_model["operators"].append(i.text())
+        new_model = {}
+        if self.model_row[0] % 2 == 0:
+            for i in self.view.get_op_checks():
+                if i.checkState() == 2:
+                    new_model.append(i.text())
 
         # The null checks are necessary in the case that a user checks an option box but does not select any values.
-        if self.view.integer_option.checkState() == 2 and (self.integer_ctrl.current_model is not None
-                                                           or self.integer_ctrl.display_state is not None):
-            self.integer_ctrl.save_selection_changes()
-            # If save_selection_changes detects that no values are selected, display_state is not set to None.
-            # this honestly isn't a great solution from a best practice perspective.
-            if self.integer_ctrl.display_state is None:
-                new_model["terms"]["Integer"] = self.integer_ctrl.current_model
-            self.integer_ctrl.load_to_view()
+        else:
+            if self.view.integer_option.checkState() == 2 and (self.integer_ctrl.current_model is not None
+                                                               or self.integer_ctrl.display_state is not None):
+                self.integer_ctrl.save_selection_changes()
+                # If save_selection_changes detects that no values are selected, display_state is not set to None.
+                # this honestly isn't a great solution from a best practice perspective.
+                if self.integer_ctrl.display_state is None:
+                    new_model["Integer"] = self.integer_ctrl.current_model
+                self.integer_ctrl.load_to_view()
 
-        if (self.view.fraction_option.checkState() == 2 and (self.numerator_ctrl.current_model is not None
-                                                             or self.numerator_ctrl.display_state is not None)
-                and (self.denominator_ctrl.current_model is not None or self.denominator_ctrl.display_state is not None)):
-            self.numerator_ctrl.save_selection_changes()
-            self.denominator_ctrl.save_selection_changes()
-            if self.numerator_ctrl.display_state is None and self.denominator_ctrl.display_state is None:
-                new_model["terms"]["Fraction"] = {"Numerator": {"Integer": self.numerator_ctrl.current_model},
-                                                  "Denominator": {"Integer": self.denominator_ctrl.current_model}}
-            self.numerator_ctrl.load_to_view()
-            self.denominator_ctrl.load_to_view()
+            if (self.view.fraction_option.checkState() == 2 and (self.numerator_ctrl.current_model is not None
+                                                                 or self.numerator_ctrl.display_state is not None)
+                    and (self.denominator_ctrl.current_model is not None or self.denominator_ctrl.display_state is not None)):
+                self.numerator_ctrl.save_selection_changes()
+                self.denominator_ctrl.save_selection_changes()
+                if self.numerator_ctrl.display_state is None and self.denominator_ctrl.display_state is None:
+                    new_model["Fraction"] = {"Numerator": {"Integer": self.numerator_ctrl.current_model},
+                                             "Denominator": {"Integer": self.denominator_ctrl.current_model}}
+                self.numerator_ctrl.load_to_view()
+                self.denominator_ctrl.load_to_view()
 
-        if self.view.decimal_option.checkState() == 2 and (self.decimal_ctrl.current_model is not None
-                                                           or self.decimal_ctrl.display_state is not None):
-            self.decimal_ctrl.save_selection_changes()
-            if self.decimal_ctrl.display_state is None:
-                new_model["terms"]["Decimal"] = self.decimal_ctrl.current_model
-                for i in new_model["terms"]["Decimal"]:
-                    i["precision"] = 3
-            self.decimal_ctrl.load_to_view()
+            if self.view.decimal_option.checkState() == 2 and (self.decimal_ctrl.current_model is not None
+                                                               or self.decimal_ctrl.display_state is not None):
+                self.decimal_ctrl.save_selection_changes()
+                if self.decimal_ctrl.display_state is None:
+                    new_model["Decimal"] = self.decimal_ctrl.current_model
+                    for i in new_model["Decimal"]:
+                        i["precision"] = 3
+                self.decimal_ctrl.load_to_view()
 
-        if new_model["terms"] == {}:
-            self.current_model = None
+            if new_model == {}:
+                self.current_model = None
 
-        self.current_model = new_model
+            self.current_model = new_model
 

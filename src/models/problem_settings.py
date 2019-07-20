@@ -38,29 +38,6 @@ class ProblemSettings:
             Also a good idea to support integer-like user controlled selection/limitation of decimal values. 
         '''
         # supported terms integer, fraction
-        self.problem_elements = [
-            {"terms":
-                 {
-                     "Integer": [{"range": True, "vals": [0, 100]}]
-                 },
-             "operators": ["+"]
-            },
-            {"terms":
-                 {
-                     "Fraction": {
-                         "Numerator": {"Integer": [{"range": False, "vals": [0, 5, 10]}]},
-                         "Denominator": {"Integer": [{"range": True, "vals": [-30, -20]}]}
-                     }
-                 },
-             "operators": ["-"]
-             },
-            {"terms":
-                 {
-                     "Decimal": [{"precision": 3, "range": True, "vals": [-4, -1]}]
-                 },
-             "operators": ["*"]
-             }
-        ]
 
         self.ordered_terms = [
             [

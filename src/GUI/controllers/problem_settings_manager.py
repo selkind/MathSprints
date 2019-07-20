@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
+import logging
 from src.GUI.controllers.problem_element_manager import ProblemElementManager
 
 
@@ -11,6 +12,7 @@ class ProblemSettingsManager:
         self.sheet_display = sheet_display
         self.problem_element_ctrl = ProblemElementManager(self.view.problem_element_selection)
         self.current_model = None
+        logging.basicConfig(filename="log.txt")
 
     def set_current_model(self, model):
         self.clear_connections()
@@ -33,8 +35,8 @@ class ProblemSettingsManager:
             self.view.problem_elements.disconnect()
             self.view.add_button.disconnect()
             self.view.del_button.disconnect()
-        except TypeError:
-            pass
+        except TypeError as e:
+            logging.log(logging.DEBUG, e)
 
     def clear_view(self):
         self.problem_element_ctrl.clear_view()
@@ -74,27 +76,43 @@ class ProblemSettingsManager:
                     operator_setting = QtWidgets.QTreeWidgetItem(operator_widget)
                     operator_setting.setText(0, "Operator Group {}".format(k + 1))
 
-        self.view.problem_elements.setCurrentItem(term_widget)
+        self.view.problem_elements.setCurrentItem(term_setting)
 
     def load_term_display_state(self):
         if self.problem_element_ctrl.current_model is not None:
             self.problem_element_ctrl.update_model()
-            self.current_model.problem_elements[self.problem_element_ctrl.model_row] = self.problem_element_ctrl.current_model
+            first_level, second_level = self.problem_element_ctrl.model_row
+            if first_level % 2 == 0:
+                self.current_model.ordered_terms[first_level // 2][second_level] = self.problem_element_ctrl.current_model
+            else:
+                self.current_model.ordered_operators[(first_level - 1) // 2][second_level] = self.problem_element_ctrl.current_model
 
+        parent_row = None
+        selected_item_row = None
         try:
             parent = self.view.problem_elements.currentItem().parent()
             parent_row = self.view.problem_elements.indexOfTopLevelItem(parent)
             selected_item_row = self.view.problem_elements.selectionModel().selectedIndexes()[0].row()
             print(selected_item_row, parent_row)
         except IndexError as e:
-            row = self.view.problem_elements.indexOfTopLevelItem(self.view.problem_elements.currentItem())
-            print(e)
+            logging.log(logging.DEBUG, e)
         except AttributeError as e:
-            row = self.view.problem_elements.indexOfTopLevelItem(self.view.problem_elements.currentItem())
-            print(e)
+            logging.log(logging.DEBUG, e)
 
-        selected_element = self.current_model.problem_elements[row]
-        self.problem_element_ctrl.set_current_model(selected_element, row)
+        # if nothing is selected, select the last possible item to load into the view
+        if parent_row is None:
+            parent_row = len(self.current_model.ordered_terms) - 1
+            selected_item_row = len(self.current_model.ordered_terms[parent_row]) - 1
+            selected_element = self.current_model.ordered_terms[parent_row][selected_item_row]
+        else:
+            if parent_row == -1:
+                return
+            elif parent_row % 2 == 0:
+                selected_element = self.current_model.ordered_terms[parent_row // 2][selected_item_row]
+            else:
+                selected_element = self.current_model.ordered_operators[(parent_row - 1) // 2][selected_item_row]
+
+        self.problem_element_ctrl.set_current_model(selected_element, (parent_row, selected_item_row))
 
     def load_to_view(self):
         if self.current_model is None:

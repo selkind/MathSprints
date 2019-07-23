@@ -28,6 +28,7 @@ class ProblemSettingsManager:
         self.view.problem_elements.itemSelectionChanged.connect(self.load_term_display_state)
         self.view.add_button.clicked.connect(self.add_element)
         self.view.del_button.clicked.connect(self.del_element)
+        self.problem_element_ctrl.view.element_save.clicked.connect(self.update_problem_elements_model)
 
     def clear_connections(self):
         try:
@@ -35,6 +36,7 @@ class ProblemSettingsManager:
             self.view.problem_elements.disconnect()
             self.view.add_button.disconnect()
             self.view.del_button.disconnect()
+            self.problem_element_ctrl.view.element_save.disconnect()
         except TypeError as e:
             logging.log(logging.DEBUG, e)
 
@@ -121,13 +123,15 @@ class ProblemSettingsManager:
             self.current_model.term_count_min = self.view.term_count_min.value()
             self.current_model.term_count_max = self.current_model.term_count_min
 
-        self.problem_element_ctrl.update_model()
+        self.update_problem_elements_model()
 
+    def update_problem_elements_model(self):
+        self.problem_element_ctrl.update_model()
         parent_row, setting_row = self.problem_element_ctrl.model_row
         if parent_row % 2 == 0:
             self.current_model.ordered_terms[parent_row // 2][setting_row] = self.problem_element_ctrl.current_model
         else:
-            self.current_model.ordered_operators[(parent_row - 1) // 2][setting_row] = self.problem_element_ctrl.current_model
+            self.current_model.ordered_terms[parent_row // 2][setting_row] = self.problem_element_ctrl.current_model
 
     def switch_term_count_state(self):
         if self.view.variable_term_count.isChecked():

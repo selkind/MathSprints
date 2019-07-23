@@ -50,11 +50,8 @@ class ProblemElementManager:
                                                         self.view.decimal_option,
                                                         self.decimal_ctrl))
 
-        self.view.element_save.clicked.connect(self.update_model)
-
     def clear_connections(self):
         try:
-            self.view.element_save.disconnect()
             self.view.integer_option.disconnect()
             self.view.fraction_option.disconnect()
             self.view.decimal_option.disconnect()

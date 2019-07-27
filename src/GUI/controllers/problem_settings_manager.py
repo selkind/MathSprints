@@ -45,8 +45,28 @@ class ProblemSettingsManager:
         self.view.problem_elements.clear()
 
     def add_element(self):
-        self.view.add_problem_element_item("Element Group {}".format(self.view.problem_elements.count() + 1))
-        self.current_model.problem_elements.append({"terms": {}, "operators": []})
+        # this line is necessary because adding elements changes the selection, so unsaved changes would be lost.
+        self.update_problem_elements_model()
+        # after updating the current model, set the problem_elements model to None to bypass the included model update
+        # in self.load_term_display_state(). This should probably be pulled out into a separate method to conform to SRP
+        self.problem_element_ctrl.current_model = None
+
+        parent, selected_item_row = self.get_selection_coordinates()
+        if parent % 2 == 0:
+            self.current_model.ordered_terms[(parent // 2)].append({})
+        else:
+            self.current_model.ordered_operators[(parent - 1) // 2].append([])
+
+        # clearing connections here because configure element list changes the selection and we're manually changing
+        # the selection below. This avoids triggering self.load_term_display_state
+        self.clear_connections()
+        self.configure_element_list()
+
+        receiving_parent_item = self.view.problem_elements.topLevelItem(parent)
+        added_child = receiving_parent_item.child(selected_item_row + 1)
+        self.view.problem_elements.setCurrentItem(added_child)
+        self.load_term_display_state()
+        self.configure_buttons()
 
     def del_element(self):
         self.clear_connections()
@@ -64,7 +84,6 @@ class ProblemSettingsManager:
         self.view.problem_elements.clear()
 
         term_count = len(self.current_model.ordered_terms)
-
         for i in range(term_count):
             term_widget = QtWidgets.QTreeWidgetItem(self.view.problem_elements)
             term_widget.setText(0, "Term {}".format(i + 1))
@@ -77,17 +96,16 @@ class ProblemSettingsManager:
                 for k in range(len(self.current_model.ordered_operators[i])):
                     operator_setting = QtWidgets.QTreeWidgetItem(operator_widget)
                     operator_setting.setText(0, "Operator Group {}".format(k + 1))
-
-        self.view.problem_elements.setCurrentItem(term_setting)
+        try:
+            self.view.problem_elements.setCurrentItem(term_setting)
+        except NameError as e:
+            logging.log(logging.DEBUG, e + " while attempting to set current item of "
+                                           "problem_setting_display.problem elements. The last term has no "
+                                           "term setting groups in the model")
 
     def load_term_display_state(self):
         if self.problem_element_ctrl.current_model is not None:
-            self.problem_element_ctrl.update_model()
-            first_level, second_level = self.problem_element_ctrl.model_row
-            if first_level % 2 == 0:
-                self.current_model.ordered_terms[first_level // 2][second_level] = self.problem_element_ctrl.current_model
-            else:
-                self.current_model.ordered_operators[(first_level - 1) // 2][second_level] = self.problem_element_ctrl.current_model
+            self.update_problem_elements_model()
 
         parent_row, selected_item_row = self.get_selection_coordinates()
 

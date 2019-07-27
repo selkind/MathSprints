@@ -134,6 +134,7 @@ class ProblemSettingsManager:
         parent_row, selected_item_row = self.get_selection_coordinates()
 
         if parent_row == -1:
+            self.problem_element_ctrl.clear_view()
             return
         elif parent_row % 2 == 0:
             selected_element = self.current_model.ordered_terms[parent_row // 2][selected_item_row]
@@ -180,9 +181,9 @@ class ProblemSettingsManager:
             if parent_row % 2 == 0:
                 self.current_model.ordered_terms[parent_row // 2][setting_row] = self.problem_element_ctrl.current_model
             else:
-                self.current_model.ordered_terms[parent_row // 2][setting_row] = self.problem_element_ctrl.current_model
+                self.current_model.ordered_operators[(parent_row - 1) // 2][setting_row] = self.problem_element_ctrl.current_model
         except IndexError as e:
-            logging.log(logging.DEBUG, str(e) + "Tried to update problem element model when topLevelItem was selected")
+            logging.log(logging.DEBUG, str(e) + " Tried to update problem element model when topLevelItem was selected")
 
     def switch_term_count_state(self):
         if self.view.variable_term_count.isChecked():

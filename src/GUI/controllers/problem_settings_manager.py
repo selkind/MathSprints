@@ -12,7 +12,7 @@ class ProblemSettingsManager:
         self.sheet_display = sheet_display
         self.problem_element_ctrl = ProblemElementManager(self.view.problem_element_selection)
         self.current_model = None
-        logging.basicConfig(filename="log.txt")
+        logging.basicConfig(filename="log.txt", level=logging.DEBUG)
 
     def set_current_model(self, model):
         self.clear_connections()
@@ -52,6 +52,10 @@ class ProblemSettingsManager:
         self.problem_element_ctrl.current_model = None
 
         parent, selected_item_row = self.get_selection_coordinates()
+        if parent == -1:
+            parent = selected_item_row
+            selected_item_row = -1
+
         if parent % 2 == 0:
             self.current_model.ordered_terms[(parent // 2)].append({})
         else:
@@ -63,21 +67,41 @@ class ProblemSettingsManager:
         self.configure_element_list()
 
         receiving_parent_item = self.view.problem_elements.topLevelItem(parent)
-        added_child = receiving_parent_item.child(selected_item_row + 1)
-        self.view.problem_elements.setCurrentItem(added_child)
+        try:
+            added_child = receiving_parent_item.child(selected_item_row + 1)
+            self.view.problem_elements.setCurrentItem(added_child)
+        except AttributeError as e:
+            logging.log(logging.DEBUG, str(e) + "problem selecting child at coordinates {}, {}".format(parent,
+                                                                                            selected_item_row + 1))
         self.load_term_display_state()
+
         self.configure_buttons()
 
     def del_element(self):
         self.clear_connections()
-        self.problem_element_ctrl.clear_view()
+        self.problem_element_ctrl.current_model = None
 
-        selected = self.view.problem_elements.currentRow()
-        self.view.remove_selected_element_item(selected)
-        self.current_model.problem_elements.pop(selected)
+        parent, selected_item_row = self.get_selection_coordinates()
 
-        new_row = self.view.problem_elements.currentRow()
-        self.problem_element_ctrl.set_current_model(self.current_model.problem_elements[new_row], new_row)
+        if parent % 2 == 0:
+            self.current_model.ordered_terms[parent // 2].pop(selected_item_row)
+        else:
+            self.current_model.ordered_operators[(parent - 1) // 2].pop(selected_item_row)
+
+        self.configure_element_list()
+
+        item_losing_parent = self.view.problem_elements.topLevelItem(parent)
+        next_remaining_child = item_losing_parent.child(selected_item_row - 1)
+        self.view.problem_elements.setCurrentItem(next_remaining_child)
+        try:
+            self.load_term_display_state()
+        except IndexError as e:
+            logging.log(logging.DEBUG, str(e) + " no element groups remained in the topLevelItem")
+
+            empty_parent = self.view.problem_elements.topLevelItem(parent)
+            self.view.problem_elements.setCurrentItem(empty_parent)
+            self.load_term_display_state()
+
         self.configure_buttons()
 
     def configure_element_list(self):
@@ -99,7 +123,7 @@ class ProblemSettingsManager:
         try:
             self.view.problem_elements.setCurrentItem(term_setting)
         except NameError as e:
-            logging.log(logging.DEBUG, e + " while attempting to set current item of "
+            logging.log(logging.DEBUG, str(e) + " while attempting to set current item of "
                                            "problem_setting_display.problem elements. The last term has no "
                                            "term setting groups in the model")
 
@@ -116,7 +140,13 @@ class ProblemSettingsManager:
         else:
             selected_element = self.current_model.ordered_operators[(parent_row - 1) // 2][selected_item_row]
 
-        self.problem_element_ctrl.set_current_model(selected_element, (parent_row, selected_item_row))
+        try:
+            self.problem_element_ctrl.set_current_model(selected_element, (parent_row, selected_item_row))
+        except AttributeError as e:
+            logging.debug(str(e) + " problem_settings model: {}\n selection coordinates: {}, {}".format(
+                                                                                                    self.current_model,
+                                                                                                    parent_row,
+                                                                                                    selected_item_row))
 
     def load_to_view(self):
         if self.current_model is None:
@@ -146,10 +176,13 @@ class ProblemSettingsManager:
     def update_problem_elements_model(self):
         self.problem_element_ctrl.update_model()
         parent_row, setting_row = self.problem_element_ctrl.model_row
-        if parent_row % 2 == 0:
-            self.current_model.ordered_terms[parent_row // 2][setting_row] = self.problem_element_ctrl.current_model
-        else:
-            self.current_model.ordered_terms[parent_row // 2][setting_row] = self.problem_element_ctrl.current_model
+        try:
+            if parent_row % 2 == 0:
+                self.current_model.ordered_terms[parent_row // 2][setting_row] = self.problem_element_ctrl.current_model
+            else:
+                self.current_model.ordered_terms[parent_row // 2][setting_row] = self.problem_element_ctrl.current_model
+        except IndexError as e:
+            logging.log(logging.DEBUG, str(e) + "Tried to update problem element model when topLevelItem was selected")
 
     def switch_term_count_state(self):
         if self.view.variable_term_count.isChecked():
@@ -199,5 +232,6 @@ class ProblemSettingsManager:
             # are used to update the model in the first iteration.
             parent_row = (len(self.current_model.ordered_terms) - 1) * 2
             selected_item_row = len(self.current_model.ordered_terms[parent_row // 2]) - 1
+            logging.log(logging.DEBUG, "selection coordinates set to: {}, {}".format(parent_row, selected_item_row))
 
         return parent_row, selected_item_row

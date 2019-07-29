@@ -22,9 +22,11 @@ class ProblemSettingsManager:
         self.configure_element_list()
         self.load_to_view()
         self.toggle_tree_mod_buttons()
+        self.toggle_variable_term_count()
         self.configure_buttons()
 
     def configure_buttons(self):
+        self.view.ordered_term_check.stateChanged.connect(self.toggle_variable_term_count)
         self.view.variable_term_count.stateChanged.connect(self.switch_term_count_state)
         self.view.problem_elements.itemSelectionChanged.connect(self.load_term_display_state)
         self.view.problem_elements.itemSelectionChanged.connect(self.toggle_tree_mod_buttons)
@@ -34,6 +36,7 @@ class ProblemSettingsManager:
 
     def clear_connections(self):
         try:
+            self.view.ordered_term_check.disconnect()
             self.view.variable_term_count.disconnect()
             self.view.problem_elements.disconnect()
             self.view.add_button.disconnect()
@@ -214,6 +217,10 @@ class ProblemSettingsManager:
         parent_selected = self.get_selection_coordinates()[0] == -1
         self.view.add_button.setEnabled(parent_selected)
         self.view.del_button.setEnabled(not parent_selected)
+
+    def toggle_variable_term_count(self):
+        self.view.variable_term_count.setChecked(False)
+        self.view.variable_term_count.setEnabled(not self.view.ordered_term_check.isChecked())
 
     def min_changed(self):
         self.view.term_count_max.setMinimum(self.view.term_count_min.value())

@@ -79,6 +79,7 @@ class ProblemSettingsManager:
             logging.log(logging.DEBUG, str(e) + "problem selecting child at coordinates {}, {}".format(parent,
                                                                                             selected_item_row + 1))
         self.load_term_display_state()
+        self.toggle_tree_mod_buttons()
 
         self.configure_buttons()
 
@@ -89,24 +90,32 @@ class ProblemSettingsManager:
         parent, selected_item_row = self.get_selection_coordinates()
 
         if parent % 2 == 0:
-            self.current_model.ordered_terms[parent // 2].pop(selected_item_row)
+            element_model = self.current_model.ordered_terms[parent // 2]
         else:
-            self.current_model.ordered_operators[(parent - 1) // 2].pop(selected_item_row)
+            element_model = self.current_model.ordered_operators[(parent - 1) // 2]
 
-        self.configure_element_list()
+        element_model.pop(selected_item_row)
 
-        item_losing_parent = self.view.problem_elements.topLevelItem(parent)
-        next_remaining_child = item_losing_parent.child(selected_item_row - 1)
-        self.view.problem_elements.setCurrentItem(next_remaining_child)
         try:
             self.load_term_display_state()
         except IndexError as e:
             logging.log(logging.DEBUG, str(e) + " no element groups remained in the topLevelItem")
 
+        self.configure_element_list()
+
+        if element_model:
+            item_losing_parent = self.view.problem_elements.topLevelItem(parent)
+            # if deleted child had index 0, select child below instead of above.
+            if selected_item_row > 0:
+                next_remaining_child = item_losing_parent.child(selected_item_row - 1)
+            else:
+                next_remaining_child = item_losing_parent.child(selected_item_row)
+            self.view.problem_elements.setCurrentItem(next_remaining_child)
+        else:
             empty_parent = self.view.problem_elements.topLevelItem(parent)
             self.view.problem_elements.setCurrentItem(empty_parent)
-            self.load_term_display_state()
 
+        self.toggle_tree_mod_buttons()
         self.configure_buttons()
 
     def configure_element_list(self):
@@ -139,6 +148,7 @@ class ProblemSettingsManager:
         parent_row, selected_item_row = self.get_selection_coordinates()
 
         if parent_row == -1:
+            self.problem_element_ctrl.current_model = None
             self.problem_element_ctrl.clear_view()
             return
         elif parent_row % 2 == 0:

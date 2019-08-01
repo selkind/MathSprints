@@ -22,11 +22,11 @@ class ProblemSettingsManager:
         self.configure_element_list()
         self.load_to_view()
         self.toggle_tree_mod_buttons()
-        self.toggle_variable_term_count()
+        self.handle_switch_settings_mode()
         self.configure_buttons()
 
     def configure_buttons(self):
-        self.view.ordered_term_check.stateChanged.connect(self.toggle_variable_term_count)
+        self.view.ordered_term_check.stateChanged.connect(self.handle_switch_settings_mode)
         self.view.variable_term_count.stateChanged.connect(self.switch_term_count_state)
         self.view.problem_elements.itemSelectionChanged.connect(self.load_term_display_state)
         self.view.problem_elements.itemSelectionChanged.connect(self.toggle_tree_mod_buttons)
@@ -167,7 +167,9 @@ class ProblemSettingsManager:
     def load_to_view(self):
         if self.current_model is None:
             return
-        self.view.variable_term_count.setChecked(self.current_model.variable_term_count)
+        self.view.ordered_term_check.setChecked(self.current_model.ordered)
+        self.view.variable_term_count.setChecked(self.current_model.variable_term_count and
+                                                 not self.current_model.ordered)
         self.view.term_count_min.setValue(self.current_model.term_count_min)
         self.view.term_count_min.setMinimum(self.MIN_TERMS)
         self.view.term_count_min.setMaximum(self.current_model.term_count_max)
@@ -179,7 +181,10 @@ class ProblemSettingsManager:
         self.view.term_count_max.setValue(self.current_model.term_count_max)
 
     def update_model(self):
+        self.current_model.ordered = self.view.ordered_term_check.isChecked()
         self.current_model.variable_term_count = self.view.variable_term_count.isChecked()
+        if self.current_model.variable_term_count and self.current_model.ordered:
+            raise ValueError
         if self.current_model.variable_term_count:
             self.current_model.term_count_min = self.view.term_count_min.value()
             self.current_model.term_count_max = self.view.term_count_max.value()
@@ -228,9 +233,30 @@ class ProblemSettingsManager:
         self.view.add_button.setEnabled(parent_selected)
         self.view.del_button.setEnabled(not parent_selected)
 
-    def toggle_variable_term_count(self):
+    def handle_switch_settings_mode(self):
+        ordered_enabled = self.view.ordered_term_check.isChecked()
+        if ordered_enabled:
+            self.view.term_count_min.valueChanged.connect(self.change_term_count)
+        else:
+            try:
+                self.view.term_count_min.disconnect()
+            except TypeError as e:
+                logging.debug(str(e) + " term_count_min failed to disconnect while switching settings mode")
+
         self.view.variable_term_count.setChecked(False)
-        self.view.variable_term_count.setEnabled(not self.view.ordered_term_check.isChecked())
+        self.view.variable_term_count.setEnabled(not ordered_enabled)
+
+    def change_term_count(self):
+        term_count_diff = self.view.term_count_min.value() - len(self.current_model.ordered_terms)
+        if term_count_diff > 0:
+            for i in range(term_count_diff):
+                self.current_model.ordered_terms.append([])
+                self.current_model.ordered_operators.append([])
+        elif term_count_diff < 0:
+            for i in range(-term_count_diff):
+                self.current_model.ordered_terms.pop()
+                self.current_model.ordered_operators.pop()
+        self.configure_element_list()
 
     def min_changed(self):
         self.view.term_count_max.setMinimum(self.view.term_count_min.value())

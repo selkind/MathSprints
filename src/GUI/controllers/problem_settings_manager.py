@@ -50,10 +50,6 @@ class ProblemSettingsManager:
         self.view.problem_elements.clear()
 
     def add_element(self):
-        # this line is necessary because adding elements changes the selection, so unsaved changes would be lost.
-        self.update_problem_elements_model()
-        # after updating the current model, set the problem_elements model to None to bypass the included model update
-        # in self.load_term_display_state(). This should probably be pulled out into a separate method to conform to SRP
         self.problem_element_ctrl.current_model = None
 
         parent, selected_item_row = self.get_selection_coordinates()
@@ -103,6 +99,7 @@ class ProblemSettingsManager:
 
         self.configure_element_list()
 
+        # handle selection logic after configuring element list to overwrite its integrated selection logic.
         if element_model:
             item_losing_parent = self.view.problem_elements.topLevelItem(parent)
             # if deleted child had index 0, select child below instead of above.
@@ -147,7 +144,7 @@ class ProblemSettingsManager:
 
         parent_row, selected_item_row = self.get_selection_coordinates()
 
-        if parent_row == -1:
+        if parent_row == -1 or selected_item_row == -1:
             self.problem_element_ctrl.current_model = None
             self.problem_element_ctrl.clear_view()
             return
@@ -256,6 +253,7 @@ class ProblemSettingsManager:
             for i in range(-term_count_diff):
                 self.current_model.ordered_terms.pop()
                 self.current_model.ordered_operators.pop()
+        self.problem_element_ctrl.current_model = None
         self.configure_element_list()
 
     def min_changed(self):
@@ -278,7 +276,7 @@ class ProblemSettingsManager:
             logging.log(logging.DEBUG, e)
 
         # if nothing is selected, select the last setting from the last term to load into the view
-        if parent_row is None:
+        if selected_item_row is None:
             # I know this looks dumb, but having the parent row is important so that the correct indices
             # are used to update the model in the first iteration.
             parent_row = (len(self.current_model.ordered_terms) - 1) * 2

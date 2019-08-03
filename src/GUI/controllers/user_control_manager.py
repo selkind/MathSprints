@@ -44,6 +44,9 @@ class UserControlManager:
         self.set_layout_manager.update_model()
         row = self.sheet_set_manager.view.set_list.currentRow()
         problem_set = self.sheet_display.worksheet.problem_sets[row]
-        problem_set["set"].build_set()
+        try:
+            problem_set["set"].build_set()
+        except IndexError as e:
+            print(self.problem_settings_manager.current_model)
         self.sheet_display.load_pages_to_viewer()
 

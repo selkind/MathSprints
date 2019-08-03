@@ -118,19 +118,33 @@ class ProblemSettingsManager:
     def configure_element_list(self):
         self.view.problem_elements.clear()
 
-        term_count = len(self.current_model.ordered_terms)
-        for i in range(term_count):
+        if self.view.ordered_term_check.isChecked():
+            term_count = len(self.current_model.ordered_terms)
+            for i in range(term_count):
+                term_widget = QtWidgets.QTreeWidgetItem(self.view.problem_elements)
+                term_widget.setText(0, "Term {}".format(i + 1))
+                for j in range(len(self.current_model.ordered_terms[i])):
+                    term_setting = QtWidgets.QTreeWidgetItem(term_widget)
+                    term_setting.setText(0, "Term Group {}".format(j + 1))
+                if i < term_count - 1:
+                    operator_widget = QtWidgets.QTreeWidgetItem(self.view.problem_elements)
+                    operator_widget.setText(0, "Operator {}".format(i + 1))
+                    for k in range(len(self.current_model.ordered_operators[i])):
+                        operator_setting = QtWidgets.QTreeWidgetItem(operator_widget)
+                        operator_setting.setText(0, "Operator Group {}".format(k + 1))
+        else:
             term_widget = QtWidgets.QTreeWidgetItem(self.view.problem_elements)
-            term_widget.setText(0, "Term {}".format(i + 1))
-            for j in range(len(self.current_model.ordered_terms[i])):
+            term_widget.setText(0, "Terms")
+            for i in range(len(self.current_model.ordered_terms[0])):
                 term_setting = QtWidgets.QTreeWidgetItem(term_widget)
-                term_setting.setText(0, "Term Group {}".format(j + 1))
-            if i < term_count - 1:
-                operator_widget = QtWidgets.QTreeWidgetItem(self.view.problem_elements)
-                operator_widget.setText(0, "Operator {}".format(i + 1))
-                for k in range(len(self.current_model.ordered_operators[i])):
-                    operator_setting = QtWidgets.QTreeWidgetItem(operator_widget)
-                    operator_setting.setText(0, "Operator Group {}".format(k + 1))
+                term_setting.setText(0, "Term Group {}".format(i + 1))
+
+            operator_widget = QtWidgets.QTreeWidgetItem(self.view.problem_elements)
+            operator_widget.setText(0, "Operators")
+            for j in range(len(self.current_model.ordered_operators[0])):
+                operator_setting = QtWidgets.QTreeWidgetItem(operator_widget)
+                operator_setting.setText(0, "Operator Group {}".format(j + 1))
+
         try:
             self.view.problem_elements.setCurrentItem(term_setting)
         except NameError as e:
@@ -233,15 +247,40 @@ class ProblemSettingsManager:
     def handle_switch_settings_mode(self):
         ordered_enabled = self.view.ordered_term_check.isChecked()
         if ordered_enabled:
+            self.expand_element_models()
             self.view.term_count_min.valueChanged.connect(self.change_term_count)
         else:
             try:
                 self.view.term_count_min.disconnect()
             except TypeError as e:
                 logging.debug(str(e) + " term_count_min failed to disconnect while switching settings mode")
+            self.consolidate_elements_models()
 
         self.view.variable_term_count.setChecked(False)
         self.view.variable_term_count.setEnabled(not ordered_enabled)
+        self.configure_element_list()
+
+    def expand_element_models(self):
+        first_term_setting = self.current_model.ordered_terms[0][0]
+        first_operator_setting = self.current_model.ordered_operators[0][0]
+        self.current_model.ordered_terms = []
+        self.current_model.ordered_operators = []
+        term_count = self.view.term_count_min.value()
+        for i in range(term_count):
+            self.current_model.ordered_terms.append([first_term_setting])
+            if i < term_count - 1:
+                self.current_model.ordered_operators.append([first_operator_setting])
+
+    def consolidate_elements_models(self):
+        term_count = self.view.term_count_min.value()
+        for i in range(1, term_count):
+            for j in self.current_model.ordered_terms[i]:
+                self.current_model.ordered_terms[0].append(j)
+            if i < term_count - 1:
+                for k in self.current_model.ordered_operators[i]:
+                    self.current_model.ordered_operators[0].append(k)
+        self.current_model.ordered_terms = [self.current_model.ordered_terms[0]]
+        self.current_model.ordered_operators = [self.current_model.ordered_operators[0]]
 
     def change_term_count(self):
         term_count_diff = self.view.term_count_min.value() - len(self.current_model.ordered_terms)
